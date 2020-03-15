@@ -26,12 +26,13 @@ taggers_by_lang = load_pos_taggers(pos_tagger_dir, resources_by_lang)
 
 results_file = './features/nv_ratio.txt'
 
-def readFeatures(f):
+
+def read_features(f):
     feature_dict = {}
     with open(f, 'r') as f:
         for line in f.readlines()[1:]:
-            lang, noun, verb = line.split('\t')
-            feature_dict[lang] = [float(noun), float(verb)]
+            lang, noun, verb, n2v = line.split('\t')
+            feature_dict[lang] = (float(noun), float(verb), float(n2v))
     return feature_dict
 
 
@@ -40,11 +41,21 @@ def findTags(taggedSample):
     return tags
 
 
-def NounVerbRatio(lang, dataset_source=None):
-    if os.path.isfile(results_file):
-        feature_dict = readFeatures(results_file)
-        noun, verb = feature_dict[lang][0], feature_dict[lang][1]
-        return noun, verb
+def noun2verb(noun_cnt, verb_cnt):
+    n2v = noun_cnt / (noun_cnt + verb_cnt)
+    return n2v
+
+
+def count_pos(pos_counter, pos='noun'):
+    if pos == 'noun':
+        tags = ['/NOUN', '/NCMN', '/NTTL', '/NLBL']
+    elif pos == 'verb':
+        tags = ['/VERB', '/VACT', '/VSTA', '/VATT']
+    cnt = sum([pos_counter.get(t, 0) for t in tags])
+    return cnt
+
+
+def build_counter(lang, dataset_source):
 
     if isinstance(dataset_source, str):
         with open(dataset_source) as inp:
@@ -53,7 +64,7 @@ def NounVerbRatio(lang, dataset_source=None):
         source_lines = dataset_source
     else:
         raise Exception("dataset_source should either be a filnename (str) or a list of sentences.")
-    
+
     pos_counter = Counter()
     tagger = taggers_by_lang[lang]
 
@@ -64,42 +75,53 @@ def NounVerbRatio(lang, dataset_source=None):
             pos_counter.update(findTags(result))
         except:
             pass
+    return pos_counter
 
-    num_tokens = sum(pos_counter.values())
 
-    if lang == 'tha':
-        noun_tags = ['/NCMN', '/NTTL', '/NLBL']
-        verb_tags = ['/VACT', '/VSTA', '/VATT']
-        noun_ratio = sum([pos_counter.get(t, 0) for t in noun_tags]) / num_tokens
-        verb_ratio = sum([pos_counter.get(t, 0) for t in verb_tags]) / num_tokens        
-    else:
-        noun_ratio = pos_counter.get('/NOUN', 0) / num_tokens
-        verb_ratio = pos_counter.get('/VERB', 0) / num_tokens
+def build_features(data_dir='../data'):
+    feature_dict = {}
 
-    return noun_ratio, verb_ratio
-
-if __name__ == "__main__":
     languages = list(ud_resources.keys()) + list(etc_resources.keys())
     languages = sorted(languages)
-    noun_ratio = []
-    verb_ratio = []
 
     for lang in languages:
-        fname = [f for f in os.listdir(f'../data/{lang}') if f.endswith('reviews.tsv') or 'amazon' in f][0]
-        fname = os.path.join(f'../data/{lang}', fname)
-        n, v = NounVerbRatio(lang, fname)
-        noun_ratio.append(n)
-        verb_ratio.append(v)
+        fname = [f for f in os.listdir(f'{data_dir}/{lang}') if f.endswith('reviews.tsv') or 'amazon' in f][0]
+        fname = os.path.join(f'{data_dir}/{lang}', fname)
+        pos_counter = build_counter(lang, fname)
+
+        num_tokens = sum(pos_counter.values())
+        noun_cnt = count_pos(pos_counter, 'noun')
+        verb_cnt = count_pos(pos_counter, 'verb')
+
+        n2v_ratio = noun2verb(noun_cnt, verb_cnt)
+        n_ratio = noun_cnt / num_tokens
+        v_ratio = verb_cnt / num_tokens
+        feature_dict[lang] = (n_ratio, v_ratio, n2v_ratio)
 
         print(f"*** {lang} {fname} ***")
-        print(f"Noun {n} | Verb {v}")
-        # if counts is not None:
-        #     print(counts)
-        print("-"*50)
+        print(f"Noun {n_ratio} | Verb {v_ratio} | Noun-to-verb {n2v_ratio}")
+        print("-" * 50)
+    write_output(feature_dict)
+    return feature_dict
 
+
+def write_output(feature_dict):
     with open(results_file, 'w') as f:
         f.write('lang\tnoun\tverb\n')
-        for l, n, v in zip(languages, noun_ratio, verb_ratio):
-            print(f'{l}\t{n}\t{v}', file=f)
-    
+        for lang, features in feature_dict.items():
+            n, v, n2v = tuple(features)
+            print(f'{lang}\t{n}\t{v}', file=f)
     print(f'Results saved as {results_file}')
+
+
+def nv_features(lang):
+    if os.path.isfile(results_file):
+        feature_dict = read_features(results_file)
+        noun, verb, n2v = tuple(feature_dict[lang])
+        return noun, verb, n2v
+    feature_dict = build_features('../lang-selection/data')
+    return feature_dict[lang]
+
+
+if __name__ == "__main__":
+    build_features(data_dir='../lang-selection/data')
