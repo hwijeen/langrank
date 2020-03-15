@@ -1,0 +1,1399 @@
+<html>
+
+<head>
+<meta name=Title
+content="RDRPOSTagger: A Rule-based Part-of-Speech and Morphological Tagging Toolkit">
+<meta name=Keywords content="">
+<meta http-equiv=Content-Type content="text/html; charset=us-ascii">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>RDRPOSTagger: A Rule-based Part-of-Speech and Morphological Tagging
+Toolkit</title>
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Arial;
+	panose-1:2 11 6 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:"Courier New";
+	panose-1:2 7 3 9 2 2 5 2 4 4;}
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Cambria;
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+h1
+	{margin-top:24.0pt;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:0cm;
+	margin-bottom:.0001pt;
+	font-size:14.0pt;
+	font-family:"Calibri Light",sans-serif;
+	color:#2F5496;
+	font-weight:bold;}
+h2
+	{margin-top:10.0pt;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:0cm;
+	margin-bottom:.0001pt;
+	font-size:13.0pt;
+	font-family:"Calibri Light",sans-serif;
+	color:#4472C4;
+	font-weight:bold;}
+h3
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:13.5pt;
+	font-family:"Times New Roman",serif;
+	font-weight:bold;}
+h4
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;
+	font-weight:bold;}
+h5
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman",serif;
+	font-weight:bold;}
+p.MsoToc1, li.MsoToc1, div.MsoToc1
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:5.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoToc2, li.MsoToc2, div.MsoToc2
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:5.0pt;
+	margin-left:11.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoToc3, li.MsoToc3, div.MsoToc3
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:5.0pt;
+	margin-left:22.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Arial",sans-serif;}
+code
+	{font-family:"Courier New",serif;}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New",serif;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma",sans-serif;}
+p.MsoTocHeading, li.MsoTocHeading, div.MsoTocHeading
+	{margin-top:24.0pt;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:0cm;
+	margin-bottom:.0001pt;
+	line-height:115%;
+	font-size:14.0pt;
+	font-family:"Calibri Light",sans-serif;
+	color:#2F5496;
+	font-weight:bold;}
+span.Heading1Char
+	{font-family:"Calibri Light",sans-serif;
+	color:#2F5496;
+	font-weight:bold;}
+span.Heading2Char
+	{font-family:"Calibri Light",sans-serif;
+	color:#4472C4;
+	font-weight:bold;}
+span.Heading3Char
+	{font-family:"Cambria",serif;
+	color:#4F81BD;
+	font-weight:bold;}
+span.Heading4Char
+	{font-family:"Cambria",serif;
+	color:#4F81BD;
+	font-weight:bold;
+	font-style:italic;}
+span.Heading5Char
+	{font-family:"Cambria",serif;
+	color:#243F60;}
+span.HTMLPreformattedChar
+	{font-family:"Courier New",serif;}
+span.BalloonTextChar
+	{font-family:"Tahoma",sans-serif;}
+p.StyleHTML1, li.StyleHTML1, div.StyleHTML1
+	{margin-top:18.0pt;
+	margin-right:0cm;
+	margin-bottom:12.0pt;
+	margin-left:0cm;
+	text-align:justify;
+	font-size:13.5pt;
+	font-family:"Arial",sans-serif;
+	font-weight:bold;}
+p.StyleHTML2, li.StyleHTML2, div.StyleHTML2
+	{margin-top:6.0pt;
+	margin-right:0cm;
+	margin-bottom:9.0pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-indent:27.0pt;
+	line-height:150%;
+	font-size:13.0pt;
+	font-family:"Arial",sans-serif;
+	font-weight:bold;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+<meta http-equiv=Content-Language content=en-us>
+</head>
+
+<body lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p align=center style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;
+margin-left:27.0pt;text-align:center;line-height:150%'><b><span lang=EN-US
+style='font-size:20.0pt;line-height:150%'>RDRPOSTagger</span></b></p>
+
+<p align=center style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;
+margin-left:27.0pt;text-align:center;line-height:150%'><span lang=EN-US
+style='font-size:18.0pt;line-height:150%'>A Rule-based Part-of-Speech and
+Morphological Tagging Toolkit</span></p>
+
+<p align=center style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;
+margin-left:27.0pt;text-align:center;line-height:150%'><span lang=EN-US><a
+href="https://github.com/datquocnguyen/RDRPOSTagger" target="_blank">https://github.com/datquocnguyen/RDRPOSTagger</a>
+</span></p>
+
+<div style='margin-left:27.0pt;margin-right:27.0pt'>
+
+<div style='margin-right:27.0pt'>
+
+<div style='margin-top:12.0pt;margin-right:27.0pt;margin-bottom:12.0pt'>
+
+<div style='margin-left:90.0pt;margin-right:27.0pt'>
+
+<div style='margin-top:6.0pt;margin-bottom:9.0pt'>
+
+<div class=MsoNormal align=center style='text-align:center;line-height:150%'><span
+lang=EN-US style='font-family:"Arial",sans-serif'>
+
+<hr size=1 width="95%" align=center>
+
+</span></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<p class=MsoToc1 style='margin-left:36.0pt;line-height:150%'><span
+class=MsoHyperlink><span lang=EN-US style='font-family:"Arial",sans-serif'><a
+href="#_Toc435576449">1. Introduction<span style='color:windowtext;display:
+none;text-decoration:none'>. </span><span style='color:windowtext;display:none;
+text-decoration:none'>2</span></a></span></span></p>
+
+<p class=MsoToc1 style='margin-left:36.0pt;line-height:150%'><span
+class=MsoHyperlink><span lang=EN-US style='font-family:"Arial",sans-serif'><a
+href="#_Toc435576450">2. Train RDRPOSTagger on a gold standard training corpus<span
+style='color:windowtext;display:none;text-decoration:none'>. </span><span
+style='color:windowtext;display:none;text-decoration:none'>3</span></a></span></span></p>
+
+<p class=MsoToc1 style='margin-left:36.0pt;line-height:150%'><span
+class=MsoHyperlink><span lang=EN-US style='font-family:"Arial",sans-serif'><a
+href="#_Toc435576451">3. Use pre-trained POS and morphological tagging models<span
+style='color:windowtext;display:none;text-decoration:none'>. </span><span
+style='color:windowtext;display:none;text-decoration:none'>5</span></a></span></span></p>
+
+<p class=MsoToc1 style='margin-left:36.0pt;line-height:150%'><span
+class=MsoHyperlink><span lang=EN-US style='font-family:"Arial",sans-serif'><a
+href="#_Toc435576452">4. Combine RDRPOSTagger with an external initial tagger<span
+style='color:windowtext;display:none;text-decoration:none'> </span><span
+style='color:windowtext;display:none;text-decoration:none'>8</span></a></span></span></p>
+
+<p class=MsoToc1 style='margin-left:36.0pt;line-height:150%'><span
+class=MsoHyperlink><span lang=EN-US style='font-family:"Arial",sans-serif'><a
+href="#_Toc435576453">5. Speed up tagging process with an implementation in
+Java<span style='color:windowtext;display:none;text-decoration:none'>. </span><span
+style='color:windowtext;display:none;text-decoration:none'>9</span></a></span></span></p>
+
+<p class=MsoToc1 style='margin-left:36.0pt;line-height:150%'><span
+class=MsoHyperlink><span lang=EN-US style='font-family:"Arial",sans-serif'><a
+href="#_Toc435576454">References<span style='color:windowtext;display:none;
+text-decoration:none'>. </span><span style='color:windowtext;display:none;
+text-decoration:none'>10</span></a></span></span></p>
+
+<p class=MsoNormal style='margin-top:12.0pt;margin-right:27.35pt;margin-bottom:
+9.0pt;margin-left:36.0pt;text-align:justify;line-height:150%'><b><span
+lang=EN-US style='font-size:13.5pt;line-height:150%;font-family:"Arial",sans-serif;
+color:red'>News:</span></b></p>
+
+<p style='margin-top:6.0pt;margin-right:28.8pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>22/06/2019: Ported to Python 3.4+ & Released 300+ pre-trained UPOS, XPOS and morphological tagging models for about 80 languages from <a
+href="http://universaldependencies.org/">UD v2.4</a>.</span></p>
+
+<p style='margin-top:6.0pt;margin-right:28.8pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>24/05/2017: Released version <a
+href="https://github.com/datquocnguyen/RDRPOSTagger/tree/python2.7" target="_blank">1.2.4</a> with
+pre-trained Universal POS tagging models for 40+ languages from UD v2.0. This is the last version with Python 2.7 support.</span></p>
+
+
+<p class=StyleHTML1 style='margin-top:12.0pt;margin-right:27.35pt;margin-bottom:
+9.0pt;margin-left:27.35pt;line-height:150%'><a name="_Toc435576449"><span
+lang=EN-US>1. Introduction</span></a></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US style='color:black'>RDRPOSTagger is a robust and easy-to-use toolkit for POS and morphological tagging. It employs an error-driven methodology to automatically construct tagging rules in the form of a binary tree.</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol;color:black'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN-US style='color:black'>RDRPOSTagger obtains fast training & tagging speed. For example, </span><span lang=EN-US>on <span
+style='color:black'>the English Penn WSJ sections 22-24, it achieves
+tagging speeds of <b>8K</b> and <b>90K</b> <b>words/second</b>
+computed for <u>single</u> threaded implementations in <b>Python</b> and <b>Java</b>, 
+respectively (a computer with </span>Core2Duo 2.4GHz<i> </i>and<i> </i>3GB
+of memory<span style='color:black'>). </span></span><span lang=EN-US>See more
+results in our <i>AI Communications</i> article.</span><span lang=EN-US
+style='color:black'> </span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol;color:black'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN-US style='color:black'>RDRPOSTagger obtains a competitive performance in comparison to the state-of-the-art results. It now supports pre-trained UPOS, XPOS and morphological tagging models for about 80 languages. See <a href="https://github.com/datquocnguyen/RDRPOSTagger/tree/master/Models" target="_blank">HERE</a> for details.</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US style='color:black'>The general architecture and experimental results of RDRPOSTagger can be found in our following papers:</span><span lang=EN-US> </span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;line-height:150%'><span lang=EN-US>Dat Quoc Nguyen,
+Dai Quoc Nguyen, Dang Duc Pham and Son Bao Pham. <a
+href="http://www.aclweb.org/anthology/E14-2005">RDRPOSTagger: A Ripple Down
+Rules-based Part-Of-Speech Tagger</a>. In <i>Proceedings of the Demonstrations
+at the 14th Conference of the European Chapter of the Association for
+Computational Linguistics</i> (EACL), pp. 17-20, 2014. [<a
+href="http://www.aclweb.org/anthology/E14-2005" target="_blank">.PDF</a>] [<a
+href="http://rdrpostagger.sourceforge.net/13eacl2014.bib" target="_blank">.bib</a>]</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;line-height:150%'><span lang=EN-US>Dat Quoc Nguyen,
+Dai Quoc Nguyen, Dang Duc Pham and Son Bao Pham. <a
+href="http://content.iospress.com/articles/ai-communications/aic698">A Robust
+Transformation-Based Learning Approach Using Ripple Down Rules for
+Part-Of-Speech Tagging</a>. <i>AI Communications</i> (AICom)<i>, </i>vol. 29,
+no. 3, pp. 409-422, 2016. <a href="http://arxiv.org/pdf/1412.4021.pdf"
+target="_blank">[.PDF]</a> [<a
+href="http://rdrpostagger.sourceforge.net/AICom.bib" target="_blank">.bib</a>]</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;line-height:150%'><b><u><span lang=EN-US>Please CITE</span></u></b><b><span
+lang=EN-US> </span></b><span lang=EN-US>either<b> </b>the EACL or the AICom
+paper whenever RDRPOSTagger is used to produce published results or incorporated
+into other software.</span></p>
+
+<p class=StyleHTML1 style='margin-top:12.0pt;margin-right:27.35pt;margin-bottom:
+9.0pt;margin-left:27.35pt;line-height:150%'><a name="_Toc435576450"><span
+lang=EN-US>2. Train RDRPOSTagger on a gold standard training corpus</span></a></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><u><span lang=EN-US>NOTICES:</span></u></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US style='background:transparent'>In terms of
+implementation, the training process has been implemented in Python while the
+tagging process has been implemented in both Python and Java. </span><span
+lang=EN-US style='color:black'>There is a multi-threaded mode with faster
+tagging speed for the Python implementation. See Section 5 for details of using
+the Java implementation.</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>RDRPOSTagger requires an initial tagger. The
+internal initial tagger developed within RDRPOSTagger uses a lexicon to assign
+a tag for each word. See Section 4 for combining RDRPOSTagger with an external
+initial tagger.</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>RDRPOSTagger assumes that each line in the gold
+standard training corpus is a sequence of </span><span lang=EN-US
+style='font-family:"Courier New",serif'>WORD<b>/</b>TAG</span><span lang=EN-US>
+pairs separated by whitespace characters. See sample training and test sets in
+folder </span><span lang=EN-US style='font-family:"Courier New",serif;color:black'>data</span><span
+lang=EN-US>.</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>Assume that
+<b>Python 3.4+</b> is already set to run in command line or terminal (e.g. adding
+Python to the environment variable &#8216;path&#8217; in Windows OS). </span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>We train RDRPOSTagger on the gold standard
+training corpus by <span style='background:transparent'>executing</span>:</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span lang=EN-US style='font-family:
+"Courier New",serif'>pSCRDRtagger$ python RDRPOSTagger.py train
+PATH-TO-GOLD-STANDARD-TRAINING-CORPUS</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span class=apple-converted-space><u><span
+lang=EN-US style='color:black'>Example 1</span></u></span><span
+class=apple-converted-space><span lang=EN-US style='color:black'>: </span></span><span
+lang=EN-US style='font-family:"Courier New",serif'>pSCRDRtagger$ <span
+class=apple-converted-space><span style='color:black'>python RDRPOSTagger.py
+train ../data/goldTrain</span></span></span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span class=apple-converted-space><span
+lang=EN-US style='color:black'>Note that the actual command starts from </span></span><span
+lang=EN-US style='font-family:"Courier New",serif'>python</span><span
+class=apple-converted-space><span lang=EN-US style='color:black'>. Here </span></span><span
+lang=EN-US style='font-family:"Courier New",serif'>pSCRDRtagger$ </span><span
+class=apple-converted-space><span lang=EN-US style='color:black'>is simply used
+to denote the current  source
+package </span></span><span lang=EN-US style='font-family:"Courier New",serif'>pSCRDRtagger</span><span
+class=apple-converted-space><span lang=EN-US style='color:black'>. </span></span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;line-height:150%'><span class=apple-converted-space><span
+lang=EN-US style='color:black'>A  lexicon  .</span></span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>DICT</span></span><span class=apple-converted-space><span
+lang=EN-US style='color:black'> file and a  model  </span></span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>.RDR</span></span><span class=apple-converted-space><span
+lang=EN-US style='color:black'> file, for example </span></span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>goldTrain.DICT </span></span><span class=apple-converted-space><span
+lang=EN-US style='color:black'>and</span></span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'> goldTrain.RDR</span></span><span class=apple-converted-space><span
+lang=EN-US style='color:black'>, will be generated in the same directory
+containing the gold standard training corpus. </span></span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+class=apple-converted-space><span lang=EN-US style='font-family:Symbol;
+color:black'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><span class=apple-converted-space><span lang=EN-US
+style='color:black'>To employ the trained model for POS tagging on a raw
+unlabeled text corpus, we perform:</span></span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><a name="OLE_LINK47"><a
+name="OLE_LINK48"><a name="OLE_LINK49"><a name="OLE_LINK50"><span lang=EN-US
+style='font-family:"Courier New",serif'>pSCRDRtagger$ <span
+class=apple-converted-space><span style='color:black'>python RDRPOSTagger.py
+tag PATH-TO-TRAINED-RDR-MODEL PATH-TO-LEXICON PATH-TO-RAW-TEXT-CORPUS</span></span></span></a></a></a></a></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span class=apple-converted-space><u><span
+lang=EN-US style='color:black'>Example 2</span></u></span><span
+class=apple-converted-space><span lang=EN-US style='color:black'>: </span></span><span
+lang=EN-US style='font-family:"Courier New",serif'>pSCRDRtagger$ <span
+class=apple-converted-space><span style='color:black'>python RDRPOSTagger.py
+tag ../data/goldTrain.RDR ../data/goldTrain.DICT ../data/rawTest</span></span></span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;line-height:150%'><span class=apple-converted-space><span
+lang=EN-US style='color:black'>A </span></span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>.TAGGED</span></span><span class=apple-converted-space><span
+lang=EN-US style='color:black'> file, in this case </span></span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>rawTest.TAGGED</span></span><span class=apple-converted-space><span
+lang=EN-US style='color:black'>, will be generated in the same directory
+containing the raw text corpus. </span></span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;line-height:150%'><span class=apple-converted-space><u><span
+lang=EN-US style='color:black'>To obtain faster tagging process in Python</span></u></span><span
+class=apple-converted-space><span lang=EN-US style='color:black'>: set a higher
+value for variable </span></span><span class=apple-converted-space><span lang=EN-US
+style='font-family:"Courier New",serif;color:black'>NUMBER_OF_PROCESSES</span></span><span
+class=apple-converted-space><span lang=EN-US style='color:black'>  in
+module </span></span><span class=apple-converted-space><span lang=EN-US
+style='font-family:"Courier New",serif;color:black'>Config.py</span></span><span
+class=apple-converted-space><span lang=EN-US style='color:black'> in package
+</span></span><span class=apple-converted-space><span lang=EN-US
+style='font-family:"Courier New",serif;color:black'>Utility</span></span><span
+class=apple-converted-space><span lang=EN-US style='color:black'>. <!---The value should not larger than
+the number of CPU cores which your computer has.--></span></span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-AU style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span class=apple-converted-space><span lang=EN-US
+style='color:black'>To evaluate tagging accuracy, we  employ module </span></span><span
+lang=EN-US style='font-family:"Courier New",serif;background:transparent'>Eval.py</span><span
+lang=EN-US style='background:transparent'>  in package </span><span
+lang=EN-US style='font-family:"Courier New",serif;background:transparent'>Utility
+</span><span lang=EN-US style='background:transparent'>:</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span lang=EN-US style='font-family:
+"Courier New",serif'>Utility</span><span lang=EN-US style='line-height:150%;
+font-family:"Courier New",serif;background:transparent'>$ python Eval.py
+PATH-TO-TAGGED-TEST-CORPUS PATH-TO-GOLD-TEST-CORPUS</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><u><span lang=EN-US
+style='line-height:150%;background:transparent'>Example 3</span></u><span
+lang=EN-US style='line-height:150%;background:transparent'>: </span><span
+lang=EN-US style='font-family:"Courier New",serif'>Utility$</span><span
+lang=EN-US style='line-height:150%;background:transparent'> </span><span
+lang=EN-US style='line-height:150%;font-family:"Courier New",serif;background:
+transparent'>python Eval.py </span><span class=apple-converted-space><span
+lang=EN-US style='font-family:"Courier New",serif;color:black;background:transparent'>..</span></span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>/data/rawTest</span></span><span class=apple-converted-space><span
+lang=EN-US style='line-height:150%;font-family:"Courier New",serif;background:
+transparent'>.TAGGED</span></span><span lang=EN-US style='line-height:150%;
+font-family:"Courier New",serif;background:transparent'> </span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>../data/goldTest</span></span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><b><span lang=EN-US>NOTE: Use</span></b><span lang=EN-US> </span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>RDRPOSTagger4En.py </span></span><span lang=EN-US>and </span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>RDRPOSTagger4Vn.py</span></span><span lang=EN-US> in case of
+retraining tagging models for English with Penn Treebank POS tags and for 
+Vietnamese with VietTreebank (or VLSP) POS tags, respectively.</span></p>
+
+<p class=StyleHTML1 style='margin-top:12.0pt;margin-right:27.35pt;margin-bottom:
+9.0pt;margin-left:27.35pt;line-height:150%'><a name="_Toc435576451"><span
+lang=EN-US>3. Use pre-trained POS and morphological tagging models</span></a><span
+lang=EN-US> </span></p>
+
+<p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:9.0pt;margin-left:
+54.0pt;text-indent:-18.0pt;line-height:150%'><span lang=EN-US style='font-family:
+Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>Pre-trained POS and morphological tagging models from our AI Communications paper:</span></p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='margin-left:36.0pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  background:#E7E6E6;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p align=center style='margin-top:6.0pt;margin-right:0cm;margin-bottom:0cm;
+  margin-left:0cm;margin-bottom:.0001pt;text-align:center;line-height:150%'><b><span
+  style='font-size:11.0pt;line-height:150%'>Language</span></b></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border:solid black 1.0pt;
+  border-left:none;background:#E7E6E6;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p align=center style='margin-top:6.0pt;margin-right:0cm;margin-bottom:0cm;
+  margin-left:0cm;margin-bottom:.0001pt;text-align:center;line-height:150%'><b><span
+  style='font-size:11.0pt;line-height:150%'>Corpus</span></b></p>
+  </td>
+  <td width=203 valign=top style='width:202.5pt;border:solid black 1.0pt;
+  border-left:none;background:#E7E6E6;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p align=center style='margin-top:6.0pt;margin-right:0cm;margin-bottom:0cm;
+  margin-left:0cm;margin-bottom:.0001pt;text-align:center;line-height:150%'><b><span
+  style='font-size:11.0pt;line-height:150%'>Model</span></b></p>
+  </td>
+  <td width=208 valign=top style='width:207.8pt;border:solid black 1.0pt;
+  border-left:none;background:#E7E6E6;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p align=center style='margin-top:6.0pt;margin-right:0cm;margin-bottom:0cm;
+  margin-left:0cm;margin-bottom:.0001pt;text-align:center;line-height:150%'><b><span
+  style='font-size:11.0pt;line-height:150%'>Lexicon</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>English</span></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>Penn
+  WSJ section 00-18 [M93]</span></p>
+  </td>
+  <td width=203 valign=top style='width:202.5pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/English.RDR</span></p>
+  </td>
+  <td width=208 valign=top style='width:207.8pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/English.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK11"><a name="OLE_LINK10"><span
+  style='font-size:11.0pt;line-height:150%'>French</span></a></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>French
+  Treebank [A03]</span></p>
+  </td>
+  <td width=203 valign=top style='width:202.5pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/<a name="OLE_LINK13"><a
+  name="OLE_LINK12">French</a>.RDR</a></span></p>
+  </td>
+  <td width=208 valign=top style='width:207.8pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/French.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK15"><a name="OLE_LINK14"><span
+  style='font-size:11.0pt;line-height:150%'>German</span></a></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>TIGER
+  Corpus [B04]</span></p>
+  </td>
+  <td width=203 valign=top style='width:202.5pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/German.RDR</span></p>
+  </td>
+  <td width=208 valign=top style='width:207.8pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/German.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK17"><a name="OLE_LINK16"><span
+  style='font-size:11.0pt;line-height:150%'>Hindi</span></a></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>Hindi
+  Treebank [P09]</span></p>
+  </td>
+  <td width=203 valign=top style='width:202.5pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/Hindi.RDR</span></p>
+  </td>
+  <td width=208 valign=top style='width:207.8pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/Hindi.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK19"><a name="OLE_LINK18"><span
+  style='font-size:11.0pt;line-height:150%'>Italian</span></a></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>ISDT
+  Treebank [B13]</span></p>
+  </td>
+  <td width=203 valign=top style='width:202.5pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/Italian.RDR</span></p>
+  </td>
+  <td width=208 valign=top style='width:207.8pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/Italian.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK21"><a name="OLE_LINK20"><span
+  style='font-size:11.0pt;line-height:150%'>Thai</span></a></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>ORCHID
+  Corpus [S97]</span></p>
+  </td>
+  <td width=203 valign=top style='width:202.5pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/Thai.RDR</span></p>
+  </td>
+  <td width=208 valign=top style='width:207.8pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/Thai.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK23"><a name="OLE_LINK22"><span
+  style='font-size:11.0pt;line-height:150%'>Vietnamese</span></a></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:-5.4pt;margin-bottom:3.0pt;
+  margin-left:0cm;line-height:150%'><a name="OLE_LINK40"><a name="OLE_LINK39"><span
+  style='font-size:11.0pt;line-height:150%'>VLSP 2013 POS-annotated corpus </span></a></a><span
+  style='font-size:11.0pt;line-height:150%'>[N09]</span></p>
+  </td>
+  <td width=203 valign=top style='width:202.5pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/Vietnamese.RDR</span></p>
+  </td>
+  <td width=208 valign=top style='width:207.8pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/POS/Vietnamese.DICT</span></p>
+  </td>
+ </tr>
+</table>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='margin-left:36.0pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  background:#E7E6E6;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p align=center style='margin-top:6.0pt;margin-right:0cm;margin-bottom:0cm;
+  margin-left:0cm;margin-bottom:.0001pt;text-align:center;line-height:150%'><b><span
+  style='font-size:11.0pt;line-height:150%'>Language</span></b></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border:solid black 1.0pt;
+  border-left:none;background:#E7E6E6;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p align=center style='margin-top:6.0pt;margin-right:0cm;margin-bottom:0cm;
+  margin-left:0cm;margin-bottom:.0001pt;text-align:center;line-height:150%'><b><span
+  style='font-size:11.0pt;line-height:150%'>Corpus</span></b></p>
+  </td>
+  <td width=216 valign=top style='width:216.0pt;border:solid black 1.0pt;
+  border-left:none;background:#E7E6E6;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p align=center style='margin-top:6.0pt;margin-right:0cm;margin-bottom:0cm;
+  margin-left:0cm;margin-bottom:.0001pt;text-align:center;line-height:150%'><b><span
+  style='font-size:11.0pt;line-height:150%'>Model</span></b></p>
+  </td>
+  <td width=221 valign=top style='width:221.4pt;border:solid black 1.0pt;
+  border-left:none;background:#E7E6E6;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p align=center style='margin-top:6.0pt;margin-right:0cm;margin-bottom:0cm;
+  margin-left:0cm;margin-bottom:.0001pt;text-align:center;line-height:150%'><b><span
+  style='font-size:11.0pt;line-height:150%'>Lexicon</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>Bulgarian</span></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>BulTreeBank-Morph
+  [S04]</span></p>
+  </td>
+  <td width=216 valign=top style='width:216.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/Bulgarian.RDR</span></p>
+  </td>
+  <td width=221 valign=top style='width:221.4pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/Bulgarian.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK25"><a name="OLE_LINK24"><span
+  style='font-size:11.0pt;line-height:150%'>Czech</span></a></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>Prague
+  Dependency Treebank 2.5 [B12]</span></p>
+  </td>
+  <td width=216 valign=top style='width:216.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/Czech.RDR</span></p>
+  </td>
+  <td width=221 valign=top style='width:221.4pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/Czech.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK26"><span style='font-size:11.0pt;
+  line-height:150%'>Dutch</span></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>Lassy
+  Small Corpus [N13]</span></p>
+  </td>
+  <td width=216 valign=top style='width:216.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/Dutch.RDR</span></p>
+  </td>
+  <td width=221 valign=top style='width:221.4pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/Dutch.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK28"><a name="OLE_LINK27"><span
+  style='font-size:11.0pt;line-height:150%'>French</span></a></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>French
+  Treebank [A03] </span></p>
+  </td>
+  <td width=216 valign=top style='width:216.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/French.RDR</span></p>
+  </td>
+  <td width=221 valign=top style='width:221.4pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/French.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK30"><a name="OLE_LINK29"><span
+  style='font-size:11.0pt;line-height:150%'>German</span></a></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>TIGER
+  Corpus [B04] </span></p>
+  </td>
+  <td width=216 valign=top style='width:216.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/German.RDR</span></p>
+  </td>
+  <td width=221 valign=top style='width:221.4pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/German.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK32"><a name="OLE_LINK31"><span
+  style='font-size:11.0pt;line-height:150%'>Portuguese</span></a></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>Tycho
+  Brahe Corpus [G10]</span></p>
+  </td>
+  <td width=216 valign=top style='width:216.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/Portuguese.RDR</span></p>
+  </td>
+  <td width=221 valign=top style='width:221.4pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/Portuguese.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK34"><a name="OLE_LINK33"><span
+  style='font-size:11.0pt;line-height:150%'>Spanish</span></a></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>IULA
+  LSP Treebank [M12]</span></p>
+  </td>
+  <td width=216 valign=top style='width:216.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/Spanish.RDR</span></p>
+  </td>
+  <td width=221 valign=top style='width:221.4pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/Spanish.DICT</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=77 valign=top style='width:77.4pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><a name="OLE_LINK35"><span style='font-size:11.0pt;
+  line-height:150%'>Swedish</span></a></p>
+  </td>
+  <td width=210 valign=top style='width:210.2pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%'>Stockholm&#8212;Ume&deg;a
+  Corpus 3.0 [S12]</span></p>
+  </td>
+  <td width=216 valign=top style='width:216.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/Swedish.RDR</span></p>
+  </td>
+  <td width=221 valign=top style='width:221.4pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p style='margin-top:6.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:
+  0cm;line-height:150%'><span style='font-size:11.0pt;line-height:150%;
+  font-family:"Courier New",serif'>../Models/MORPH/Swedish.DICT</span></p>
+  </td>
+ </tr>
+</table>
+
+
+<p style='margin-top:12.0pt;margin-right:27.35pt;margin-bottom:9.0pt;
+margin-left:54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>300+ UPOS, XPOS and FEATS (i.e. morphological) tagging models for about 80 languages available in folder <a href="https://github.com/datquocnguyen/RDRPOSTagger/tree/master/Models" target="_blank">ud-treebanks-v2.4</a>.</span></p>
+
+
+
+<p style='margin-top:12.0pt;margin-right:26.95pt;margin-bottom:9.0pt;
+margin-left:53.85pt;text-align:justify;text-indent:-17.85pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>To use a pre-trained model, we perform:</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span lang=EN-US style='font-family:
+"Courier New",serif'>pSCRDRtagger$ <span class=apple-converted-space><span
+style='color:black'>python RDRPOSTagger.py tag PATH-TO-PRETRAINED-RDR-MODEL
+PATH-TO-LEXICON PATH-TO-RAW-TEXT-CORPUS</span></span></span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><a name="OLE_LINK53"><span
+class=apple-converted-space><u><span lang=EN-US style='color:black'>Example 4</span></u></span></a><span
+class=apple-converted-space><span lang=EN-US style='color:black'>: </span></span><span
+lang=EN-US style='font-family:"Courier New",serif'>pSCRDRtagger$ <span
+class=apple-converted-space><span style='color:black'>python <a
+name="OLE_LINK56"><a name="OLE_LINK57">RDRPOSTagger.py </a>tag
+../Models/POS/German.RDR ../Models/POS/German.DICT ../data/GermanRawTest</a></span></span></span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span class=apple-converted-space><u><span
+lang=EN-US style='color:black'>Example 5</span></u></span><span
+class=apple-converted-space><span lang=EN-US style='color:black'>: </span></span><span
+lang=EN-US style='font-family:"Courier New",serif'>pSCRDRtagger$ <span
+class=apple-converted-space><span style='color:black'>python <a
+name="OLE_LINK54"><a name="OLE_LINK55">RDRPOSTagger.py </a>tag
+../Models/MORPH/German.RDR ../Models/MORPH/German.DICT ../data/GermanRawTest</a></span></span></span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;line-height:150%'><a name="OLE_LINK51"><a
+name="OLE_LINK52"><span lang=EN-US>NOTE that each line in the input raw text
+corpus represents a word-segmented sentence. For programming with
+RDRPOSTagger, please follow code lines 92-98 inmodule </span></a></a><span
+lang=EN-US style='font-family:"Courier New",serif'>RDRPOSTagger.py</span><span
+lang=EN-US>  in package </span><span lang=EN-US style='font-family:"Courier New",serif'>pSCRDRTagger</span><span
+lang=EN-US>. Here is an example:</span></p>
+
+<p style='margin-top:0cm;margin-right:27.35pt;margin-bottom:0cm;margin-left:
+72.0pt;margin-bottom:.0001pt;text-align:justify;line-height:150%'><span
+lang=EN-US style='font-size:11.0pt;line-height:150%;font-family:"Courier New",serif'>r
+= <span style='color:#44546A'>RDRPOSTagger</span>() </span></p>
+
+<p style='margin-top:0cm;margin-right:27.35pt;margin-bottom:0cm;margin-left:
+72.0pt;margin-bottom:.0001pt;text-align:justify;line-height:150%'><span
+lang=EN-US style='font-size:11.0pt;line-height:150%;font-family:"Courier New",serif;
+color:gray'># Load the POS tagging model for French</span></p>
+
+<p style='margin-top:0cm;margin-right:27.35pt;margin-bottom:0cm;margin-left:
+72.0pt;margin-bottom:.0001pt;text-align:justify;line-height:150%'><span
+lang=EN-US style='font-size:11.0pt;line-height:150%;font-family:"Courier New",serif'>r.constructSCRDRtreeFromRDRfile(<span
+style='color:#C00000'>&quot;../Models/POS/French.RDR&quot;</span>) </span></p>
+
+<p style='margin-top:0cm;margin-right:27.35pt;margin-bottom:0cm;margin-left:
+72.0pt;margin-bottom:.0001pt;text-align:justify;line-height:150%'><span
+lang=EN-US style='font-size:11.0pt;line-height:150%;font-family:"Courier New",serif;
+color:gray'># Load the lexicon for French</span></p>
+
+<p style='margin-top:0cm;margin-right:27.35pt;margin-bottom:0cm;margin-left:
+72.0pt;margin-bottom:.0001pt;text-align:justify;line-height:150%'><span
+lang=EN-US style='font-size:11.0pt;line-height:150%;font-family:"Courier New",serif'>DICT
+= readDictionary(<span style='color:#C00000'>&quot;../Models/POS/French.DICT&quot;</span>)
+</span></p>
+
+<p style='margin-top:0cm;margin-right:27.35pt;margin-bottom:0cm;margin-left:
+72.0pt;margin-bottom:.0001pt;text-align:justify;line-height:150%'><span
+lang=EN-US style='font-size:11.0pt;line-height:150%;font-family:"Courier New",serif;
+color:gray'># Tag a tokenized/word-segmented sentence</span></p>
+
+<p style='margin-top:0cm;margin-right:27.35pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span lang=EN-US style='font-size:
+11.0pt;line-height:150%;font-family:"Courier New",serif'>r.tagRawSentence(DICT,
+<span style='color:#C00000'>&quot;Cette annonce a fait l' effet d' une
+v&eacute;ritable bombe .&quot;</span>) </span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.35pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+class=apple-converted-space><span lang=EN-AU style='font-family:Symbol;
+color:black'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><b><span lang=EN-US>NOTE: Use</span></b><span lang=EN-US> </span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>RDRPOSTagger4En.py </span></span><span
+class=apple-converted-space><span lang=EN-US style='color:black'>and</span></span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'> RDRPOSTagger4Vn.py </span></span> <span class=apple-converted-space><span
+lang=EN-US style='color:black'>for running pre-trained English and Vietnamese POS
+tagging models </span></span><span lang=EN-US> in folder <span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>../Models/POS</span></span></span><span
+class=apple-converted-space><span lang=EN-US style='color:black'>,
+respectively.</span></span></p>
+
+<p class=StyleHTML1 style='margin-top:12.0pt;margin-right:27.35pt;margin-bottom:
+9.0pt;margin-left:27.35pt;line-height:150%'><a name="_Toc435576452"><span
+lang=EN-US>4. Combine RDRPOSTagger with an external initial tagger</span></a></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>In case of using output
+from an external initial tagger, to train RDRPOSTagger we perform:</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span lang=EN-US style='font-family:
+"Courier New",serif'>pSCRDRtagger$ python ExtRDRPOSTagger.py train
+PATH-TO-GOLD-STANDARD-TRAINING-CORPUS
+PATH-TO-TRAINING-CORPUS-INITIALIZED-BY-EXTERNAL-TAGGER</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><u><span lang=EN-US>Example 6</span></u><span
+lang=EN-US>: </span><span lang=EN-US style='font-family:"Courier New",serif'>pSCRDRtagger$
+python ExtRDRPOSTagger.py train ../data/goldTrain ../data/initTrain</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span lang=EN-US>Here the
+initialized training corpus </span><span lang=EN-US style='font-family:"Courier New",serif'>initTrain</span><span
+lang=EN-US> is generated by using the external initial tagger to perform  tagging on the raw
+corpus which consists of the raw text extracted from the gold standard training
+corpus </span><span lang=EN-US style='font-family:"Courier New",serif'>goldTrain</span><span
+lang=EN-US>. </span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;line-height:150%'><span class=apple-converted-space><span
+lang=EN-US style='color:black'>A model </span></span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>.RDR</span></span><span class=apple-converted-space><span
+lang=EN-US style='color:black'>  file, for example </span></span><span
+class=apple-converted-space><span lang=EN-US style='font-family:"Courier New",serif;
+color:black'>initTrain.RDR</span></span><span class=apple-converted-space><span
+lang=EN-US style='color:black'>, will be generated in the same directory
+containing the initialized </span></span><span lang=EN-US>training <span
+class=apple-converted-space><span style='color:black'>corpus.</span></span></span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>To use the trained model for retagging a test corpus where
+words already are initially tagged by the external initial tagger:</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span lang=EN-US style='font-family:
+"Courier New",serif'>pSCRDRtagger$ python ExtRDRPOSTagger.py tag
+PATH-TO-TRAINED-RDR-MODEL PATH-TO-TEST-CORPUS-INITIALIZED-BY-EXTERNAL-TAGGER</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><u><span lang=EN-US>Example 7</span></u><span
+lang=EN-US>: </span><span lang=EN-US style='font-family:"Courier New",serif'>pSCRDRtagger$
+python ExtRDRPOSTagger.py tag ../data/initTrain.RDR ../data/initTest</span></p>
+
+<p class=StyleHTML1 style='margin-top:12.0pt;margin-right:27.35pt;margin-bottom:
+9.0pt;margin-left:27.35pt;line-height:150%'><a name="_Toc435576453"><span
+lang=EN-US>5. Speed up tagging process with an implementation in Java</span></a></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><u><span lang=EN-US>Compile</span></u><span lang=EN-US>: </span><span lang=EN-US style='font-family:"Courier New",serif'>jSCRDRTagger$
+javac -encoding UTF-8 RDRPOSTagger.java</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-size:13.5pt;line-height:150%;font-family:Symbol'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN-US>To use a pre-trained model for tagging a raw text corpus:</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span lang=EN-US style='font-family:
+"Courier New",serif'>jSCRDRTagger$ java RDRPOSTagger PATH-TO-PRETRAINED-RDR-MODEL
+PATH-TO-LEXICON PATH-TO-RAW-TEXT-CORPUS </span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><u><span lang=EN-US>Example 8:</span></u><span
+lang=EN-US style='font-family:"Courier New",serif'> jSCRDRTagger$ java RDRPOSTagger
+../Models/POS/German.RDR ../Models/POS/German.DICT ../data/GermanRawTest</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><u><span lang=EN-US>Example 9</span></u><span
+lang=EN-US>:</span><span lang=EN-US style='font-family:"Courier New",serif'>
+jSCRDRTagger$ java RDRPOSTagger ../Models/MORPH/German.RDR
+../Models/MORPH/German.DICT ../data/GermanRawTest</span></p>
+
+<p style='margin-top:12.0pt;margin-right:27.35pt;margin-bottom:9.0pt;
+margin-left:54.0pt;text-align:justify;line-height:150%'><span lang=EN-US>RDRPOSTagger
+has two additional parameters specialized for POS tagging in English and
+Vietnamese:</p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><u><span lang=EN-US>Example 10</span></u><span
+lang=EN-US>: </span><span lang=EN-US style='font-family:"Courier New",serif'>jSCRDRTagger$
+java RDRPOSTagger en ../Models/POS/English.RDR ../Models/POS/English.DICT
+../data/en/rawTest</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><u><span lang=EN-US>Example 11</span></u><span
+lang=EN-US>:</span><span lang=EN-US style='font-family:"Courier New",serif'> </span><span
+lang=EN-US style='font-family:"Courier New",serif'>jSCRDRTagger$ java
+RDRPOSTagger vn ../Models/POS/Vietnamese.RDR ../Models/POS/Vietnamese.DICT
+../data/vn/rawTest</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+54.0pt;text-align:justify;text-indent:-18.0pt;line-height:150%'><span
+lang=EN-US style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>In case of using an external initial tagger:</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><span lang=EN-US style='font-family:
+"Courier New",serif'>jSCRDRTagger$ java RDRPOSTagger ex PATH-TO-TRAINED-RDR-MODEL
+PATH-TO-TEST-CORPUS-INITIALIZED-BY-EXTERNAL-TAGGER</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+72.0pt;text-align:justify;line-height:150%'><u><span lang=EN-US>Example 12</span></u><span
+lang=EN-US>:</span><span lang=EN-US style='font-family:"Courier New",serif'> </span><span
+lang=EN-US style='font-family:"Courier New",serif'>jSCRDRTagger$ java
+RDRPOSTagger ex ../data/initTrain.RDR ../data/initTest</span></p>
+
+<p class=StyleHTML1 style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:
+9.0pt;margin-left:27.0pt;line-height:150%'><a name="_Toc435576454"><span
+lang=EN-US>References</span></a></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%;text-autospace:none'><span
+lang=EN-US>[M93] M. P. Marcus, M. A. Marcinkiewicz, and B. Santorini. Building
+a Large Annotated Corpus of English: The Penn Treebank. <i>Computational
+Linguistics</i>, 19(2):313&#8211; 330, 1993. <a
+href="http://www.cis.upenn.edu/~treebank/">http://www.cis.upenn.edu/~treebank/</a>
+</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>[A03] A.
+Abeill&eacute;, L. Cl&eacute;ment, and F. Toussenel. Building a Treebank for
+French. In <i>Treebanks</i>, volume 20 of Text, Speech and Language Technology,
+pages 165&#8211; 187. 2003. <a
+href="http://www.llf.cnrs.fr/en/Gens/Abeille/French-Treebank-fr.php">http://www.llf.cnrs.fr/en/Gens/Abeille/French-Treebank-fr.php</a>
+</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>[B04] S. Brants,
+S. Dipper, P. Eisenberg, S. Hansen-Schirra, E. K&uml;onig, W. Lezius, C.
+Rohrer, G. Smith, and H. Uszkoreit. TIGER: Linguistic Interpretation of a
+German Corpus. <i>Research on Language and Computation</i>, 2(4):597&#8211;620,
+2004. <a
+href="http://www.ims.uni-stuttgart.de/forschung/ressourcen/korpora/tiger.en.html">http://www.ims.uni-stuttgart.de/forschung/ressourcen/korpora/tiger.en.html</a>
+</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>[P09] M. Palmer,
+R. Bhatt, B. Narasimhan, O. Rambow, D. M. Sharma, and F. Xia. Hindi Syntax:
+Annotating Dependency, Lexical Predicate-Argument Structure, and Phrase
+Structure. In <i>Proceedings of 7th International Conference on Natural
+Language Processing</i>, pages 261&#8211;268, 2009. <a
+href="http://verbs.colorado.edu/hindiurdu/index.html">http://verbs.colorado.edu/hindiurdu/index.html</a>
+</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>[B13] C. Bosco, S.
+Montemagni, and M. Simi. Converting Italian Treebanks: Towards an Italian
+Stanford Dependency Treebank. In <i>Proceedings of the 7th Linguistic
+Annotation Workshop and Interoperability with Discourse</i>, pages 61&#8211;69,
+2013. <a href="http://medialab.di.unipi.it/wiki/ISDT">http://medialab.di.unipi.it/wiki/ISDT</a>
+</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>[S97] V.
+Sornlertlamvanich, T. Charoenporn, and H. Isahara. ORCHID: Thai Part-Of-Speech
+Tagged Corpus, 1997. URL <a href="http://culturelab.in.th/files/orchid.html">http://culturelab.in.th/files/orchid.html</a>
+</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>[N09] P. T.
+Nguyen, X. L. Vu, T. M. H. Nguyen, V. H. Nguyen, and H. P. Le. Building a Large
+Syntactically-Annotated Corpus of Vietnamese. In <i>Proceedings of the Third
+Linguistic Annotation Workshop</i>, pages 182&#8211;185, 2009. <a
+href="http://vlsp.vietlp.org:8080/">http://vlsp.vietlp.org:8080/</a> </span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>[S04] K. Simov, P.
+Osenova, A. Simov, and M. Kouylekov. Design and Implementation of the Bulgarian
+HPSGbased Treebank. <i>Research on Language and Computation</i>,
+2:495&#8211;522, 2004. <a href="http://www.bultreebank.org">http://www.bultreebank.org</a>
+</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>[B12] E. Bejcek,
+J. Panevov&aacute;, J. Popelka, P. Stran&aacute;k, M. Sevc&iacute;kov&aacute;,
+J. Step&aacute;nek, and Z. Zabokrtsk&yacute;. Prague Dependency Treebank 2.5 -
+a Revisited Version of PDT 2.0. In <i>Proceedings of 24th International
+Conference on Computational Linguistics</i>, pages 231&#8211;246, 2012. <a
+href="https://ufal.mff.cuni.cz/pdt2.5/">https://ufal.mff.cuni.cz/pdt2.5/</a> </span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>[N13] G. Noord, G.
+Bouma, F. Eynde, D. Kok, J. Linde, I. Schuurman, E. Sang, and V. Vandeghinste.
+Large Scale Syntactic Annotation of Written Dutch: Lassy. In <i>Essential
+Speech and Language Technology for Dutch, Theory and Applications of Natural
+Language Processing</i>, pages 147&#8211;164, 2013. <a
+href="http://www.let.rug.nl/~vannoord/Lassy/">http://www.let.rug.nl/~vannoord/Lassy/</a>
+</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>[G10] C. Galves
+and P. Faria. Tycho Brahe Parsed Corpus of Historical Portuguese, 2010. <a
+href="http://www.tycho.iel.unicamp.br/~tycho/corpus/en/index.html">http://www.tycho.iel.unicamp.br/~tycho/corpus/en/index.html</a>.</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>[M12] M. Marimon,
+B. Fisas, N. Bel, M. Villegas, J. Vivaldi, S. Torner, M. Lorente, and S.
+V&aacute;zquez. The IULA Treebank. In <i>Proceedings of the eighth
+international conference on Language Resources and Evaluation</i>, pages
+1920&#8211;1926, 2012. <a href="https://www.iula.upf.edu/recurs01_tbk_uk.htm">https://www.iula.upf.edu/recurs01_tbk_uk.htm</a>
+</span></p>
+
+<p style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;margin-left:
+36.0pt;text-align:justify;line-height:150%'><span lang=EN-US>[S12] SUC-3.0. The
+Stockholm&#8212;Ume&deg;a Corpus (SUC) 3.0, 2012. URL <a
+href="http://spraakbanken.gu.se/eng/resource/suc3">http://spraakbanken.gu.se/eng/resource/suc3</a>
+</span></p>
+
+<div style='margin-left:27.0pt;margin-right:27.0pt'>
+
+<div style='margin-right:27.0pt'>
+
+<div style='margin-top:12.0pt;margin-right:27.0pt;margin-bottom:12.0pt'>
+
+<div style='margin-left:85.5pt;margin-right:27.0pt'>
+
+<div style='margin-top:6.0pt;margin-bottom:9.0pt'>
+
+<div class=MsoNormal align=center style='text-align:center;line-height:150%'><span
+lang=EN-US style='font-family:"Arial",sans-serif'>
+
+<hr size=1 width="96%" align=center>
+
+</span></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<p align=center style='margin-top:6.0pt;margin-right:27.0pt;margin-bottom:9.0pt;
+margin-left:27.0pt;text-align:center;line-height:150%'><span lang=EN-US
+style='color:black'>Last updated: June 22, 2019</span></p>
+
+</div>
+
+</body>
+
+</html>

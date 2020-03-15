@@ -1,0 +1,8 @@
+The Universal Dependencies Treebank of Spoken Slovenian (SST) is available
+under CC BY-NC-SA 4.0, Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International.
+
+Unannotated transcriptions have been sampled from the Gos corpus of spoken Slovene
+(http://hdl.handle.net/11356/1040), also distributed under CC BY-NC-SA 4.0.
+
+http://creativecommons.org/licenses/by-nc-sa/4.0/
+http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode

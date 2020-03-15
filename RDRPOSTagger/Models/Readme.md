@@ -1,0 +1,106 @@
+# Pre-trained models
+
+Pre-trained POS and morphological tagging models detailed in our [AI Communications paper](https://arxiv.org/abs/1412.4021):
+
+<img width="750" alt="pos" src="https://user-images.githubusercontent.com/2412555/59964377-205faf80-9543-11e9-9d7f-67c3959b581e.png">
+<img width="750" alt="morph" src="https://user-images.githubusercontent.com/2412555/59964375-205faf80-9543-11e9-949d-44f9c1b11849.png">
+
+300+ UPOS, XPOS and FEATS (i.e. morphological) tagging models for about 80 languages available in folder `ud-treebanks-v2.4`. These models are trained using files `*-train.conllu`  from [UD treebanks v2.4](https://universaldependencies.org/). For each treebank which does not contain a `*-train.conllu` file, file `*-test.conllu` is then used for training. The following accuracies are computed for treebanks which have both `*-train.conllu` and `*-test.conllu` files (i.e.`*-train.conllu` and `*-test.conllu` are used for training and test, respectively): 
+
+	Treebank                      | UPOS  | XPOS  | FEATS
+	----------------------------- + ----- + ----- + -----
+	UD_Afrikaans-AfriBooms        | 94.46 | 89.82 | 92.33
+	UD_Ancient_Greek-Perseus      | 84.75 | 75.1  | 85.59
+	UD_Ancient_Greek-PROIEL       | 95.22 | 95.79 | 88.47
+	UD_Arabic-PADT                | 94.53 | 86.8  | 86.63
+	UD_Armenian-ArmTDP            | 89.25 | _     | 79.15
+	UD_Basque-BDT                 | 91.37 | _     | 85.21
+	UD_Belarusian-HSE             | 90.93 | 37.7  | 65.48
+	UD_Bulgarian-BTB              | 96.6  | 94.01 | 94.85
+	UD_Buryat-BDT                 | 54.69 | _     | 45.83
+	UD_Catalan-AnCora             | 96.65 | 96.49 | 96.15
+	UD_Chinese-GSD                | 89.09 | 89.0  | _    
+	UD_Classical_Chinese-Kyoto    | 91.31 | 88.08 | 91.27
+	UD_Coptic-Scriptorium         | 91.7  | 90.65 | 93.15
+	UD_Croatian-SET               | 95.63 | 86.88 | 87.87
+	UD_Czech-CAC                  | 98.02 | 87.67 | 86.6 
+	UD_Czech-CLTT                 | 97.11 | 82.5  | 82.53
+	UD_Czech-FicTree              | 97.01 | 87.03 | 87.88
+	UD_Czech-PDT                  | 97.74 | 90.22 | 89.64
+	UD_Danish-DDT                 | 93.56 | _     | 92.81
+	UD_Dutch-Alpino               | 93.27 | 90.22 | 92.01
+	UD_Dutch-LassySmall           | 92.81 | 90.92 | 92.52
+	UD_English-EWT                | 92.86 | 92.45 | 94.08
+	UD_English-GUM                | 90.57 | 90.72 | 93.03
+	UD_English-LinES              | 93.95 | 91.74 | 93.73
+	UD_English-ParTUT             | 94.6  | 94.42 | 94.04
+	UD_Estonian-EDT               | 93.12 | _     | 92.17
+	UD_Estonian-EWT               | 83.52 | _     | 79.77
+	UD_Finnish-FTB                | 89.08 | 89.64 | 92.12
+	UD_Finnish-TDT                | 92.4  | _     | 89.84
+	UD_French-GSD                 | 96.07 | _     | 94.98
+	UD_French-ParTUT              | 94.62 | 93.89 | 92.01
+	UD_French-Sequoia             | 96.06 | _     | 94.88
+	UD_French-Spoken              | 90.58 | _     | _    
+	UD_Galician-CTG               | 96.16 | 95.99 | _    
+	UD_Galician-TreeGal           | 90.56 | 86.63 | 89.9 
+	UD_German-GSD                 | 90.75 | 93.58 | 80.16
+	UD_Gothic-PROIEL              | 93.38 | 94.3  | 86.08
+	UD_Greek-GDT                  | 94.58 | 94.61 | 88.56
+	UD_Hebrew-HTB                 | 92.89 | 92.87 | 88.17
+	UD_Hindi-HDTB                 | 95.51 | 94.33 | 88.69
+	UD_Hungarian-Szeged           | 87.61 | _     | 70.32
+	UD_Indonesian-GSD             | 90.65 | 92.8  | 94.37
+	UD_Irish-IDT                  | 89.45 | 88.68 | 76.01
+	UD_Italian-ISDT               | 96.2  | 95.9  | 96.13
+	UD_Italian-ParTUT             | 94.59 | 94.01 | 94.28
+	UD_Italian-PoSTWITA           | 91.92 | 91.73 | 93.31
+	UD_Italian-VIT                | 93.73 | 92.78 | 93.88
+	UD_Japanese-GSD               | 95.26 | 94.75 | _    
+	UD_Kazakh-KTB                 | 65.38 | 65.04 | 47.35
+	UD_Korean-GSD                 | 89.31 | 74.84 | _    
+	UD_Korean-Kaist               | 89.29 | 76.72 | _    
+	UD_Kurmanji-MG                | 62.89 | 62.43 | 47.47
+	UD_Latin-ITTB                 | 96.85 | 91.53 | 91.94
+	UD_Latin-Perseus              | 84.44 | 68.72 | 72.82
+	UD_Latin-PROIEL               | 93.98 | 94.46 | 85.05
+	UD_Latvian-LVTB               | 92.02 | 82.88 | 88.28
+	UD_Lithuanian-ALKSNIS         | 85.87 | 74.39 | 75.32
+	UD_Lithuanian-HSE             | 71.79 | 70.19 | 64.34
+	UD_Maltese-MUDT               | 91.75 | 91.61 | _    
+	UD_Marathi-UFAL               | 75.73 | _     | 63.83
+	UD_North_Sami-Giella          | 87.51 | 90.33 | 80.98
+	UD_Norwegian-Bokmaal          | 94.08 | _     | 93.2 
+	UD_Norwegian-Nynorsk          | 93.92 | _     | 93.14
+	UD_Norwegian-NynorskLIA       | 92.98 | _     | 92.42
+	UD_Old_Church_Slavonic-PROIEL | 93.12 | 93.51 | 85.13
+	UD_Old_French-SRCMF           | 92.25 | 91.91 | 94.95
+	UD_Old_Russian-TOROT          | 88.12 | 88.57 | 79.26
+	UD_Persian-Seraji             | 95.85 | 95.72 | 95.69
+	UD_Polish-LFG                 | 95.35 | 84.59 | 84.36
+	UD_Polish-PDB                 | 96.44 | 86.35 | 86.52
+	UD_Portuguese-Bosque          | 94.38 | _     | 92.89
+	UD_Portuguese-GSD             | 95.35 | 95.38 | _    
+	UD_Romanian-Nonstandard       | 93.91 | 88.54 | 87.03
+	UD_Romanian-RRT               | 95.74 | 94.25 | 94.56
+	UD_Russian-GSD                | 93.13 | 92.94 | 82.53
+	UD_Russian-SynTagRus          | 97.0  | _     | 91.8 
+	UD_Russian-Taiga              | 89.36 | _     | 77.78
+	UD_Serbian-SET                | 96.16 | 87.26 | 87.82
+	UD_Slovak-SNK                 | 89.71 | 71.74 | 76.23
+	UD_Slovenian-SSJ              | 94.55 | 84.74 | 85.53
+	UD_Slovenian-SST              | 89.81 | 79.15 | 79.39
+	UD_Spanish-AnCora             | 96.94 | 96.64 | 96.98
+	UD_Spanish-GSD                | 95.36 | _     | 95.29
+	UD_Swedish-LinES              | 92.39 | 89.85 | 86.32
+	UD_Swedish-Talbanken          | 94.21 | 94.47 | 93.54
+	UD_Swedish_Sign_Language-SSLC | 81.2  | 84.04 | _    
+	UD_Tamil-TTB                  | 83.56 | 77.98 | 82.05
+	UD_Telugu-MTG                 | 89.04 | 89.04 | _    
+	UD_Turkish-IMST               | 92.06 | 91.23 | 86.61
+	UD_Ukrainian-IU               | 94.38 | 82.51 | 82.11
+	UD_Upper_Sorbian-UFAL         | 69.36 | _     | 47.98
+	UD_Urdu-UDTB                  | 91.52 | 89.17 | 80.14
+	UD_Uyghur-UDT                 | 88.53 | _     | 84.33
+	UD_Vietnamese-VTB             | 87.08 | 80.79 | _    
+	UD_Wolof-WTB                  | 88.78 | 88.12 | 88.21
