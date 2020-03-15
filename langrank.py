@@ -4,6 +4,7 @@ import pkg_resources
 import os
 import lightgbm as lgb
 from sklearn.datasets import load_svmlight_file
+from nv_ratio import nv_features
 
 TASKS = ["MT","DEP","EL","POS", "OLID"]
 
@@ -189,6 +190,9 @@ def prepare_new_dataset(lang, task="MT", dataset_source=None,
             types = set(tokens)
             features["word_vocab"] = types
 
+    if task == "SA" or task == "OLID":
+        features["noun_ratio"], features["verb_ratio"], features["n2v_ratio"] = nv_features(lang, source_lines)
+
     if task == "MT":
         # Only use subword overlap features for the MT task
         if isinstance(dataset_subword_source, str):
@@ -243,6 +247,7 @@ def distance_vec(test, transfer, uriel_features, task):
         transfer_ttr = transfer["type_token_ratio"]
         task_ttr = test["type_token_ratio"]
         distance_ttr = (1 - transfer_ttr/task_ttr) ** 2
+
     # Word overlap
     if task != "EL":
         word_overlap = float(len(set(transfer["word_vocab"]).intersection(set(test["word_vocab"])))) / (transfer["type_number"] + test["type_number"])
@@ -252,13 +257,27 @@ def distance_vec(test, transfer, uriel_features, task):
     if task == "MT":
         subword_overlap = float(len(set(transfer["subword_vocab"]).intersection(set(test["subword_vocab"])))) / (transfer["subword_type_number"] + test["subword_type_number"])
 
+    # POS related features
+    if task == "SA" or task == "OLID":
+        transfer_nr = transfer["noun_ratio"]
+        transfer_vr = transfer["verb_ratio"]
+        transfer_n2vr = transfer["n2v_ratio"]
+
+        task_nr = test["noun_ratio"]
+        task_vr = test["verb_ratio"]
+        task_n2vr = test["n2v_ratio"]
+
+        distance_n2v = (1 - transfer_n2vr / task_n2vr) ** 2
+
     if task == "MT":
         data_specific_features = [word_overlap, subword_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
-    elif task == "POS" or task == "DEP" or task == "OLID":
+    elif task == "POS" or task == "DEP":
         data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
     elif task == "EL":
         data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size]
-
+    elif task == "OLID" or task == "SA":
+        data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
+                                  transfer_ttr, task_ttr, distance_ttr, transfer_nr, transfer_vr, distance_n2v]
     return np.array(data_specific_features + uriel_features)
 
 def lgbm_rel_exp(BLEU_level, cutoff):
@@ -301,7 +320,7 @@ def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
             sds = segmented_datasets[i]
             with open(sds, "r") as sds_f:
                 seg_lines = sds_f.readlines()
-        features[lang] = prepare_new_dataset(lang=lang, dataset_source=lines,
+        features[lang] = prepare_new_dataset(lang=lang, task=task, dataset_source=lines,
                                              dataset_subword_source=seg_lines)
     uriel = uriel_distance_vec(langs)
 
@@ -393,7 +412,7 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", print
                     "Target lang dataset size", "Transfer over target size ratio", "Transfer lang TTR",
                     "Target lang TTR", "Transfer target TTR distance", "GENETIC",
                     "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
-    elif task == "POS" or task == "DEP" or task == "OLID":
+    elif task == "POS" or task == "DEP":
         sort_sign_list = [-1, 0, -1, 0, -1, 0, 0, 1, 1, 1, 1, 1, 1]
         feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
                         "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
@@ -404,6 +423,13 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", print
         feature_name = ["Entity overlap", "Transfer lang dataset size", "Target lang dataset size",
                         "Transfer over target size ratio", "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL",
                         "INVENTORY", "GEOGRAPHIC"]
+    elif task == "OLID" or task == "SA":
+        sort_sign_list = [-1, 0, -1, 0, -1, 0, 0, -1, -1, -1, 1, 1, 1, 1, 1, 1]
+        feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+                        "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+                        "Transfer target TTR distance", "Transfer lang noun ratio",
+                        "Transfer lang verb ratio", "Transfer target n2v distance" 
+                        "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
 
     test_inputs = np.array(test_inputs)
     for j in range(len(feature_name)):
@@ -426,7 +452,4 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", print
                      feature_name[contrib_ind[1]], contrib_scores[contrib_ind[1]],
                      feature_name[contrib_ind[2]], contrib_scores[contrib_ind[2]]))
     return ind
-
-
-
 
