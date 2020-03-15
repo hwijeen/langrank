@@ -30,7 +30,6 @@ def train_olid(exclude_lang=None):
             [3, 1, 4, 0, 2],
             [3, 1, 4, 2, 0]]
 
-    import ipdb; ipdb.set_trace(context=5)
     if exclude_lang is not None: # for cross validation
         exclude_idx = langs.index(exclude_lang)
         langs.pop(exclude_idx)
@@ -72,14 +71,14 @@ def train_sa(exclude_lang=None):
     tmp_dir = 'tmp'
     preprocess = None
     prepare_train_file(datasets=datasets, langs=langs, rank=rank,
-                       tmp_dir=tmp_dir, task="sa", preprocess=preprocess)
+                       tmp_dir=tmp_dir, task="SA", preprocess=preprocess)
     output_model = "{}/sa_model.txt".format(tmp_dir)
     feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                     'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                     'transfer_nr', 'transfer_vr', 'distance_n2v',
                     'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     train(tmp_dir=tmp_dir, output_model=output_model,
-          feature_name=feature_name, task="OLID")
+          feature_name=feature_name, task="SA")
     assert os.path.isfile(output_model)
 
 
@@ -93,4 +92,5 @@ def evaluate(pred_ranking, gold_ranking):
 
 
 if __name__ == '__main__':
-    train_sa(exclude_lang='eng')
+    train_olid(exclude_lang='eng')
+    # train_sa(exclude_lang='eng')
