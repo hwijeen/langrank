@@ -107,10 +107,10 @@ def build_features(data_dir='../data'):
 
 def write_output(feature_dict):
     with open(results_file, 'w') as f:
-        f.write('lang\tnoun\tverb\n')
+        f.write('lang\tnoun\tverb\tn2v\n')
         for lang, features in feature_dict.items():
             n, v, n2v = tuple(features)
-            print(f'{lang}\t{n}\t{v}', file=f)
+            print(f'{lang}\t{n}\t{v}\t{n2v}', file=f)
     print(f'Results saved as {results_file}')
 
 
