@@ -7,10 +7,12 @@ from test_pos_tagger import *
 
 ud_resources={'ara': 'Arabic-PADT',
               'chi': 'Chinese-CFL', # GSD, HK
+              'dan': 'Danish-DDT',
               'dut': 'Dutch-Alpino',
               'eng': 'English-EWT', # GUM, LinES, ParTUT
               'fre': 'French-FQB', # GSD, ParTUT, Sequoia, Spoken
               'ger': 'German-GSD', #HDT, LIT
+              'ell': 'Greek-GDT',
               'jap': 'Japanese-GSD', #Modern
               'kor': 'Korean-Kaist', #Kaist
               'per': 'Persian-Seraji',
@@ -60,6 +62,7 @@ def build_counter(lang, dataset_source):
     if isinstance(dataset_source, str):
         with open(dataset_source) as inp:
             source_lines = inp.readlines()[1:]
+            source_lines = [l.strip().split('\t')[1] for l in source_lines]
     elif isinstance(dataset_source, list):
         source_lines = dataset_source
     else:
@@ -70,8 +73,7 @@ def build_counter(lang, dataset_source):
 
     for l in source_lines:
         try:
-            sample = l.strip().split('\t')[1]
-            result = tagger(rawLine=sample)
+            result = tagger(rawLine=l)
             pos_counter.update(findTags(result))
         except:
             pass
@@ -114,12 +116,25 @@ def write_output(feature_dict):
     print(f'Results saved as {results_file}')
 
 
-def nv_features(lang):
+def nv_features(lang, source_lines=None):
     if os.path.isfile(results_file):
         feature_dict = read_features(results_file)
-        noun, verb, n2v = tuple(feature_dict[lang])
-        return noun, verb, n2v
-    feature_dict = build_features('../lang-selection/data')
+        if lang in feature_dict.keys():
+            noun, verb, n2v = tuple(feature_dict[lang])
+            return noun, verb, n2v
+    else:
+        feature_dict = build_features('../lang-selection/data')
+
+    if lang not in feature_dict.keys() and source_lines is not None:
+        pos_counter = build_counter(lang, source_lines)
+        num_tokens = sum(pos_counter.values())
+        noun_cnt = count_pos(pos_counter, 'noun')
+        verb_cnt = count_pos(pos_counter, 'verb')
+        n2v_ratio = noun2verb(noun_cnt, verb_cnt)
+        n_ratio = noun_cnt / num_tokens
+        v_ratio = verb_cnt / num_tokens
+        feature_dict[lang] = (n_ratio, v_ratio, n2v_ratio)
+
     return feature_dict[lang]
 
 

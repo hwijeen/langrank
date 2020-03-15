@@ -191,7 +191,7 @@ def prepare_new_dataset(lang, task="MT", dataset_source=None,
             features["word_vocab"] = types
 
     if task == "SA" or task == "OLID":
-        features["noun_ratio"], features["verb_ratio"], features["n2v_ratio"] = nv_features(lang)
+        features["noun_ratio"], features["verb_ratio"], features["n2v_ratio"] = nv_features(lang, source_lines)
 
     if task == "MT":
         # Only use subword overlap features for the MT task
@@ -277,8 +277,7 @@ def distance_vec(test, transfer, uriel_features, task):
         data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size]
     elif task == "OLID" or task == "SA":
         data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
-                                  transfer_ttr, task_ttr, distance_ttr,
-                                  transfer_nr, transfer_vr, distance_n2v]
+                                  transfer_ttr, task_ttr, distance_ttr, transfer_nr, transfer_vr, distance_n2v]
     return np.array(data_specific_features + uriel_features)
 
 def lgbm_rel_exp(BLEU_level, cutoff):
@@ -321,7 +320,7 @@ def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
             sds = segmented_datasets[i]
             with open(sds, "r") as sds_f:
                 seg_lines = sds_f.readlines()
-        features[lang] = prepare_new_dataset(lang=lang, dataset_source=lines,
+        features[lang] = prepare_new_dataset(lang=lang, task=task, dataset_source=lines,
                                              dataset_subword_source=seg_lines)
     uriel = uriel_distance_vec(langs)
 
@@ -351,7 +350,7 @@ def train(tmp_dir, output_model, feature_name='auto', task='OLID'):
     train_file = os.path.join(tmp_dir, f"train_{task}.csv")
     train_size = os.path.join(tmp_dir, f"train_{task}_size.csv")
     X_train, y_train = load_svmlight_file(train_file)
-    import ipdb; ipdb.set_trace(context=5)
+    # import ipdb; ipdb.set_trace(context=5)
     model = lgb.LGBMRanker(boosting_type='gbdt', num_leaves=16,
                         max_depth=-1, learning_rate=0.1, n_estimators=100,
                         min_child_samples=5)

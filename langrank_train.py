@@ -34,6 +34,7 @@ def train_olid():
     output_model = "{}/model_child_1.txt".format(tmp_dir)
     feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                     'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
+                    'transfer_nr', 'transfer_vr', 'distance_n2v',
                     'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     train(tmp_dir=tmp_dir, output_model=output_model,
           feature_name=feature_name, task="OLID")
