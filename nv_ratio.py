@@ -84,6 +84,8 @@ def build_features(data_dir='../data'):
     feature_dict = {}
 
     languages = list(ud_resources.keys()) + list(etc_resources.keys())
+    languages.remove('dan')
+    languages.remove('ell')
     languages = sorted(languages)
 
     for lang in languages:
@@ -117,15 +119,8 @@ def write_output(feature_dict):
 
 
 def nv_features(lang, source_lines=None):
-    if os.path.isfile(results_file):
-        feature_dict = read_features(results_file)
-        if lang in feature_dict.keys():
-            noun, verb, n2v = tuple(feature_dict[lang])
-            return noun, verb, n2v
-    else:
-        feature_dict = build_features('../lang-selection/data')
-
-    if lang not in feature_dict.keys() and source_lines is not None:
+    feature_dict = {}
+    if source_lines is not None:
         pos_counter = build_counter(lang, source_lines)
         num_tokens = sum(pos_counter.values())
         noun_cnt = count_pos(pos_counter, 'noun')
@@ -134,7 +129,11 @@ def nv_features(lang, source_lines=None):
         n_ratio = noun_cnt / num_tokens
         v_ratio = verb_cnt / num_tokens
         feature_dict[lang] = (n_ratio, v_ratio, n2v_ratio)
-
+    else:
+        if os.path.isfile(results_file):
+            feature_dict = read_features(results_file)
+        else:
+            feature_dict = build_features('../lang-selection/data')
     return feature_dict[lang]
 
 

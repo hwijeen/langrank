@@ -6,7 +6,7 @@ import lightgbm as lgb
 from sklearn.datasets import load_svmlight_file
 from nv_ratio import nv_features
 
-TASKS = ["MT","DEP","EL","POS", "OLID"]
+TASKS = ["MT", "DEP", "EL", "POS", "OLID", "SA"]
 
 
 MT_DATASETS = {
@@ -23,6 +23,9 @@ DEP_DATASETS = {
 }
 OLID_DATASETS = {
     "olid" : "olid.npy"
+}
+SA_DATASETS = {
+    "sa": "sa.npy"
 }
 
 MT_MODELS = {
@@ -42,11 +45,15 @@ OLID_MODELS = {
     "best": "lgbm_model_olid_all.txt",
     "child1": "child_1.txt"
 }
+OLID_MODELS = {
+    "best": "lgbm_model_sa_all.txt",
+    "child1": "child_1.txt"
+}
 
 # checks
 def check_task(task):
     if task not in TASKS:
-        raise Exception("Unknown task " + task + ". Only 'MT', 'DEP', 'EL', 'POS' are supported.")
+        raise Exception("Unknown task " + task + ". Only 'MT', 'DEP', 'EL', 'POS', 'OLID', 'SA' are supported.")
 
 def check_task_model(task, model):
     check_task(task)
@@ -75,6 +82,8 @@ def map_task_to_data(task):
         return DEP_DATASETS
     elif task == "OLID":
         return OLID_DATASETS
+    elif task == "SA":
+        return SA_DATASETS
     else:
         raise Exception("Unknown task")
 
@@ -89,6 +98,8 @@ def map_task_to_models(task):
         return DEP_MODELS
     elif task == "OLID":
         return OLID_MODELS
+    elif task == "SA":
+        return SA_MODELS
     else:
         raise Exception("Unknown task")
 

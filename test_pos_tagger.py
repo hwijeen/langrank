@@ -54,7 +54,7 @@ def load_pos_taggers(pos_tagger_dir, resources_by_lang):
         rdr_path, dict_path = resources
         tagger.constructSCRDRtreeFromRDRfile(rdr_path)
         dict_ = readDictionary(dict_path)
-        taggers_by_lang[lang] = partial(tagger.getOnlyTagsRawSentence, DICT=dict_)
+        taggers_by_lang[lang] = partial(tagger.tagRawSentence, DICT=dict_)
     return taggers_by_lang
 
 if __name__ == '__main__':
