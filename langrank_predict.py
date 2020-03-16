@@ -4,7 +4,16 @@
 import langrank as lr
 import os
 import argparse
+from utils import ndcg
 
+def evaluate(pred_rank, gold_rank, k=3):
+    # NDCG@3 as default
+    num_lang = len(pred_rank)
+    pred_rel = rank_to_relevance(pred_rank, num_lang)
+    gold_rel = rank_to_relevance(gold_rank, num_lang)
+    pred_rel = np.expand_dims(pred_rel, axis=0)
+    gold_rel = np.expand_dims(gold_rel, axis=0)
+    return ndcg(y_score=pred_rel, y_true=gold_rel, k=k)
 
 parser = argparse.ArgumentParser(description='Langrank parser.')
 parser.add_argument('-o', '--orig', type=str, required=True, help='unsegmented dataset')

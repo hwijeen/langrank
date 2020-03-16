@@ -7,7 +7,6 @@ import numpy as np
 from langrank import prepare_train_file, train, rank_to_relevance
 from preprocessing import build_preprocess
 from scipy.stats import rankdata
-# from sklearn.metrics import ndcg_score
 
 def test_train_mt():
     langs = ["aze", "ben", "fin"]
@@ -85,14 +84,6 @@ def train_sa(exclude_lang=None):
     assert os.path.isfile(output_model)
 
 
-# def evaluate(pred_rank, gold_rank, k=3):
-#     # NDCG@3 as default
-#     num_lang = len(pred_rank)
-#     pred_rel = rank_to_relevance(pred_rank, num_lang)
-#     gold_rel = rank_to_relevance(gold_rank, num_lang)
-#     pred_rel = np.expand_dims(pred_rel, axis=0)
-#     gold_rel = np.expand_dims(gold_rel, axis=0)
-#     return ndcg_score(y_score=pred_rel, y_true=gold_rel, k=k)
 
 
 if __name__ == '__main__':
