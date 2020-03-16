@@ -2,6 +2,7 @@ import os, sys
 root=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(root)
 # import pytest
+import numpy as np
 from langrank import prepare_train_file, train, rank_to_relevance
 from preprocessing import build_preprocess
 from sklearn.metrics import ndcg_score
@@ -42,14 +43,19 @@ def train_olid():
     assert os.path.isfile(output_model)
 
 
-def evaluate(pred_ranking, gold_ranking):
-    num_lang = len(pred_ranking)
-    pred_rel = rank_to_relevance(pred_ranking, num_lang)
-    gold_rel = rank_to_relevance(gold_ranking, num_lang)
-    pred_topk = [pred_rel[idx] for idx, rel in enumerate(gold_rel) if rel > 0]
-    gold_topk = [rel for idx, rel in enumerate(gold_rel) if rel > 0]
-    return ndcg_score(y_score=pred_topk, y_true=gold_topk)
+def evaluate(pred_rank, gold_rank, k=3):
+    # NDCG@3 as default
+    num_lang = len(pred)
+    pred_rel = rank_to_relevance(pred_rank, num_lang)
+    gold_rel = rank_to_relevance(gold_rank, num_lang)
+    pred_rel = np.expand_dims(pred_rel, axis=0)
+    gold_rel = np.expand_dims(gold_rel, axis=0)
+    return ndcg_score(y_score=pred_rel, y_true=gold_rel, k=k)
 
 
 if __name__ == '__main__':
-    train_olid()
+    # train_olid()
+    # task language has rank 0
+    pred = [0,1,2,4,3]
+    gold = [0,4,3,2,1]
+    print(evaluate(pred_rank=pred, gold_rank=gold))
