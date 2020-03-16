@@ -59,7 +59,7 @@ def load_pos_taggers(pos_tagger_dir, resources_by_lang):
 
 if __name__ == '__main__':
     ud_resources={'ara': 'Arabic-PADT',
-                  'chi': 'Chinese-CFL', # GSD, HK
+                  'zho': 'Chinese-CFL', # GSD, HK
                   'eng': 'English-EWT', # GUM, LinES, ParTUT
                   'fra': 'French-FQB', # GSD, ParTUT, Sequoia, Spoken
                   'deu': 'German-GSD', #HDT, LIT

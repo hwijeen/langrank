@@ -202,7 +202,7 @@ def prepare_new_dataset(lang, task="MT", dataset_source=None,
             features["word_vocab"] = types
 
     if task == "SA" or task == "OLID":
-        features["noun_ratio"], features["verb_ratio"], features["n2v_ratio"] = nv_features(lang, source_lines)
+        features["noun_ratio"], features["verb_ratio"], features["n2v_ratio"] = nv_features(lang, task, source_lines)
 
     if task == "MT":
         # Only use subword overlap features for the MT task

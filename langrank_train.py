@@ -57,7 +57,7 @@ def rerank(rank, without_idx=None):
     return rank
 
 def train_sa(exclude_lang=None):
-    langs = ['ara', 'chi', 'nld', 'eng', 'fra',
+    langs = ['ara', 'zho', 'nld', 'eng', 'fra',
              'deu', 'kor', 'rus', # no jap, no per
              'spa', 'tam', 'tur'] # no tha
     data_dir = 'datasets/sa/'
@@ -99,7 +99,7 @@ def evaluate(pred_rank, gold_rank, k=3):
 
 if __name__ == '__main__':
     # train_olid(exclude_lang='eng')
-    langs = ['ara', 'chi', 'nld', 'eng', 'fra',
+    langs = ['ara', 'zho', 'nld', 'eng', 'fra',
              'deu', 'kor', 'rus', # no jap, no per
              'spa', 'tam', 'tur'] # no tha
     train_sa(exclude_lang='ara')

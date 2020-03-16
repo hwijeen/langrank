@@ -6,7 +6,7 @@ from collections import Counter
 from test_pos_tagger import *
 
 ud_resources={'ara': 'Arabic-PADT',
-              'chi': 'Chinese-CFL', # GSD, HK
+              'zho': 'Chinese-CFL', # GSD, HK
               'dan': 'Danish-DDT',
               'nld': 'Dutch-Alpino',
               'eng': 'English-EWT', # GUM, LinES, ParTUT
@@ -25,8 +25,6 @@ etc_resources = {'tha': ['Models/POS/Thai.RDR', 'Models/POS/Thai.DICT']}
 pos_tagger_dir = 'RDRPOSTagger'
 resources_by_lang = get_resources_path(pos_tagger_dir, ud_resources, etc_resources)
 taggers_by_lang = load_pos_taggers(pos_tagger_dir, resources_by_lang)
-
-results_file = './features/nv_ratio.txt'
 
 
 def read_features(f):
@@ -61,8 +59,8 @@ def build_counter(lang, dataset_source):
 
     if isinstance(dataset_source, str):
         with open(dataset_source) as inp:
-            source_lines = inp.readlines()[1:]
-            source_lines = [l.strip().split('\t')[1] for l in source_lines]
+            source_lines = inp.readlines()
+            source_lines = [l.strip() for l in source_lines]
     elif isinstance(dataset_source, list):
         source_lines = dataset_source
     else:
@@ -80,17 +78,12 @@ def build_counter(lang, dataset_source):
     return pos_counter
 
 
-def build_features(data_dir='../data'):
+def build_features(data_dir='./datasets', task='SA'):
     feature_dict = {}
-
-    languages = list(ud_resources.keys()) + list(etc_resources.keys())
-    languages.remove('dan')
-    languages.remove('ell')
-    languages = sorted(languages)
-
+    languages = os.listdir(f'{data_dir}/{task.lower()}')
+    languages = [os.path.splitext(lang)[0] for lang in sorted(languages)]
     for lang in languages:
-        fname = [f for f in os.listdir(f'{data_dir}/{lang}') if f.endswith('reviews.tsv') or 'amazon' in f][0]
-        fname = os.path.join(f'{data_dir}/{lang}', fname)
+        fname = os.path.join(f'{data_dir}/{task.lower()}/{lang}.txt')
         pos_counter = build_counter(lang, fname)
 
         num_tokens = sum(pos_counter.values())
@@ -105,20 +98,20 @@ def build_features(data_dir='../data'):
         print(f"*** {lang} {fname} ***")
         print(f"Noun {n_ratio} | Verb {v_ratio} | Noun-to-verb {n2v_ratio}")
         print("-" * 50)
-    write_output(feature_dict)
+    write_output(feature_dict, f'./features/nv-ratio-{task.lower()}.txt')
     return feature_dict
 
 
-def write_output(feature_dict):
-    with open(results_file, 'w') as f:
+def write_output(feature_dict, out_file):
+    with open(out_file, 'w') as f:
         f.write('lang\tnoun\tverb\tn2v\n')
         for lang, features in feature_dict.items():
             n, v, n2v = tuple(features)
             print(f'{lang}\t{n}\t{v}\t{n2v}', file=f)
-    print(f'Results saved as {results_file}')
+    print(f'Results saved as {out_file}')
 
 
-def nv_features(lang, source_lines=None):
+def nv_features(lang, task, source_lines=None):
     feature_dict = {}
     if source_lines is not None:
         pos_counter = build_counter(lang, source_lines)
@@ -130,12 +123,13 @@ def nv_features(lang, source_lines=None):
         v_ratio = verb_cnt / num_tokens
         feature_dict[lang] = (n_ratio, v_ratio, n2v_ratio)
     else:
-        if os.path.isfile(results_file):
-            feature_dict = read_features(results_file)
+        if os.path.isfile(f'./features/nv-ratio-{task.lower()}.txt'):
+            feature_dict = read_features(f'./features/nv-ratio-{task.lower()}.txt')
         else:
-            feature_dict = build_features('../lang-selection/data')
+            feature_dict = build_features(task=task)
     return feature_dict[lang]
 
 
 if __name__ == "__main__":
-    build_features(data_dir='../lang-selection/data')
+    build_features(task='SA')
+    build_features(task='OLID')
