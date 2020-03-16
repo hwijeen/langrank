@@ -2,9 +2,13 @@
 #python langrank_predict.py -o datasets/olid/dan.txt -l dan -n 3 -t OLID
 #!python langrank_predict.py -o datasets/sa/ara.txt -l ara -c '*ara;' -t SA -m ara
 import langrank as lr
+from langrank import rank_to_relevance
 import os
 import argparse
 from utils import ndcg
+import pickle
+from scipy.stats import rankdata
+import numpy as np
 
 def evaluate(pred_rank, gold_rank, k=3):
     # NDCG@3 as default
@@ -41,11 +45,37 @@ if params.seg is not None:
     with open(params.seg) as inp:
         bpelines = inp.readlines()
 
+sort_dict = {'ara': 0, 'zho':1, 'nld':2, 'eng':3, 'fra':4, 'deu':5, 'kor':6, 'rus':7, 'spa':8, 'tam':9, 'tur':10}
+def sort_prediction(cand_list, neg_scores):
+    cand_list = [c.split('/')[2][:3] for c in cand_list]
+    sorted_list = sorted(zip(cand_list, neg_scores), key=lambda x: sort_dict[x[0]])
+    pred_neg_scores = [z[1] for z in sorted_list]
+    pred = rankdata(pred_neg_scores)
+    return pred
+
+def load_gold(task, target_lang):
+    dir_ = f'datasets/{task.lower()}'
+    filename = 'rankings_wo_jpn_per_tha.pkl'
+    f = open(os.path.join(dir_, filename), 'rb')
+    gold_list = pickle.load(f)
+    for l in gold_list:
+        l.pop(l.index(0)) # drop self
+    target_lang_idx = sort_dict[target_lang]
+    return gold_list[target_lang_idx]
+
 print("read lines")
 prepared = lr.prepare_new_dataset(params.lang, task=params.task, dataset_source=lines, dataset_subword_source=bpelines)
 print("prepared")
 candidates = "all" if params.candidates == "all" else params.candidates.split(";")
 task = params.task
-lr.rank(prepared, task=task, candidates=candidates, print_topK=params.num, model=params.model)
+print(f'Prediction for lang {params.lang}')
+cand_langs, neg_predicted_scores = lr.rank(prepared, task=task, candidates=candidates, print_topK=params.num, model=params.model)
 print("ranked")
+
+pred = sort_prediction(cand_langs, neg_predicted_scores)
+gold = load_gold(params.task, params.lang)
+ndcg = evaluate(pred, gold)
+print(f'Prediction is {pred}')
+print(f'Gold is {gold}')
+print(f'ndcg is {ndcg}')
 

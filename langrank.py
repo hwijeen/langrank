@@ -50,7 +50,17 @@ OLID_MODELS = {
 }
 SA_MODELS = {
     "all":"lgbm_model_sa_all.txt",
-    "ara":"lgbm_model_sa_ara.txt"
+    "ara":"lgbm_model_sa_ara.txt",
+    "deu":"lgbm_model_sa_deu.txt",
+    "eng":"lgbm_model_sa_eng.txt",
+    "fra":"lgbm_model_sa_fra.txt",
+    "kor":"lgbm_model_sa_kor.txt",
+    "nld":"lgbm_model_sa_nld.txt",
+    "rus":"lgbm_model_sa_rus.txt",
+    "spa":"lgbm_model_sa_spa.txt",
+    "tam":"lgbm_model_sa_tam.txt",
+    "tur":"lgbm_model_sa_tur.txt",
+    "zho":"lgbm_model_sa_zho.txt"
 }
 
 # checks
@@ -375,6 +385,7 @@ def train(tmp_dir, output_model, feature_name='auto', task='OLID'):
     model.fit(X_train, y_train, group=np.loadtxt(train_size),
               feature_name=feature_name)
     model.booster_.save_model(output_model)
+    print(f'Model saved at {output_model}')
 
 def rank(test_dataset_features, task="MT", candidates="all", model="best", print_topK=3):
     '''
@@ -469,5 +480,6 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", print
                     (feature_name[contrib_ind[0]], contrib_scores[contrib_ind[0]],
                      feature_name[contrib_ind[1]], contrib_scores[contrib_ind[1]],
                      feature_name[contrib_ind[2]], contrib_scores[contrib_ind[2]]))
-    return ind
+    cand_langs = [c[0] for c in candidate_list]
+    return cand_langs, -predict_scores
 

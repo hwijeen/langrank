@@ -92,7 +92,7 @@ if __name__ == '__main__':
              'deu', 'kor', 'rus', # no jap, no per
              'spa', 'tam', 'tur'] # no tha
     for exclude in langs:
-        train_sa(exclude_lang=langs)
+        train_sa(exclude_lang=exclude)
     # pred = [0,1,2,4,3]
     # gold = [0,4,3,2,1]
     # print(evaluate(pred_rank=pred, gold_rank=gold))
