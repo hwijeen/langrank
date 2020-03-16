@@ -57,22 +57,26 @@ def rerank(rank, without_idx=None):
 
 def train_sa(exclude_lang=None):
     langs = ['ara', 'chi', 'dut', 'eng', 'fre',
-             'ger', 'jap', 'kor', 'per', 'rus',
-             'spa', 'tam', 'tha', 'tur']
+             'ger', 'kor', 'rus', # no jap, no per
+             'spa', 'tam', 'tur'] # no tha
     data_dir = 'datasets/sa/'
     datasets = [os.path.join(data_dir, f'{l}.txt') for l in langs]
-    rank = pickle.load(os.path.join(data_dir, 'rankings.pkl'))
+    ranking_f = open(os.path.join(data_dir, 'rankings_wo_jap_per_tha.pkl'), 'rb')
+    rank = pickle.load(ranking_f)
 
-    if exclude_lang is not None: # for cross validation
+    if exclude_lang is not None: # exclude for cross validation
         exclude_idx = langs.index(exclude_lang)
         langs.pop(exclude_idx)
         rank = rerank(rank, exclude_idx)
+    else:
+        exclude_lang = 'all' # for model file name
 
+    model_save_dir = 'pretrained/SA'
     tmp_dir = 'tmp'
     preprocess = None
     prepare_train_file(datasets=datasets, langs=langs, rank=rank,
                        tmp_dir=tmp_dir, task="SA", preprocess=preprocess)
-    output_model = "{}/sa_model.txt".format(tmp_dir)
+    output_model = f"{model_save_dir}/lgbm_model_sa_{exclude_lang}.txt"
     feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                     'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                     'transfer_nr', 'transfer_vr', 'distance_n2v',
@@ -92,5 +96,8 @@ def evaluate(pred_ranking, gold_ranking):
 
 
 if __name__ == '__main__':
-    train_olid(exclude_lang='eng')
-    # train_sa(exclude_lang='eng')
+    # train_olid(exclude_lang='eng')
+    langs = ['ara', 'chi', 'dut', 'eng', 'fre',
+             'ger', 'kor', 'rus', # no jap, no per
+             'spa', 'tam', 'tur'] # no tha
+    train_sa(exclude_lang='ara')
