@@ -40,21 +40,6 @@ class RDRPOSTagger(SCRDRTree):
                 sen.append(word + "/" + tag)
         return " ".join(sen)
 
-    def getOnlyTagsRawSentence(self, DICT, rawLine):
-        line = initializeSentence(DICT, rawLine)
-        sen = []
-        wordTags = line.split()
-        for i in range(len(wordTags)):
-            fwObject = FWObject.getFWObject(wordTags, i)
-            word, tag = getWordTag(wordTags[i])
-            node = self.findFiredNode(fwObject)
-            if node.depth > 0:
-                sen.append(word + "/" + node.conclusion)
-            else:# Fired at root, return initialized tag
-                # sen.append(word + "/" + tag)
-                sen.append(tag)
-        return " ".join(sen)
-
     def tagRawCorpus(self, DICT, rawCorpusPath):
         lines = open(rawCorpusPath, "r").readlines()
         #Change the value of NUMBER_OF_PROCESSES to obtain faster tagging process!

@@ -363,7 +363,6 @@ def train(tmp_dir, output_model, feature_name='auto', task='OLID'):
     train_file = os.path.join(tmp_dir, f"train_{task}.csv")
     train_size = os.path.join(tmp_dir, f"train_{task}_size.csv")
     X_train, y_train = load_svmlight_file(train_file)
-    # import ipdb; ipdb.set_trace(context=5)
     model = lgb.LGBMRanker(boosting_type='gbdt', num_leaves=16,
                         max_depth=-1, learning_rate=0.1, n_estimators=100,
                         min_child_samples=5)
