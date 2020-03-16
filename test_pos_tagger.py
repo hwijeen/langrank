@@ -59,11 +59,11 @@ def load_pos_taggers(pos_tagger_dir, resources_by_lang):
 
 if __name__ == '__main__':
     ud_resources={'ara': 'Arabic-PADT',
-                  'chi': 'Chinese-CFL', # GSD, HK
+                  'zho': 'Chinese-CFL', # GSD, HK
                   'eng': 'English-EWT', # GUM, LinES, ParTUT
                   'fre': 'French-FQB', # GSD, ParTUT, Sequoia, Spoken
                   'ger': 'German-GSD', #HDT, LIT
-                  'jap': 'Japanese-GSD', #Modern
+                  'jpn': 'Japanese-GSD', #Modern
                   'kor': 'Korean-Kaist', #Kaist
                   'per': 'Persian-Seraji',
                   'rus': 'Russian-GSD', # SynTagRus, Taiga
