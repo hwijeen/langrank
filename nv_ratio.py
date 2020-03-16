@@ -8,14 +8,14 @@ from test_pos_tagger import *
 ud_resources={'ara': 'Arabic-PADT',
               'chi': 'Chinese-CFL', # GSD, HK
               'dan': 'Danish-DDT',
-              'dut': 'Dutch-Alpino',
+              'nld': 'Dutch-Alpino',
               'eng': 'English-EWT', # GUM, LinES, ParTUT
-              'fre': 'French-FQB', # GSD, ParTUT, Sequoia, Spoken
-              'ger': 'German-GSD', #HDT, LIT
+              'fra': 'French-FQB', # GSD, ParTUT, Sequoia, Spoken
+              'deu': 'German-GSD', #HDT, LIT
               'ell': 'Greek-GDT',
-              'jap': 'Japanese-GSD', #Modern
+              'jpn': 'Japanese-GSD', #Modern
               'kor': 'Korean-Kaist', #Kaist
-              'per': 'Persian-Seraji',
+              'fas': 'Persian-Seraji',
               'rus': 'Russian-GSD', # SynTagRus, Taiga
               'spa': 'Spanish-AnCora', #GSD
               'tam': 'Tamil-TTB',

@@ -57,12 +57,12 @@ def rerank(rank, without_idx=None):
     return rank
 
 def train_sa(exclude_lang=None):
-    langs = ['ara', 'chi', 'dut', 'eng', 'fre',
-             'ger', 'kor', 'rus', # no jap, no per
+    langs = ['ara', 'chi', 'nld', 'eng', 'fra',
+             'deu', 'kor', 'rus', # no jap, no per
              'spa', 'tam', 'tur'] # no tha
     data_dir = 'datasets/sa/'
     datasets = [os.path.join(data_dir, f'{l}.txt') for l in langs]
-    ranking_f = open(os.path.join(data_dir, 'rankings_wo_jap_per_tha.pkl'), 'rb')
+    ranking_f = open(os.path.join(data_dir, 'rankings_wo_jpn_per_tha.pkl'), 'rb')
     rank = pickle.load(ranking_f)
 
     if exclude_lang is not None: # exclude for cross validation
@@ -99,8 +99,8 @@ def evaluate(pred_rank, gold_rank, k=3):
 
 if __name__ == '__main__':
     # train_olid(exclude_lang='eng')
-    langs = ['ara', 'chi', 'dut', 'eng', 'fre',
-             'ger', 'kor', 'rus', # no jap, no per
+    langs = ['ara', 'chi', 'nld', 'eng', 'fra',
+             'deu', 'kor', 'rus', # no jap, no per
              'spa', 'tam', 'tur'] # no tha
     train_sa(exclude_lang='ara')
     # pred = [0,1,2,4,3]

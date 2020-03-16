@@ -61,17 +61,17 @@ if __name__ == '__main__':
     ud_resources={'ara': 'Arabic-PADT',
                   'chi': 'Chinese-CFL', # GSD, HK
                   'eng': 'English-EWT', # GUM, LinES, ParTUT
-                  'fre': 'French-FQB', # GSD, ParTUT, Sequoia, Spoken
-                  'ger': 'German-GSD', #HDT, LIT
-                  'jap': 'Japanese-GSD', #Modern
+                  'fra': 'French-FQB', # GSD, ParTUT, Sequoia, Spoken
+                  'deu': 'German-GSD', #HDT, LIT
+                  'jpn': 'Japanese-GSD', #Modern
                   'kor': 'Korean-Kaist', #Kaist
-                  'per': 'Persian-Seraji',
+                  'fas': 'Persian-Seraji',
                   'rus': 'Russian-GSD', # SynTagRus, Taiga
                   'spa': 'Spanish-AnCora', #GSD
                   'tam': 'Tamil-TTB',
                   'tur': 'Turkish-GB'} # IMST
     etc_resources = {'tha': ['Models/POS/Thai.RDR', 'Models/POS/Thai.DICT'],
-                     'dut': ['Models/MORPH/Dutch.RDR', 'Models/MORPH/Dutch.DICT'] }
+                     'nld': ['Models/MORPH/Dutch.RDR', 'Models/MORPH/Dutch.DICT'] }
 
     pos_tagger_dir = 'RDRPOSTagger'
     resources_by_lang = get_resources_path(pos_tagger_dir, ud_resources, etc_resources)
