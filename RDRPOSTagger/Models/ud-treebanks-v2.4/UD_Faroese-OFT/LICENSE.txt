@@ -1,0 +1,45 @@
+Copyright © 2011 Fróðskaparsetur Føroya (University of Faroe Islands)
+
+and the following authors of articles:
+
+Áki Bertholdsen 
+Anna V. Ellingsgaard 
+Árni Joensen 
+Búi Tyril
+Dagfinn Olsen
+Dagny Joensen
+Edvard Joensen
+Eirikur Lindenskov
+Emil L. Jacobsen
+Eydna Skaale
+Eyðun Klakstein
+Frants Jensen
+Grækaris Djurhuus Magnussen
+Hans Kárason Mikkelsen
+Heini í Skorini
+Høgni Mohr
+Ingrid Bjarnastein
+Jákup Mørk
+Jan Müller
+Jóannes Hansen 
+Jógvan Hugo Gardar 
+John Johannessen 
+Jón Brian Hvidtfeldt 
+Niels Uni Dam
+Páll Holm Johannesen
+Rúna Sivertsen
+Solby A. Eliasen 
+Stefan í Skorini 
+Sveinur Poulsen
+Sveinur Tróndarson 
+Terji Nielsen 
+Turið Kjølbro 
+Vilmund Jacobsen 
+
+
+These files are published under the following open source licenses:
+
+GNU GPL version 2.0
+GNU LGPL version 2.1
+Mozilla MPL version 1.1
+

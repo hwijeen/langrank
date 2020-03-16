@@ -1,0 +1,8 @@
+True : object.conclusion = "NN"
+	object.tag == "NOUN" : object.conclusion = "NOUN"
+	object.tag == "VERB" : object.conclusion = "VERB"
+	object.tag == "PUNCT" : object.conclusion = "PUNCT"
+	object.tag == "AUX" : object.conclusion = "AUX"
+	object.tag == "ADJ" : object.conclusion = "ADJ"
+	object.tag == "PRON" : object.conclusion = "PRON"
+		object.prevTag2 == "NOUN" : object.conclusion = "NOUN"
