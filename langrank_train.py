@@ -34,7 +34,10 @@ def train_olid(exclude_lang=None):
         exclude_idx = langs.index(exclude_lang)
         langs.pop(exclude_idx)
         rank = rerank(rank, exclude_idx)
+    else:
+        exclude_lang = 'all' # for model file name
 
+    model_save_dir = 'pretrained/OLID'
     tmp_dir = "tmp"
     preprocess = build_preprocess()
     prepare_train_file(datasets=datasets, langs=langs, rank=rank,
@@ -44,8 +47,8 @@ def train_olid(exclude_lang=None):
                     'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                     'transfer_nr', 'transfer_vr', 'distance_n2v',
                     'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    train(tmp_dir=tmp_dir, output_model=output_model,
-          feature_name=feature_name, task="OLID")
+    print(f'Features used are {feature_name}')
+    train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="OLID")
     assert os.path.isfile(output_model)
 
 def rerank(rank, without_idx=None):
@@ -80,19 +83,17 @@ def train_sa(exclude_lang=None):
                     'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                     'transfer_nr', 'transfer_vr', 'distance_n2v',
                     'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    print(f'Features used are {feature_name}')
     train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="SA")
     assert os.path.isfile(output_model)
 
 
-
-
 if __name__ == '__main__':
-    # train_olid(exclude_lang='eng')
-    langs = ['ara', 'zho', 'nld', 'eng', 'fra',
-             'deu', 'kor', 'rus', # no jap, no per
-             'spa', 'tam', 'tur'] # no tha
+    # langs = ['ara', 'zho', 'nld', 'eng', 'fra',
+    #          'deu', 'kor', 'rus', # no jap, no per
+    #          'spa', 'tam', 'tur'] # no tha
+    langs= ['ara', 'dan', 'ell', 'eng', 'tur']
     for exclude in langs:
-        train_sa(exclude_lang=exclude)
-    # pred = [0,1,2,4,3]
-    # gold = [0,4,3,2,1]
-    # print(evaluate(pred_rank=pred, gold_rank=gold))
+        print(f'Start training with {exclude} excluded')
+        # train_sa(exclude_lang=exclude)
+        train_olid(exclude_lang=exclude)
