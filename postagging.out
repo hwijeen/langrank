@@ -1,0 +1,119 @@
+*** ara ../../data/ara/ara-hotel-reviews.tsv ***
+Noun 0.5291302475995955 | Verb 0.09308262998227855
+Counter({'/NOUN': 52849, '/ADJ': 10543, '/VERB': 9297, '/ADP': 9112, '/X': 6985, '/CCONJ': 3779, '/DET': 1804, '/PART': 1541, '/NUM': 1126, '/PUNCT': 1064, '/ADV': 733, '/AUX': 650, '/PRON': 374, '/PROPN': 11, '/SYM': 8, '/INTJ': 3})
+--------------------------------------------------
+*** chi ../../data/chi/chi-phone-reviews.tsv ***
+Noun 0.9845070422535211 | Verb 0.0
+Counter({'/NOUN': 1398, '/PROPN': 22})
+--------------------------------------------------
+*** dut ../../data/dut/dut-rest-reviews.tsv ***
+Noun 0.2443479950767636 | Verb 0.08505538640927642
+Counter({'/NOUN': 3772, '/ADJ': 1713, '/DET': 1674, '/ADP': 1625, '/ADV': 1391, '/VERB': 1313, '/PRON': 1282, '/AUX': 894, '/CCONJ': 722, '/PROPN': 473, '/SCONJ': 255, '/NUM': 207, '/X': 94, '/SYM': 15, '/INTJ': 5, '/PUNCT': 2})
+--------------------------------------------------
+*** eng ../../data/eng/eng-amazon-us-reviews-test.tsv ***
+Noun 0.23697359805612778 | Verb 0.1257687061807566
+Counter({'/NOUN': 108937, '/VERB': 57816, '/DET': 47013, '/PRON': 44826, '/ADP': 40975, '/ADJ': 36583, '/ADV': 27226, '/AUX': 24869, '/PROPN': 24560, '/CCONJ': 17920, '/PART': 9511, '/SCONJ': 8817, '/NUM': 6755, '/PUNCT': 2872, '/INTJ': 397, '/X': 395, '/SYM': 123, '/A': 11, '/V': 10, '/R': 9, '/S': 6, '/B': 5, '/P': 5, '/D': 5, '/DVD': 5, '/T': 4, '/C': 4, '/I': 4, '/DC': 3, '/M': 2, '/RC': 2, '/F': 2, '/VPO': 2, '/L': 2, '/CPU': 2, '/BPO': 2, '/OLDER': 1, '/HER': 1, '/OR': 1, '/SPOILER': 1, '/N': 1, '/W': 1, '/US': 1, '/J': 1, '/TV': 1, '/AMD': 1, '/DDR': 1, '/AID': 1, '/CD': 1, '/H': 1, '/ALABAMA': 1, '/MP': 1, '/HULK': 1, '/U': 1, '/NES': 1, '/TBA': 1, '/Y': 1})
+--------------------------------------------------
+*** fre ../../data/fre/fre-amazon-reviews-test.tsv ***
+Noun 0.287463452933158 | Verb 0.09479839505994442
+Counter({'/NOUN': 59680, '/PROPN': 25892, '/DET': 24033, '/VERB': 19681, '/ADP': 18882, '/ADJ': 10971, '/PRON': 10104, '/X': 10022, '/ADV': 8387, '/CCONJ': 6272, '/AUX': 5473, '/NUM': 3676, '/PUNCT': 2367, '/SCONJ': 2127, '/R': 5, '/M': 4, '/H': 3, '/B': 3, '/DC': 3, '/V': 3, '/I': 2, '/P': 2, '/S': 2, '/J': 2, '/F': 2, '/O': 2, '/G': 1, '/D': 1, '/T': 1, '/E': 1, '/VIRELLES': 1, '/W': 1, '/A': 1, '/N': 1, '/L': 1})
+--------------------------------------------------
+*** ger ../../data/ger/ger-amazon-reviews-test.tsv ***
+Noun 0.16944188806192068 | Verb 0.04928595890652284
+Counter({'/ADJ': 130825, '/NOUN': 120228, '/PROPN': 90886, '/ADV': 69777, '/DET': 62916, '/PRON': 61370, '/ADP': 52160, '/VERB': 34971, '/AUX': 29087, '/CCONJ': 24869, '/NUM': 9482, '/SCONJ': 7727, '/PART': 7521, '/PUNCT': 5052, '/X': 2170, '/SYM': 227, '/B': 21, '/L': 21, '/P': 21, '/S': 20, '/M': 19, '/DC': 17, '/A': 16, '/F': 16, '/G': 15, '/D': 12, '/T': 11, '/DVD': 10, '/C': 9, '/W': 8, '/V': 7, '/N': 7, '/E': 7, '/H': 6, '/CD': 6, '/K': 6, '/R': 5, '/I': 5, '/J': 3, '/O': 3, '/U': 2, '/CSNY': 1, '/Z': 1, '/BRAIN': 1, '/CEO': 1, '/USA': 1, '/DCA': 1, '/JK': 1, '/TH': 1, '/UR': 1, '/ABBA': 1, '/CSO': 1, '/TOGETHER': 1})
+--------------------------------------------------
+*** jap ../../data/jap/jap-amazon-reviews-test.tsv ***
+Noun 0.6638941814451121 | Verb 0.0005496116077971567
+Counter({'/NOUN': 18119, '/PROPN': 6700, '/NUM': 1904, '/ADJ': 293, '/SYM': 91, '/ADP': 62, '/PUNCT': 50, '/ADV': 18, '/VERB': 15, '/HM': 6, '/CCONJ': 5, '/C': 4, '/DC': 3, '/A': 2, '/PART': 2, '/W': 2, '/UA': 2, '/G': 2, '/M': 1, '/P': 1, '/CD': 1, '/PRON': 1, '/D': 1, '/SCONJ': 1, '/FINAL': 1, '/HOSTEL': 1, '/S': 1, '/AUX': 1, '/T': 1, '/DET': 1})
+--------------------------------------------------
+*** kor ../../data/kor/kor-movie-reviews.tsv ***
+Noun 0.588453583802084 | Verb 0.08543886920209193
+Counter({'/NOUN': 893402, '/ADV': 205821, '/VERB': 129715, '/SCONJ': 79548, '/CCONJ': 47333, '/ADJ': 42732, '/NUM': 32027, '/AUX': 25245, '/PRON': 24467, '/DET': 16725, '/PROPN': 9468, '/X': 6845, '/PUNCT': 2797, '/INTJ': 1592, '/ADP': 368, '/PART': 122, '/SYM': 2, '/P': 1, '/O': 1, '/C': 1, '/G': 1, '/FJ': 1, '/BD': 1, '/CG': 1, '/B': 1, '/N': 1, '/F': 1, '/SF': 1})
+--------------------------------------------------
+*** per ../../data/per/per-hotel-reviews.tsv ***
+Noun 0.49652955203542837 | Verb 0.053717424629535
+Counter({'/NOUN': 23321, '/ADJ': 4983, '/ADP': 4193, '/CCONJ': 2690, '/VERB': 2523, '/ADV': 2388, '/AUX': 1911, '/SCONJ': 1413, '/PRON': 1395, '/DET': 857, '/NUM': 582, '/PUNCT': 481, '/PART': 190, '/INTJ': 32, '/X': 9})
+--------------------------------------------------
+*** rus ../../data/rus/rus-rest-reviews.tsv ***
+Noun 0.3539114813000163 | Verb 0.1092275028580761
+Counter({'/NOUN': 10835, '/VERB': 3344, '/ADP': 2909, '/ADJ': 2583, '/ADV': 2575, '/CCONJ': 1639, '/PRON': 1542, '/PART': 1273, '/DET': 1110, '/PROPN': 987, '/SCONJ': 522, '/AUX': 506, '/NUM': 471, '/PUNCT': 293, '/X': 18, '/SYM': 8})
+--------------------------------------------------
+*** spa ../../data/spa/spa-rest-reviews.tsv ***
+Noun 0.23568262411347518 | Verb 0.08519503546099291
+Counter({'/NOUN': 5317, '/DET': 3104, '/ADP': 2719, '/ADJ': 2579, '/VERB': 1922, '/ADV': 1594, '/PRON': 1479, '/CCONJ': 1170, '/AUX': 999, '/PROPN': 773, '/SCONJ': 595, '/NUM': 214, '/PUNCT': 73, '/SYM': 7, '/INTJ': 6, '/PART': 6, '/P': 1, '/M': 1, '/R': 1})
+--------------------------------------------------
+*** tam ../../data/tam/tam-movie-reviews.tsv ***
+Noun 0.5048406703134497 | Verb 0.0999120864808544
+Counter({'/NOUN': 93028, '/ADJ': 24400, '/VERB': 18411, '/PROPN': 15472, '/ADV': 9108, '/PART': 5410, '/PUNCT': 5393, '/PRON': 3764, '/DET': 2835, '/AUX': 2791, '/ADP': 2081, '/NUM': 1195, '/CCONJ': 380, '/VU': 1, '/L': 1, '/V': 1, '/M': 1})
+--------------------------------------------------
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+
+'' is not in the dictionary 
+Manually add '' with a possible POS tag into the .DICT file!
+*** tha ../../data/tha/tha-rest-reviews.tsv ***
+Noun 0.9109451192273148 | Verb 0.01305011262055572
+Counter({'/NCMN': 756487, '/ADVN': 17296, '/NLBL': 14955, '/DCNM': 13800, '/CMTR': 8178, '/CNIT': 7287, '/VSTA': 4136, '/RPRE': 4128, '/JCRG': 3916, '/VATT': 3544, '/NPRP': 3430, '/VACT': 3421, '/NCNM': 1690, '/PUNC': 1314, '/XVAE': 1112, '/FIXV': 772, '/PDMN': 745, '/JSBR': 714, '/ADVS': 527, '/ADVI': 453, '/DIBQ': 375, '/ADVP': 332, '/PREL': 312, '/PPRS': 307, '/DDBQ': 270, '/DDAC': 108, '/NEG': 106, '/DDAN': 105, '/DIAC': 99, '/DONM': 91, '/CFQC': 90, '/CLTV': 88, '/XVAM': 74, '/XVMM': 72, '/JCMP': 55, '/PNTR': 36, '/XVBM': 36, '/DIAQ': 25, '/N': 19, '/NTTL': 18, '/S': 14, '/M': 12, '/C': 12, '/P': 10, '/B': 10, '/T': 10, '/EITT': 8, '/A': 7, '/DDAQ': 6, '/FIXN': 4, '/L': 4, '/R': 3, '/O': 3, '/J': 3, '/G': 2, '/V': 2, '/E': 2, '/D': 2, '/F': 2, '/H': 1, '/Q': 1, '/GSGLR': 1, '/NZ': 1, '/K': 1})
+--------------------------------------------------
+*** tur ../../data/tur/tur-rest-reviews.tsv ***
+Noun 0.3370990088457849 | Verb 0.3046999893424278
+Counter({'/NOUN': 3163, '/VERB': 2859, '/ADV': 956, '/ADJ': 629, '/DET': 458, '/CCONJ': 356, '/PRON': 292, '/ADP': 270, '/AUX': 168, '/NUM': 91, '/PUNCT': 82, '/PROPN': 31, '/SCONJ': 27, '/P': 1})
+--------------------------------------------------

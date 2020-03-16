@@ -299,6 +299,8 @@ def lgbm_rel_exp(BLEU_level, cutoff):
 
 # TODO: cutoff when data is big!
 def rank_to_relevance(rank, num_lang):
+    if isinstance(rank, list):
+        rank = np.array(rank)
     return np.where(rank != 0, -rank + num_lang, 0)
 
 # preparing the file for training
@@ -377,7 +379,7 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", print
 
     # Get candidates to be compared against
     print("Preparing candidate list...")
-    if candidates=='all':
+    if candidates == 'all':
         candidate_list = get_candidates(task)
     else:
         # Restricts to a specific set of languages
