@@ -7,7 +7,7 @@ import numpy as np
 from langrank import prepare_train_file, train, rank_to_relevance
 from preprocessing import build_preprocess
 from scipy.stats import rankdata
-from sklearn.metrics import ndcg_score
+# from sklearn.metrics import ndcg_score
 
 def test_train_mt():
     langs = ["aze", "ben", "fin"]
@@ -75,26 +75,24 @@ def train_sa(exclude_lang=None):
     model_save_dir = 'pretrained/SA'
     tmp_dir = 'tmp'
     preprocess = None
-    prepare_train_file(datasets=datasets, langs=langs, rank=rank,
-                       tmp_dir=tmp_dir, task="SA", preprocess=preprocess)
+    prepare_train_file(datasets=datasets, langs=langs, rank=rank, tmp_dir=tmp_dir, task="SA", preprocess=preprocess)
     output_model = f"{model_save_dir}/lgbm_model_sa_{exclude_lang}.txt"
     feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                     'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                     'transfer_nr', 'transfer_vr', 'distance_n2v',
                     'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    train(tmp_dir=tmp_dir, output_model=output_model,
-          feature_name=feature_name, task="SA")
+    train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="SA")
     assert os.path.isfile(output_model)
 
 
-def evaluate(pred_rank, gold_rank, k=3):
-    # NDCG@3 as default
-    num_lang = len(pred)
-    pred_rel = rank_to_relevance(pred_rank, num_lang)
-    gold_rel = rank_to_relevance(gold_rank, num_lang)
-    pred_rel = np.expand_dims(pred_rel, axis=0)
-    gold_rel = np.expand_dims(gold_rel, axis=0)
-    return ndcg_score(y_score=pred_rel, y_true=gold_rel, k=k)
+# def evaluate(pred_rank, gold_rank, k=3):
+#     # NDCG@3 as default
+#     num_lang = len(pred_rank)
+#     pred_rel = rank_to_relevance(pred_rank, num_lang)
+#     gold_rel = rank_to_relevance(gold_rank, num_lang)
+#     pred_rel = np.expand_dims(pred_rel, axis=0)
+#     gold_rel = np.expand_dims(gold_rel, axis=0)
+#     return ndcg_score(y_score=pred_rel, y_true=gold_rel, k=k)
 
 
 if __name__ == '__main__':
@@ -102,7 +100,8 @@ if __name__ == '__main__':
     langs = ['ara', 'zho', 'nld', 'eng', 'fra',
              'deu', 'kor', 'rus', # no jap, no per
              'spa', 'tam', 'tur'] # no tha
-    train_sa(exclude_lang='ara')
+    for exclude in langs:
+        train_sa(exclude_lang=langs)
     # pred = [0,1,2,4,3]
     # gold = [0,4,3,2,1]
     # print(evaluate(pred_rank=pred, gold_rank=gold))

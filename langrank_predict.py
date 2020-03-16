@@ -1,5 +1,6 @@
 #python3 langrank_predict.py -o sample-data/ted-train.orig.aze -s sample-data/ted-train.orig.spm8000.aze -l aze -n 3 -t MT
 #python langrank_predict.py -o datasets/olid/dan.txt -l dan -n 3 -t OLID
+#!python langrank_predict.py -o datasets/sa/ara.txt -l ara -c '*ara;' -t SA -m ara
 import langrank as lr
 import os
 import argparse
@@ -32,7 +33,7 @@ if params.seg is not None:
         bpelines = inp.readlines()
 
 print("read lines")
-prepared = lr.prepare_new_dataset(params.lang, dataset_source=lines, dataset_subword_source=bpelines)
+prepared = lr.prepare_new_dataset(params.lang, task=params.task, dataset_source=lines, dataset_subword_source=bpelines)
 print("prepared")
 candidates = "all" if params.candidates == "all" else params.candidates.split(";")
 task = params.task

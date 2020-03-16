@@ -46,8 +46,11 @@ OLID_MODELS = {
     "child1": "child_1.txt"
 }
 OLID_MODELS = {
-    "best": "lgbm_model_sa_all.txt",
-    "child1": "child_1.txt"
+    "best": "lgbm_model_olid_all.txt",
+}
+SA_MODELS = {
+    "all":"lgbm_model_sa_all.txt",
+    "ara":"lgbm_model_sa_ara.txt"
 }
 
 # checks
@@ -127,12 +130,15 @@ def get_candidates(task, languages=None):
         # QUESTION: fn is string, what is the meaning of this complicated things??
         fn = pkg_resources.resource_filename(__name__, os.path.join('indexed', task, datasets_dict[dt]))
         d = np.load(fn, encoding='latin1', allow_pickle=True).item()
-        # QUESTION: why no english?
-        # cands += [(key,d[key]) for key in d if key != "eng"]
-        cands += [(key,d[key]) for key in d]
+        # languages with * means to exclude
+        cands += [(key,d[key]) for key in d if '*' + key.split('/')[2][:3] not in languages]
+    cand_langs = [i[0] for i in cands]
+    print(f"Candidate languages are: {cand_langs}")
+
     # Possibly restrict to a subset of candidate languages
     # FIXME: why limits to 2?
     # cands = cands[:2]
+
     if languages is not None and task == "MT":
         add_languages = []
         sub_languages = []
@@ -403,10 +409,10 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", print
         test_inputs.append(distance_vector)
 
     # load model
-    print("Loading model...")
     model_dict = map_task_to_models(task) # this loads the dict that will give us the name of the pretrained model
     model_fname = model_dict[model] # this gives us the filename (needs to be joined, see below)
     modelfilename = pkg_resources.resource_filename(__name__, os.path.join('pretrained', task, model_fname))
+    print(f"Loading model... {modelfilename}")
 
     # rank
     bst = lgb.Booster(model_file=modelfilename)
@@ -439,9 +445,8 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", print
     elif task == "OLID" or task == "SA":
         sort_sign_list = [-1, 0, -1, 0, -1, 0, 0, -1, -1, -1, 1, 1, 1, 1, 1, 1]
         feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
-                        "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
-                        "Transfer target TTR distance", "Transfer lang noun ratio",
-                        "Transfer lang verb ratio", "Transfer target n2v distance" 
+                        "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR", "Transfer target TTR distance",
+                        "Transfer lang noun ratio", "Transfer lang verb ratio", "Transfer target n2v distance",
                         "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
 
     test_inputs = np.array(test_inputs)
