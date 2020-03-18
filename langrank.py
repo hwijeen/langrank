@@ -47,6 +47,11 @@ OLID_MODELS = {
 }
 OLID_MODELS = {
     "best": "lgbm_model_olid_all.txt",
+    "ara":"lgbm_model_olid_ara.txt",
+    "dan":"lgbm_model_olid_dan.txt",
+    "ell":"lgbm_model_olid_ell.txt",
+    "eng":"lgbm_model_olid_eng.txt",
+    "tur":"lgbm_model_olid_tur.txt",
 }
 SA_MODELS = {
     "all":"lgbm_model_sa_all.txt",
