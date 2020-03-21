@@ -57,7 +57,7 @@ def train_olid(exclude_lang=None, model='best'):
     train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="OLID")
     assert os.path.isfile(output_model)
 
-def train_sa(exclude_lang=None):
+def train_sa(exclude_lang=None, model='best'):
     langs = ['ara', 'zho', 'nld', 'eng', 'fra',
              'deu', 'kor', 'rus', # no jap, no per
              'spa', 'tam', 'tur'] # no tha
@@ -78,7 +78,9 @@ def train_sa(exclude_lang=None):
     preprocess = None
     prepare_train_file(datasets=datasets, langs=langs, rank=rank, tmp_dir=tmp_dir, task="SA", preprocess=preprocess,
                        model=model)
+
     output_model = f"{model_save_dir}/lgbm_model_sa_{exclude_lang}.txt"
+
     feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                     'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                     'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']

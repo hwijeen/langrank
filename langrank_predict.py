@@ -32,6 +32,8 @@ def parse_args():
                         "'DEP': Dependency Parsing, 'POS': POS-tagging, 'EL': Entity Linking,"
                         "'OLID': Offensive Language Identification, and 'SA': Sentiment Analysis.")
     parser.add_argument('-m', '--model', type=str, default="best", help="model to be used for prediction")
+    parser.add_argument('-f', '--feature', type=str, default="base", choices=['base', 'pos', 'emot'],
+                        help="set of features to use for prediction")
     return parser.parse_args()
 
 def read_file(fpath):
@@ -90,7 +92,8 @@ if __name__ == '__main__':
     candidates = "all" if params.candidates == "all" else params.candidates.split(";")
     task = params.task
     print(f'Prediction for lang {params.lang}')
-    cand_langs, neg_predicted_scores = lr.rank(prepared, task=task, candidates=candidates, print_topK=params.num, model=params.model)
+    cand_langs, neg_predicted_scores = lr.rank(prepared, task=task, candidates=candidates, print_topK=params.num,
+                                               model=params.model, feature=params.feature)
     print("ranked")
 
     pred = sort_prediction(cand_langs, neg_predicted_scores)

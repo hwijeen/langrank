@@ -268,7 +268,7 @@ def uriel_distance_vec(languages):
     return uriel_features
 
 
-def distance_vec(test, transfer, uriel_features, task, model):
+def distance_vec(test, transfer, uriel_features, task, feature):
     output = []
     # Dataset specific
     # Dataset Size
@@ -320,8 +320,8 @@ def distance_vec(test, transfer, uriel_features, task, model):
         data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size]
     elif task == "OLID" or task == "SA":
         data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
-                                      transfer_ttr, task_ttr, distance_ttr]
-        if model == 'pos':
+                                  transfer_ttr, task_ttr, distance_ttr]
+        if feature == 'pos':
             data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
 
     return np.array(data_specific_features + uriel_features)
@@ -340,7 +340,7 @@ def rank_to_relevance(rank, num_lang):
 
 # preparing the file for training
 def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
-                       task="MT", tmp_dir="tmp", preprocess=None, model='best'):
+                       task="MT", tmp_dir="tmp", preprocess=None, feature='all'):
     """
     dataset: [ted_aze, ted_tur, ted_ben]
     lang: [aze, tur, ben]
@@ -383,7 +383,7 @@ def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
         for j, lang2 in enumerate(langs):
             if i != j:
                 uriel_features = [u[i, j] for u in uriel]
-                distance_vector = distance_vec(features[lang1], features[lang2], uriel_features, task, model)
+                distance_vector = distance_vec(features[lang1], features[lang2], uriel_features, task, feature)
                 distance_vector = ["{}:{}".format(i, d) for i, d in enumerate(distance_vector)]
                 # line = " ".join([str(rel_BLEU_level[i, j])] + distance_vector) # svmlight format
                 line = " ".join([str(relevance[i, j])] + distance_vector) # svmlight format
@@ -407,7 +407,7 @@ def train(tmp_dir, output_model, feature_name='auto', task='OLID'):
     model.booster_.save_model(output_model)
     print(f'Model saved at {output_model}')
 
-def rank(test_dataset_features, task="MT", candidates="all", model="best", print_topK=3):
+def rank(test_dataset_features, task="MT", candidates="all", model="best", feature='base', print_topK=3):
     '''
     est_dataset_features : the output of prepare_new_dataset(). Basically a dictionary with the necessary dataset features.
     '''
@@ -436,7 +436,7 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", print
         cand_dict = c[1]
         candidate_language = key[-3:]
         uriel_j = [u[0,i+1] for u in uriel]
-        distance_vector = distance_vec(test_dataset_features, cand_dict, uriel_j, task, model)
+        distance_vector = distance_vec(test_dataset_features, cand_dict, uriel_j, task, model, feature)
         test_inputs.append(distance_vector)
 
     # load model
