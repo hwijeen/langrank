@@ -41,17 +41,28 @@ POS_MODELS = {
 }
 EL_MODELS = {} # QUESTION: why empty?
 DEP_MODELS = {}
+
 OLID_MODELS = {
     "best": "lgbm_model_olid_all.txt",
-    "base": "lgbm_model_base_olid_all.txt",
-    "pos": "lgbm_model_pos_olid_all.txt",
-    "child1": "child_1.txt"
+    "ara":"lgbm_model_olid_ara.txt",
+    "dan":"lgbm_model_olid_dan.txt",
+    "ell":"lgbm_model_olid_ell.txt",
+    "eng":"lgbm_model_olid_eng.txt",
+    "tur":"lgbm_model_olid_tur.txt",
 }
 SA_MODELS = {
-    "best": "lgbm_model_sa_all.txt",
-    "base": "lgbm_model_base_sa_all.txt",
-    "pos": "lgbm_model_pos_sa_all.txt",
-    "child1": "child_1.txt"
+    "all":"lgbm_model_sa_all.txt",
+    "ara":"lgbm_model_sa_ara.txt",
+    "deu":"lgbm_model_sa_deu.txt",
+    "eng":"lgbm_model_sa_eng.txt",
+    "fra":"lgbm_model_sa_fra.txt",
+    "kor":"lgbm_model_sa_kor.txt",
+    "nld":"lgbm_model_sa_nld.txt",
+    "rus":"lgbm_model_sa_rus.txt",
+    "spa":"lgbm_model_sa_spa.txt",
+    "tam":"lgbm_model_sa_tam.txt",
+    "tur":"lgbm_model_sa_tur.txt",
+    "zho":"lgbm_model_sa_zho.txt"
 }
 
 # checks
@@ -131,12 +142,15 @@ def get_candidates(task, languages=None):
         # QUESTION: fn is string, what is the meaning of this complicated things??
         fn = pkg_resources.resource_filename(__name__, os.path.join('indexed', task, datasets_dict[dt]))
         d = np.load(fn, encoding='latin1', allow_pickle=True).item()
-        # QUESTION: why no english?
-        # cands += [(key,d[key]) for key in d if key != "eng"]
-        cands += [(key,d[key]) for key in d]
+        # languages with * means to exclude
+        cands += [(key,d[key]) for key in d if '*' + key.split('/')[2][:3] not in languages]
+    cand_langs = [i[0] for i in cands]
+    print(f"Candidate languages are: {cand_langs}")
+
     # Possibly restrict to a subset of candidate languages
     # FIXME: why limits to 2?
     # cands = cands[:2]
+
     if languages is not None and task == "MT":
         add_languages = []
         sub_languages = []
@@ -384,12 +398,14 @@ def train(tmp_dir, output_model, feature_name='auto', task='OLID'):
     train_file = os.path.join(tmp_dir, f"train_{task}.csv")
     train_size = os.path.join(tmp_dir, f"train_{task}_size.csv")
     X_train, y_train = load_svmlight_file(train_file)
+    print('Training in prog...')
     model = lgb.LGBMRanker(boosting_type='gbdt', num_leaves=16,
                         max_depth=-1, learning_rate=0.1, n_estimators=100,
                         min_child_samples=5)
     model.fit(X_train, y_train, group=np.loadtxt(train_size),
               feature_name=feature_name)
     model.booster_.save_model(output_model)
+    print(f'Model saved at {output_model}')
 
 def rank(test_dataset_features, task="MT", candidates="all", model="best", print_topK=3):
     '''
@@ -424,10 +440,10 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", print
         test_inputs.append(distance_vector)
 
     # load model
-    print("Loading model...")
     model_dict = map_task_to_models(task) # this loads the dict that will give us the name of the pretrained model
     model_fname = model_dict[model] # this gives us the filename (needs to be joined, see below)
     modelfilename = pkg_resources.resource_filename(__name__, os.path.join('pretrained', task, model_fname))
+    print(f"Loading model... {modelfilename}")
 
     # rank
     bst = lgb.Booster(model_file=modelfilename)
@@ -485,5 +501,6 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", print
                     (feature_name[contrib_ind[0]], contrib_scores[contrib_ind[0]],
                      feature_name[contrib_ind[1]], contrib_scores[contrib_ind[1]],
                      feature_name[contrib_ind[2]], contrib_scores[contrib_ind[2]]))
-    return ind
+    cand_langs = [c[0] for c in candidate_list]
+    return cand_langs, -predict_scores
 

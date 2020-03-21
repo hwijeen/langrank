@@ -3,9 +3,8 @@ import subprocess
 import numpy as np
 from collections import Counter
 
-import sys; sys.path.append('/Users/hwijeen/Documents/school/cmu/langrank')
+import sys; sys.path.append('/home/hwijeen/lang-selection')
 from nv_ratio import nv_features
-
 
 def read_data(fn):
     with open(fn) as inp:
@@ -20,7 +19,7 @@ def read_data(fn):
     return v,c
 
 
-dataset_dir = "datasets/olid"
+dataset_dir = "datasets/sa"
 
 # Not needed now
 #eng_vocab_f = "datasets/eng/word.vocab"
@@ -45,10 +44,15 @@ features = {}
 #features["eng"]["word_vocab"] = en_v
 #features["eng"]["subword_vocab"] = en_sub_v
 
+exclude_langs = {'tha', 'jpn', 'fas'}
 for filename in os.listdir(dataset_dir):
+    if filename.endswith('.pkl'): continue
     #print(filename)
     temp = filename.split(".")
     language = temp[0]
+    if language in exclude_langs: 
+        print(f'Skipping language {language}')
+        continue
 
     # Get number of lines in training data
     #filename = "ted-train.orig."+temp[0]
@@ -78,8 +82,8 @@ for filename in os.listdir(dataset_dir):
     source_lines = open(filename).readlines()
     features[key]["noun_ratio"], features[key]["verb_ratio"], features[key]["n2v_ratio"] = nv_features(language, "SA", source_lines)
 
-indexed = "indexed/OLID"
-outputfile = os.path.join(indexed, "olid.npy")
+indexed = "indexed/SA"
+outputfile = os.path.join(indexed, "sa.npy")
 np.save(outputfile, features)
 
 

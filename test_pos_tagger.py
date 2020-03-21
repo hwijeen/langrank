@@ -76,7 +76,7 @@ if __name__ == '__main__':
     pos_tagger_dir = 'RDRPOSTagger'
     resources_by_lang = get_resources_path(pos_tagger_dir, ud_resources, etc_resources)
 
-    data_dir = '../data'
+    data_dir = 'datasets/sa'
     sample_size = 3
     langs = [l for l in ud_resources.keys()] + [l for l in etc_resources.keys()]
     samples_by_lang = load_sample_data(data_dir, langs, sample_size)
