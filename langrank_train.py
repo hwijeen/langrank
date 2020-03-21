@@ -15,7 +15,7 @@ def rerank(rank, without_idx=None):
         rank[i] = reranked
     return rank
 
-def train_olid(exclude_lang=None, model='best'):
+def train_olid(exclude_lang=None, feature='base'):
     langs= ['ara', 'dan', 'ell', 'eng', 'tur']
     data_dir = 'datasets/olid/'
     datasets = [os.path.join(data_dir, f'{l}.txt') for l in langs]
@@ -32,21 +32,21 @@ def train_olid(exclude_lang=None, model='best'):
     else:
         exclude_lang = 'all' # for model file name
 
-    model_save_dir = 'pretrained/OLID'
+    model_save_dir = f'pretrained/OLID/{feature}/'
     tmp_dir = "tmp"
     preprocess = build_preprocess() # preprocessing for tweeter data
     prepare_train_file(datasets=datasets, langs=langs, rank=rank,
-                       tmp_dir=tmp_dir, task="OLID", preprocess=preprocess, model=model)
-    output_model = f"{model_save_dir}/lgbm_model_{model}_olid_{exclude_lang}.txt"
+                       tmp_dir=tmp_dir, task="OLID", preprocess=preprocess, feature=feature)
+    output_model = f"{model_save_dir}/lgbm_model_olid_{exclude_lang}.txt"
     feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                     'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                     'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    if model == 'pos':
+    if feature == 'pos':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    elif model == 'all':
+    elif feature == 'all':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
@@ -57,7 +57,8 @@ def train_olid(exclude_lang=None, model='best'):
     train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="OLID")
     assert os.path.isfile(output_model)
 
-def train_sa(exclude_lang=None, model='best'):
+
+def train_sa(exclude_lang=None, feature='base'):
     langs = ['ara', 'zho', 'nld', 'eng', 'fra',
              'deu', 'kor', 'rus', # no jap, no per
              'spa', 'tam', 'tur'] # no tha
@@ -73,11 +74,11 @@ def train_sa(exclude_lang=None, model='best'):
     else:
         exclude_lang = 'all' # for model file name
 
-    model_save_dir = 'pretrained/SA'
+    model_save_dir = f'pretrained/SA/{feature}/'
     tmp_dir = 'tmp'
     preprocess = None
     prepare_train_file(datasets=datasets, langs=langs, rank=rank, tmp_dir=tmp_dir, task="SA", preprocess=preprocess,
-                       model=model)
+                       feature=feature)
 
     output_model = f"{model_save_dir}/lgbm_model_sa_{exclude_lang}.txt"
 
@@ -85,12 +86,12 @@ def train_sa(exclude_lang=None, model='best'):
                     'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                     'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
 
-    if model == 'pos':
+    if feature == 'pos':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    elif model == 'all':
+    elif feature == 'all':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
