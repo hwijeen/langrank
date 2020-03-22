@@ -51,9 +51,7 @@ def train_olid(exclude_lang=None, feature='base'):
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    print(f'Features used are {feature_name}')
-    train(tmp_dir=tmp_dir, output_model=output_model,
-          feature_name=feature_name, task="OLID")
+    print(f'Features used are: {feature_name}')
     train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="OLID")
     assert os.path.isfile(output_model)
 
@@ -89,6 +87,8 @@ def train_sa(exclude_lang=None, feature='base'):
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    # TODO: include MWE feature, emotion feature
+    # NOTE: order of features must be consistent with the list in `distance_vec`
     elif feature == 'all':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
@@ -96,17 +96,14 @@ def train_sa(exclude_lang=None, feature='base'):
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
 
     print(f'Features used are {feature_name}')
-    train(tmp_dir=tmp_dir, output_model=output_model,
-          feature_name=feature_name, task="SA")
+    train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="SA")
     assert os.path.isfile(output_model)
 
 
 if __name__ == '__main__':
-    # langs = ['ara', 'zho', 'nld', 'eng', 'fra',
-    #          'deu', 'kor', 'rus', # no jap, no per
-    #          'spa', 'tam', 'tur'] # no tha
-    langs= ['ara', 'dan', 'ell', 'eng', 'tur']
+    langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
+    # langs= ['ara', 'dan', 'ell', 'eng', 'tur']
     for exclude in langs:
         print(f'Start training with {exclude} excluded')
-        # train_sa(exclude_lang=exclude)
-        train_olid(exclude_lang=exclude)
+        # train_olid(exclude_lang=exclude)
+        train_sa(exclude_lang=exclude)

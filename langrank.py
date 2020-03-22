@@ -170,7 +170,7 @@ def get_candidates(task, languages=None):
 
     return cands
 
-# prepare new dataset
+# extract dataset dependent feautures
 def prepare_new_dataset(lang, task="MT", dataset_source=None,
                         dataset_target=None, dataset_subword_source=None,
                         dataset_subword_target=None):
@@ -321,9 +321,8 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     elif task == "OLID" or task == "SA":
         data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
                                   transfer_ttr, task_ttr, distance_ttr]
-        if feature == 'pos':
+        if feature == 'pos': # TODO: if this is not good enough, using raw ratio as well as distances
             data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
-
     return np.array(data_specific_features + uriel_features)
 
 def lgbm_rel_exp(BLEU_level, cutoff):
@@ -333,7 +332,7 @@ def lgbm_rel_exp(BLEU_level, cutoff):
         return BLEU_level - cutoff + 1 if BLEU_level >= cutoff else 0
 
 # TODO: cutoff when data is big!
-def rank_to_relevance(rank, num_lang):
+def rank_to_relevance(rank, num_lang): # so that lower ranks are given higher relevance
     if isinstance(rank, list):
         rank = np.array(rank)
     return np.where(rank != 0, -rank + num_lang, 0)
@@ -346,9 +345,9 @@ def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
     lang: [aze, tur, ben]
     rank: [[0, 1, 2], [1, 0, 2], [1, 2, 0]]
     """
-    num_langs = len(langs)
+    # num_langs = len(langs)
     # REL_EXP_CUTOFF = num_langs - 1 - 9
-    REL_EXP_CUTOFF = num_langs - 3 # no cutoff
+    # REL_EXP_CUTOFF = num_langs - 3 # no cutoff
 
     if not isinstance(rank, np.ndarray):
         rank = np.array(rank)
