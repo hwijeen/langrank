@@ -59,9 +59,7 @@ def train_olid(exclude_lang=None, feature='base'):
 
 
 def train_sa(exclude_lang=None, feature='base'):
-    langs = ['ara', 'zho', 'nld', 'eng', 'fra',
-             'deu', 'kor', 'rus', # no jap, no per
-             'spa', 'tam', 'tur'] # no tha
+    langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     data_dir = 'datasets/sa/'
     datasets = [os.path.join(data_dir, f'{l}.txt') for l in langs]
     ranking_f = open(os.path.join(data_dir, 'rankings_wo_jpn_per_tha.pkl'), 'rb') # FIXME: temporary
