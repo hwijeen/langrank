@@ -4,7 +4,7 @@ import pkg_resources
 import os
 import lightgbm as lgb
 from sklearn.datasets import load_svmlight_file
-from pos_ratio import pos_features
+from new_features import pos_features, emo_features
 
 TASKS = ["MT", "DEP", "EL", "POS", "OLID", "SA"]
 
@@ -55,7 +55,10 @@ SA_MODELS = {
     "ara":"lgbm_model_sa_ara.txt",
     "deu":"lgbm_model_sa_deu.txt",
     "eng":"lgbm_model_sa_eng.txt",
+    "fas":"lgbm_model_sa_fas.txt",
     "fra":"lgbm_model_sa_fra.txt",
+    "hin":"lgbm_model_sa_hin.txt",
+    "jpn":"lgbm_model_sa_jpn.txt",
     "kor":"lgbm_model_sa_kor.txt",
     "nld":"lgbm_model_sa_nld.txt",
     "rus":"lgbm_model_sa_rus.txt",
@@ -310,8 +313,10 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         distance_pron = (1 - transfer_pr / task_pr) ** 2
         distance_verb = (1 - transfer_vr / task_vr) ** 2
 
+        emotion_dist = emo_features(test['lang'], transfer['lang'])
+        # emotion_dist = emo_features(test['lang'], transfer['lang'], pairewise=False)
 
-
+    # TODO: var name - this is no longer data_specific_features
     if task == "MT":
         data_specific_features = [word_overlap, subword_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
     elif task == "POS" or task == "DEP":
@@ -323,6 +328,12 @@ def distance_vec(test, transfer, uriel_features, task, feature):
                                   transfer_ttr, task_ttr, distance_ttr]
         if feature == 'pos': # TODO: if this is not good enough, using raw ratio as well as distances
             data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
+        elif feature == 'emot':
+            data_specific_features += [emotion_dist]
+        elif feature == 'all':
+            data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
+            data_specific_features += [emotion_dist]
+
     return np.array(data_specific_features + uriel_features)
 
 def lgbm_rel_exp(BLEU_level, cutoff):
@@ -345,7 +356,7 @@ def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
     lang: [aze, tur, ben]
     rank: [[0, 1, 2], [1, 0, 2], [1, 2, 0]]
     """
-    # num_langs = len(langs)
+    num_langs = len(langs)
     # REL_EXP_CUTOFF = num_langs - 1 - 9
     # REL_EXP_CUTOFF = num_langs - 3 # no cutoff
 
@@ -435,13 +446,14 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
         cand_dict = c[1]
         candidate_language = key[-3:]
         uriel_j = [u[0,i+1] for u in uriel]
-        distance_vector = distance_vec(test_dataset_features, cand_dict, uriel_j, task, model, feature)
+        distance_vector = distance_vec(test_dataset_features, cand_dict, uriel_j, task,  feature)
         test_inputs.append(distance_vector)
 
     # load model
     model_dict = map_task_to_models(task) # this loads the dict that will give us the name of the pretrained model
     model_fname = model_dict[model] # this gives us the filename (needs to be joined, see below)
-    modelfilename = pkg_resources.resource_filename(__name__, os.path.join('pretrained', task, model_fname))
+    # modelfilename = pkg_resources.resource_filename(__name__, os.path.join('pretrained', task, model_fname))
+    modelfilename = pkg_resources.resource_filename(__name__, os.path.join('pretrained', task, feature, model_fname))
     print(f"Loading model... {modelfilename}")
 
     # rank
@@ -472,13 +484,38 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
         feature_name = ["Entity overlap", "Transfer lang dataset size", "Target lang dataset size",
                         "Transfer over target size ratio", "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL",
                         "INVENTORY", "GEOGRAPHIC"]
+    # TODO: emotion distance?
     elif task == "OLID" or task == "SA":
-        sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1]
-        feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
-                        "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
-                        "Transfer target TTR distance", "Transfer lang noun ratio",
-                        "Transfer lang verb ratio", "Transfer target n2v distance" 
-                        "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+        if feature == 'base':
+            sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1]
+            feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+                            "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+                            "Transfer target TTR distance",
+                            "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+
+        if feature == 'pos':
+            sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1]
+            feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+                            "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+                            "Transfer target TTR distance", "Transfer lang noun ratio",
+                            "Transfer lang verb ratio", "Transfer target n2v distance",
+                            "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+        elif feature == 'emot':
+            sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+            feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+                            "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+                            "Transfer target TTR distance",
+                            "Emotion distance",
+                            "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+        elif feature == 'all':
+            sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+            feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+                            "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+                            "Transfer target TTR distance", "Transfer lang noun ratio",
+                            "Transfer lang verb ratio", "Transfer target n2v distance",
+                            "Emotion distance",
+                            "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+
 
     test_inputs = np.array(test_inputs)
     for j in range(len(feature_name)):

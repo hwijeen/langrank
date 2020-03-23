@@ -60,7 +60,7 @@ def train_sa(exclude_lang=None, feature='base'):
     langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     data_dir = 'datasets/sa/'
     datasets = [os.path.join(data_dir, f'{l}.txt') for l in langs]
-    ranking_f = open(os.path.join(data_dir, 'rankings_wo_jpn_per_tha.pkl'), 'rb') # FIXME: temporary
+    ranking_f = open(os.path.join(data_dir, 'rankings/sa.pkl'), 'rb') # FIXME: temporary
     rank = pickle.load(ranking_f)
 
     if exclude_lang is not None: # exclude for cross validation
@@ -87,12 +87,18 @@ def train_sa(exclude_lang=None, feature='base'):
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    # TODO: include MWE feature, emotion feature
+    elif feature == 'emot':
+        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
+                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'emotion_dist',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    # TODO: include MWE feature
     # NOTE: order of features must be consistent with the list in `distance_vec`
     elif feature == 'all':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
+                        'emotion_dist',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
 
     print(f'Features used are {feature_name}')
@@ -101,9 +107,11 @@ def train_sa(exclude_lang=None, feature='base'):
 
 
 if __name__ == '__main__':
-    langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     # langs= ['ara', 'dan', 'ell', 'eng', 'tur']
+    langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
+    feature = 'all' # base, pos
     for exclude in langs:
         print(f'Start training with {exclude} excluded')
+        print(f'Features: {feature}')
         # train_olid(exclude_lang=exclude)
-        train_sa(exclude_lang=exclude)
+        train_sa(exclude_lang=exclude, feature)

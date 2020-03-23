@@ -32,7 +32,7 @@ def parse_args():
                         "'DEP': Dependency Parsing, 'POS': POS-tagging, 'EL': Entity Linking,"
                         "'OLID': Offensive Language Identification, and 'SA': Sentiment Analysis.")
     parser.add_argument('-m', '--model', type=str, default="best", help="model to be used for prediction")
-    parser.add_argument('-f', '--feature', type=str, default="base", choices=['base', 'pos', 'emot'],
+    parser.add_argument('-f', '--feature', type=str, default="base", choices=['base', 'pos', 'emot', 'all'],
                         help="set of features to use for prediction")
     return parser.parse_args()
 
@@ -48,16 +48,15 @@ def sort_prediction(cand_list, neg_scores):
         cand_list = [c.split('/')[2][:3] for c in cand_list]
     except:
         pass
-    sorted_list = sorted(zip(cand_list, neg_scores), key=lambda x: sort_dict[x[0]])
+    sorted_list = sorted(zip(cand_list, neg_scores), key=lambda x: x[0])
     pred_neg_scores = [z[1] for z in sorted_list]
     pred = rankdata(pred_neg_scores)
     return pred
 
 def load_gold(task, target_lang):
     if params.task == 'SA':
-        dir_ = f'datasets/{task.lower()}'
-        filename = 'rankings_wo_jpn_per_tha.pkl'
-        f = open(os.path.join(dir_, filename), 'rb')
+        fpath = 'rankings/sa.pkl'
+        f = open(fpath), 'rb')
         gold_list = pickle.load(f)
     else:
         gold_list = [[0, 4, 2, 1, 3],
@@ -65,9 +64,14 @@ def load_gold(task, target_lang):
                      [2, 4, 0, 1, 3],
                      [3, 1, 4, 0, 2],
                      [3, 1, 4, 2, 0]]
+
     for l in gold_list:
         l.pop(l.index(0)) # drop self
-    target_lang_idx = sort_dict[target_lang]
+
+    langs = ['ara', 'deu', 'eng', 'fas', 'fra',
+             'hin', 'jpn', 'kor', 'nld', 'rus',
+             'spa', 'tam', 'tur', 'zho']
+    target_lang_idx = langs.index(target_lang)
     return gold_list[target_lang_idx]
 
 
@@ -79,12 +83,6 @@ if __name__ == '__main__':
 
     lines = read_file(params.orig)
     bpelines = read_file(params.seg)
-
-    if params.task == 'SA':
-        sort_dict = {'ara': 0, 'zho':1, 'nld':2, 'eng':3, 'fra':4, 'deu':5, 'kor':6, 'rus':7, 'spa':8, 'tam':9, 'tur':10}
-    elif params.task == 'OLID':
-        sort_dict = {'ara': 0, 'dan':1, 'ell':2, 'eng':3, 'tur':4}
-
 
     print("read lines")
     prepared = lr.prepare_new_dataset(params.lang, task=params.task, dataset_source=lines, dataset_subword_source=bpelines)
