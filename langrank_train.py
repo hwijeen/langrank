@@ -114,7 +114,7 @@ def train_sa(exclude_lang=None, feature='base'):
 # TODO: into shell file
 if __name__ == '__main__':
     # langs= ['ara', 'dan', 'ell', 'eng', 'tur']
-    langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
+    langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
     feature = 'base' # base, pos
     for exclude in langs:
         print(f'Start training with {exclude} excluded')
