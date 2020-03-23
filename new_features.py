@@ -132,7 +132,7 @@ def read_features(f):
         for line in f.readlines()[1:]:
             lang = line.split(',')[0]
             features = map(float, line.split(',')[1:])
-            feature_dict[lang] = tuple(features)
+            feature_dict[lang] = tuple(features)[0]
     return feature_dict
 
 
@@ -164,11 +164,11 @@ def pos_features(lang, feature, data_dir='./mono'):
     return feature_dict[lang]
 
 # FIXME: read only once
-def emo_features(lang1, lang2, fpath='featrues/', pairwise=True):
+def emo_features(lang1, lang2, fpath='features/', pairwise=True):
     if pairwise:
-        fpath = os.path.join(fpath, 'emo-diffs-consine-5.txt')
+        fpath = os.path.join(fpath, 'emo-diffs-cosine-5.txt')
     else:
-        fpath = os.path.join(fpath, 'emo-diffs-en-consine-5.txt')
+        fpath = os.path.join(fpath, 'emo-diffs-en-cosine-5.txt')
 
     lang_to_code = copy(lang2code)
     lang_to_code['zho'] = 'zh'
@@ -179,7 +179,7 @@ def emo_features(lang1, lang2, fpath='featrues/', pairwise=True):
         for line in f:
             lang1_code, lang2_code, emo_score = line.split('\t')
             feature_dict[lang1_code][lang2_code] = emo_score
-    return feature_dict[lang_to_code[lang1]][lang_to_code[lang2]]
+    return feature_dict[lang_to_code[lang1]][lang_to_code[lang2]].strip()
 
     # # if symmetric score is correct
     # feature_dict = dict()

@@ -1,6 +1,4 @@
-#python3 langrank_predict.py -o sample-data/ted-train.orig.aze -s sample-data/ted-train.orig.spm8000.aze -l aze -n 3 -t MT
-#python langrank_predict.py -o datasets/olid/dan.txt -l dan -n 3 -t OLID
-#!python langrank_predict.py -o datasets/sa/ara.txt -l ara -c '*ara;' -t SA -m ara
+#!python langrank_predict.py -l ara -m ara -c '*ara;' -t SA -m ara
 import langrank as lr
 from langrank import rank_to_relevance
 import os
@@ -21,20 +19,23 @@ def evaluate(pred_rank, gold_rank, k=3):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Langrank parser.')
-    parser.add_argument('-o', '--orig', type=str, required=True, help='unsegmented dataset')
+    # parser.add_argument('-o', '--orig', type=str, required=True, help='unsegmented dataset')
     parser.add_argument('-s', '--seg', type=str, help='segmented dataset')
     parser.add_argument('-l', '--lang', type=str, required=True, help='language code')
     parser.add_argument('-n', '--num', type=int, default=3, help='print top N')
     parser.add_argument('-c', '--candidates', type=str, default="all",
                         help="candidates of transfer languages, seperated by ;, use *abc to exclude language abc")
-    parser.add_argument('-t', '--task', type=str, default="MT", choices=["MT", "POS", "EL", "DEP", "OLID", "SA"],
+    parser.add_argument('-t', '--task', type=str, default="SA", choices=["MT", "POS", "EL", "DEP", "OLID", "SA"],
                         help="The task of interested. Current options support 'MT': machine translation,"
                         "'DEP': Dependency Parsing, 'POS': POS-tagging, 'EL': Entity Linking,"
                         "'OLID': Offensive Language Identification, and 'SA': Sentiment Analysis.")
-    parser.add_argument('-m', '--model', type=str, default="best", help="model to be used for prediction")
+    # QUESTION: when to use "all"?
+    parser.add_argument('-m', '--model', type=str, default="all", help="model to be used for prediction")
     parser.add_argument('-f', '--feature', type=str, default="base", choices=['base', 'pos', 'emot', 'all'],
                         help="set of features to use for prediction")
-    return parser.parse_args()
+    params = parser.parse_args()
+    params.orig = f'datasets/sa/{params.lang}.txt'
+    return params
 
 def read_file(fpath):
     if fpath is None:
@@ -56,7 +57,7 @@ def sort_prediction(cand_list, neg_scores):
 def load_gold(task, target_lang):
     if params.task == 'SA':
         fpath = 'rankings/sa.pkl'
-        f = open(fpath), 'rb')
+        f = open(fpath, 'rb')
         gold_list = pickle.load(f)
     else:
         gold_list = [[0, 4, 2, 1, 3],
@@ -93,6 +94,7 @@ if __name__ == '__main__':
     cand_langs, neg_predicted_scores = lr.rank(prepared, task=task, candidates=candidates, print_topK=params.num,
                                                model=params.model, feature=params.feature)
     print("ranked")
+    import ipdb; ipdb.set_trace(context=5)
 
     pred = sort_prediction(cand_langs, neg_predicted_scores)
     gold = load_gold(params.task, params.lang)

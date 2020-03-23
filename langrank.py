@@ -227,7 +227,7 @@ def prepare_new_dataset(lang, task="MT", dataset_source=None,
         features["noun_ratio"] = pos_features(lang, 'noun')
         features["verb_ratio"] = pos_features(lang, 'verb')
         features["pron_ratio"] = pos_features(lang, 'pron')
-        features["n2v_ratio"] = pos_features(lang, 'noun2veb')
+        features["n2v_ratio"] = pos_features(lang, 'noun2verb')
         features["p2n_ratio"] = pos_features(lang, 'pron2noun')
 
     if task == "MT":
@@ -463,8 +463,6 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
     predict_contribs = bst.predict(test_inputs, pred_contrib=True)
     predict_scores = predict_contribs.sum(-1)
 
-    print("Ranking with single features:")
-    TOP_K=min(3, len(candidate_list))
 
     # 0 means we ignore this feature (don't compute single-feature result of it)
     if task == "MT":
@@ -517,15 +515,17 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
                             "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
 
 
-    test_inputs = np.array(test_inputs)
-    for j in range(len(feature_name)):
-        if sort_sign_list[j] != 0:
-            print(feature_name[j])
-            values = test_inputs[:, j] * sort_sign_list[j]
-            best_feat_index = np.argsort(values)
-            for i in range(TOP_K):
-                index = best_feat_index[i]
-                print("%d. %s : score=%.2f" % (i, candidate_list[index][0], test_inputs[index][j]))
+    # print("Ranking with single features:")
+    # TOP_K=min(3, len(candidate_list))
+    # test_inputs = np.array(test_inputs)
+    # for j in range(len(feature_name)):
+    #     if sort_sign_list[j] != 0:
+    #         print(feature_name[j])
+    #         values = test_inputs[:, j] * sort_sign_list[j]
+    #         best_feat_index = np.argsort(values)
+    #         for i in range(TOP_K):
+    #             index = best_feat_index[i]
+    #             print("%d. %s : score=%.2f" % (i, candidate_list[index][0], test_inputs[index][j]))
 
     ind = list(np.argsort(-predict_scores))
     print("Ranking (top {}):".format(print_topK))
