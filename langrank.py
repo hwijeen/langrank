@@ -39,7 +39,7 @@ MT_MODELS = {
 POS_MODELS = {
         "best": "lgbm_model_pos_all.txt"
 }
-EL_MODELS = {} # QUESTION: why empty?
+EL_MODELS = {}
 DEP_MODELS = {}
 
 OLID_MODELS = {
@@ -142,7 +142,6 @@ def get_candidates(task, languages=None):
     datasets_dict = map_task_to_data(task)
     cands = []
     for dt in datasets_dict:
-        # QUESTION: fn is string, what is the meaning of this complicated things??
         fn = pkg_resources.resource_filename(__name__, os.path.join('indexed', task, datasets_dict[dt]))
         d = np.load(fn, encoding='latin1', allow_pickle=True).item()
         # languages with * means to exclude
@@ -224,10 +223,10 @@ def prepare_new_dataset(lang, task="MT", dataset_source=None,
 
     if task in ["SA", "OLID", "DEP", "POS"]:
         # read all pos features even if we might not use everything
-        features["noun_ratio"] = pos_features(lang, 'noun')
+        # features["noun_ratio"] = pos_features(lang, 'noun')
         features["verb_ratio"] = pos_features(lang, 'verb')
         features["pron_ratio"] = pos_features(lang, 'pron')
-        features["n2v_ratio"] = pos_features(lang, 'noun2verb')
+        # features["n2v_ratio"] = pos_features(lang, 'noun2verb')
         features["p2n_ratio"] = pos_features(lang, 'pron2noun')
 
     if task == "MT":
@@ -295,23 +294,24 @@ def distance_vec(test, transfer, uriel_features, task, feature):
 
     # POS related features
     if task == "SA" or task == "OLID":
-        transfer_nr = transfer["noun_ratio"]
+        # transfer_nr = transfer["noun_ratio"]
         transfer_vr = transfer["verb_ratio"]
         transfer_pr = transfer["pron_ratio"]
-        transfer_n2v = transfer["n2v_ratio"]
+        # transfer_n2v = transfer["n2v_ratio"]
         transfer_p2n = transfer["p2n_ratio"]
 
-        task_nr = test["noun_ratio"]
+        # task_nr = test["noun_ratio"]
         task_vr = test["verb_ratio"]
         task_pr = test["pron_ratio"]
-        task_n2v = test["n2v_ratio"]
+        # task_n2v = test["n2v_ratio"]
         task_p2n = test["p2n_ratio"]
 
-        distance_n2v = (1 - transfer_n2v / task_n2v) ** 2
-        distance_p2n = (1 - transfer_p2n / task_p2n) ** 2
-        distance_noun = (1 - transfer_nr / task_nr) ** 2
-        distance_pron = (1 - transfer_pr / task_pr) ** 2
+
+        # distance_noun = (1 - transfer_nr / task_nr) ** 2
         distance_verb = (1 - transfer_vr / task_vr) ** 2
+        distance_pron = (1 - transfer_pr / task_pr) ** 2
+        # distance_n2v = (1 - transfer_n2v / task_n2v) ** 2
+        distance_p2n = (1 - transfer_p2n / task_p2n) ** 2
 
         emotion_dist = emo_features(test['lang'], transfer['lang'])
         # emotion_dist = emo_features(test['lang'], transfer['lang'], pairewise=False)
@@ -327,11 +327,13 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
                                   transfer_ttr, task_ttr, distance_ttr]
         if feature == 'pos': # TODO: if this is not good enough, using raw ratio as well as distances
-            data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
+            # data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
+            data_specific_features += [distance_p2n, distance_pron, distance_verb]
         elif feature == 'emot':
             data_specific_features += [emotion_dist]
         elif feature == 'all':
-            data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
+            # data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
+            data_specific_features += [distance_p2n, distance_pron, distance_verb]
             data_specific_features += [emotion_dist]
 
     return np.array(data_specific_features + uriel_features)
@@ -490,13 +492,16 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
                             "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
                             "Transfer target TTR distance",
                             "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+       
+        elif feature =='typ':
+            pass # - geo
 
-        if feature == 'pos':
+        elif feature == 'pos':
             sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1]
             feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
                             "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
-                            "Transfer target TTR distance", "Transfer lang noun ratio",
-                            "Transfer lang verb ratio", "Transfer target n2v distance",
+                            "Transfer target TTR distance",
+                            "p2n dist", "pron dist", "verb dist",
                             "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
         elif feature == 'emot':
             sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
@@ -509,8 +514,8 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
             sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]
             feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
                             "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
-                            "Transfer target TTR distance", "Transfer lang noun ratio",
-                            "Transfer lang verb ratio", "Transfer target n2v distance",
+                            "Transfer target TTR distance",
+                            "p2n dist", "pron dist", "verb dist",
                             "Emotion distance",
                             "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
 
