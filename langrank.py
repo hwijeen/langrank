@@ -181,12 +181,14 @@ def prepare_new_dataset(lang, task="MT", dataset_source=None,
 
     # Get dataset features
     if dataset_source is None and dataset_target is None and dataset_subword_source is None and dataset_subword_target is None:
-        print("NOTE: no dataset provided. You can still use the ranker using language typological features.")
+        # print("NOTE: no dataset provided. You can still use the ranker using language typological features.")
         return features
     elif dataset_source is None: # and dataset_target is None:
-        print("NOTE: no word-level dataset provided, will only extract subword-level features.")
+        # print("NOTE: no word-level dataset provided, will only extract subword-level features.")
+        pass
     elif dataset_subword_source is None: # and dataset_subword_target is None:
-        print("NOTE: no subword-level dataset provided, will only extract word-level features.")
+        # print("NOTE: no subword-level dataset provided, will only extract word-level features.")
+        pass
 
 
     source_lines = []
@@ -254,17 +256,17 @@ def prepare_new_dataset(lang, task="MT", dataset_source=None,
     return features
 
 def uriel_distance_vec(languages):
-    print('...geographic')
+    # print('...geographic')
     geographic = l2v.geographic_distance(languages)
-    print('...genetic')
+    # print('...genetic')
     genetic = l2v.genetic_distance(languages)
-    print('...inventory')
+    # print('...inventory')
     inventory = l2v.inventory_distance(languages)
-    print('...syntactic')
+    # print('...syntactic')
     syntactic = l2v.syntactic_distance(languages)
-    print('...phonological')
+    # print('...phonological')
     phonological = l2v.phonological_distance(languages)
-    print('...featural')
+    # print('...featural')
     featural = l2v.featural_distance(languages)
     uriel_features = [genetic, syntactic, featural, phonological, inventory, geographic]
     return uriel_features
@@ -324,16 +326,23 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     elif task == "EL":
         data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size]
     elif task == "OLID" or task == "SA":
-        data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
-                                  transfer_ttr, task_ttr, distance_ttr]
-        if feature == 'pos': # TODO: if this is not good enough, using raw ratio as well as distances
+        if feature == 'base':
+            data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
+                                      transfer_ttr, task_ttr, distance_ttr]
+        elif feature == 'nogeo':
+            data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
+                                      transfer_ttr, task_ttr, distance_ttr]
+            uriel_features = uriel_features[:-1]
+        elif feature == 'pos': # TODO: if this is not good enough, using raw ratio as well as distances
             # data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
-            data_specific_features += [distance_p2n, distance_pron, distance_verb]
+            # data_specific_features += [distance_p2n, distance_pron, distance_verb]
+            data_specific_features += [distance_pron, distance_verb]
         elif feature == 'emot':
             data_specific_features += [emotion_dist]
         elif feature == 'all':
             # data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
-            data_specific_features += [distance_p2n, distance_pron, distance_verb]
+            # data_specific_features += [distance_p2n, distance_pron, distance_verb]
+            data_specific_features += [distance_pron, distance_verb]
             data_specific_features += [emotion_dist]
 
     return np.array(data_specific_features + uriel_features)
@@ -403,8 +412,8 @@ def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
         train_size_f.write("{}\n".format(num_langs-1))
     train_file_f.close()
     train_size_f.close()
-    print("Dump train file to {} ...".format(train_file_f))
-    print("Dump train size file to {} ...".format(train_size_f))
+    # print("Dump train file to {} ...".format(train_file_f))
+    # print("Dump train size file to {} ...".format(train_size_f))
 
 def train(tmp_dir, output_model, feature_name='auto', task='OLID'):
     train_file = os.path.join(tmp_dir, f"train_{task}.csv")
@@ -427,21 +436,21 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
     check_task_model(task, model)
 
     # Get candidates to be compared against
-    print("Preparing candidate list...")
+    # print("Preparing candidate list...")
     if candidates == 'all':
         candidate_list = get_candidates(task)
     else:
         # Restricts to a specific set of languages
         candidate_list = get_candidates(task, candidates)
 
-    print("Collecting URIEL distance vectors...")
+    # print("Collecting URIEL distance vectors...")
 
     languages = [test_dataset_features["lang"]] + [c[1]["lang"] for c in candidate_list]
     # TODO: This takes forever...
     uriel = uriel_distance_vec(languages)
 
 
-    print("Collecting dataset distance vectors...")
+    # print("Collecting dataset distance vectors...")
     test_inputs = []
     for i,c in enumerate(candidate_list):
         key = c[0]
@@ -461,7 +470,7 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
     # rank
     bst = lgb.Booster(model_file=modelfilename)
 
-    print("predicting...")
+    # print("predicting...")
     predict_contribs = bst.predict(test_inputs, pred_contrib=True)
     predict_scores = predict_contribs.sum(-1)
 
@@ -492,16 +501,20 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
                             "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
                             "Transfer target TTR distance",
                             "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
-       
-        elif feature =='typ':
-            pass # - geo
-
+        elif feature =='nogeo':
+            sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1]
+            feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+                            "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+                            "Transfer target TTR distance",
+                            "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY"]
         elif feature == 'pos':
             sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1]
             feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
                             "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
                             "Transfer target TTR distance",
-                            "p2n dist", "pron dist", "verb dist",
+                            # Five
+                            # "p2n dist", "pron dist", "verb dist",
+                            "pron dist", "verb dist",
                             "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
         elif feature == 'emot':
             sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
@@ -515,7 +528,9 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
             feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
                             "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
                             "Transfer target TTR distance",
-                            "p2n dist", "pron dist", "verb dist",
+                            # Five
+                            # "p2n dist", "pron dist", "verb dist",
+                            "pron dist", "verb dist",
                             "Emotion distance",
                             "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
 
@@ -531,17 +546,16 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
     #         for i in range(TOP_K):
     #             index = best_feat_index[i]
     #             print("%d. %s : score=%.2f" % (i, candidate_list[index][0], test_inputs[index][j]))
-
-    ind = list(np.argsort(-predict_scores))
-    print("Ranking (top {}):".format(print_topK))
-    for j,i in enumerate(ind[:print_topK]):
-        print("%d. %s : score=%.2f" % (j+1, candidate_list[i][0], predict_scores[i]))
-        contrib_scores = predict_contribs[i][:-1]
-        contrib_ind = list(np.argsort(contrib_scores))[::-1]
-        print("\t1. %s : score=%.2f; \n\t2. %s : score=%.2f; \n\t3. %s : score=%.2f" %
-                    (feature_name[contrib_ind[0]], contrib_scores[contrib_ind[0]],
-                     feature_name[contrib_ind[1]], contrib_scores[contrib_ind[1]],
-                     feature_name[contrib_ind[2]], contrib_scores[contrib_ind[2]]))
+    # ind = list(np.argsort(-predict_scores))
+    # print("Ranking (top {}):".format(print_topK))
+    # for j,i in enumerate(ind[:print_topK]):
+    #     print("%d. %s : score=%.2f" % (j+1, candidate_list[i][0], predict_scores[i]))
+    #     contrib_scores = predict_contribs[i][:-1]
+    #     contrib_ind = list(np.argsort(contrib_scores))[::-1]
+    #     # print("\t1. %s : score=%.2f; \n\t2. %s : score=%.2f; \n\t3. %s : score=%.2f" %
+    #     #             (feature_name[contrib_ind[0]], contrib_scores[contrib_ind[0]],
+    #     #              feature_name[contrib_ind[1]], contrib_scores[contrib_ind[1]],
+    #     #              feature_name[contrib_ind[2]], contrib_scores[contrib_ind[2]]))
     cand_langs = [c[0] for c in candidate_list]
     return cand_langs, -predict_scores
 

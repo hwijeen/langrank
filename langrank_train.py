@@ -46,13 +46,15 @@ def train_olid(exclude_lang=None, feature='base'):
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
-                        'pron_to_noun', 'distance_pron', 'distance_verb',
+                        # 'pron_to_noun', 'distance_pron', 'distance_verb',
+                        'distance_pron', 'distance_verb',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'all':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
-                        'pron_to_noun', 'distance_pron', 'distance_verb',
+                        # 'pron_to_noun', 'distance_pron', 'distance_verb',
+                        'distance_pron', 'distance_verb',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     print(f'Features used are: {feature_name}')
     train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="OLID")
@@ -86,15 +88,22 @@ def train_sa(exclude_lang=None, feature='base'):
 
     output_model = f"{model_save_dir}/lgbm_model_sa_{exclude_lang}.txt"
 
-    feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
-                    'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                    'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    if feature == 'base':
+        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
+                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
 
-    if feature == 'pos':
+    elif feature == 'nogeo':
+        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
+                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory']
+
+    elif feature == 'pos':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
-                        'pron_to_noun', 'distance_pron', 'distance_verb',
+                        # 'pron_to_noun', 'distance_pron', 'distance_verb',
+                        # 'distance_pron', 'distance_verb',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'emot':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
@@ -107,7 +116,8 @@ def train_sa(exclude_lang=None, feature='base'):
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
-                        'pron_to_noun', 'distance_pron', 'distance_verb',
+                        # 'pron_to_noun', 'distance_pron', 'distance_verb',
+                        'distance_pron', 'distance_verb',
                         'emotion_dist',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
 
@@ -119,9 +129,11 @@ def train_sa(exclude_lang=None, feature='base'):
 if __name__ == '__main__':
     # langs= ['ara', 'dan', 'ell', 'eng', 'tur']
     langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
-    feature = 'base' # base, pos
-    for exclude in langs:
-        print(f'Start training with {exclude} excluded')
-        print(f'Features: {feature}')
-        # train_olid(exclude_lang=exclude)
-        train_sa(exclude_lang=exclude, feature=feature)
+    # features = ['base', 'nogeo', 'pos', 'emot', 'all']
+    features = ['nogeo']
+    for f in features:
+        for exclude in langs:
+            print(f'\nStart training with {exclude} excluded')
+            print(f'Features: {f}')
+            # train_olid(exclude_lang=exclude)
+            train_sa(exclude_lang=exclude, feature=f)
