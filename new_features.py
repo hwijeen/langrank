@@ -8,10 +8,13 @@ from collections import Counter, defaultdict
 from test_pos_tagger import *
 
 lang2code = {
-    'ara': 'ar', 'deu': 'de', 'eng': 'en',
-    'fas': 'fa', 'fra': 'fr', 'hin': 'hi',
-    'jpn': 'ja', 'kor': 'ko', 'nld': 'nl',
-    'rus': 'ru', 'spa': 'es', 'tam': 'ta',
+    'ara': 'ar', 'ces': 'cs',
+    'deu': 'de', 'eng': 'en',
+    'fas': 'fa', 'fra': 'fr',
+    'hin': 'hi', 'jpn': 'ja',
+    'kor': 'ko', 'nld': 'nl',
+    'rus': 'ru', 'pol': 'pl',
+    'spa': 'es', 'tam': 'ta',
     'tur': 'tr', 'zho': 'zh-Hans'
 }
 
@@ -21,21 +24,21 @@ NOUN_TAGS = {
     # 'nld': ['noun.N(soort,ev,basis,zijd,stan)',
     #         'noun.N(soort,ev,basis,onz,stan)',
     #         'noun.N(soort,mv,basis)'],
-    'zho': ['n', 'an', 'f', 's']
+    # 'zho': ['n', 'an', 'f', 's']
 }
 PRONOUN_TAGS = {
     'kor': ['NP'],
     'jpn': ['代名詞'],
     # 'nld': ['pron.VNW(pers,pron,nomin,red,1,mv)',
     #         'pron.VNW(pers,pron,nomin,vol,1,ev)'],
-    'zho': ['rz', 'rr', 'r']
+    # 'zho': ['rz', 'rr', 'r']
 }
 VERB_TAGS = {
     'kor': ['VV'],
     'jpn': ['動詞'],
     # 'nld': ['verb.WW(inf,vrij,zonder)',
     #         'verb.WW(pv,tgw,mv)'],
-    'zho': ['v', 'vn']
+    # 'zho': ['v', 'vn']
 }
 
 
@@ -164,7 +167,7 @@ def pos_features(lang, feature, data_dir='./mono'):
     return feature_dict[lang]
 
 # FIXME: read only once
-def emo_features(lang1, lang2, fpath='features/', pairwise=True):
+def emo_features(lang1, lang2, fpath='./features/', pairwise=True):
     if pairwise:
         fpath = os.path.join(fpath, 'emo-diffs-cosine-5.txt') # old
         # fpath = os.path.join(fpath, 'emo-diffs-en-cc-cosine-5-norm.txt') # new
@@ -191,14 +194,26 @@ def emo_features(lang1, lang2, fpath='features/', pairwise=True):
     #         feature_dict[(lang1_code, lang2_code)] = emo_score
     # return feature_dict[(lang_to_code[lang1], lang_to_code[lang2])]
 
+def mwe_features(lang1, lang2, fpath='./features/', norm=True):
+    if norm:
+        fpath = os.path.join(fpath, 'ltq_either.txt')
+    else:
+        fpath = os.path.join(fpath, 'ltq_either_norm.txt')
 
+    lang_to_code = copy(lang2code)
+    lang_to_code['zho'] = 'zh'
 
-
-
-
+    # if asymmetric score is correct
+    feature_dict = defaultdict(dict)
+    with open(fpath) as f:
+        for line in f:
+            lang1_code, lang2_code, mwe_score = line.split('\t')
+            feature_dict[lang1_code][lang2_code] = mwe_score
+    return feature_dict[lang_to_code[lang1]][lang_to_code[lang2]].strip()
 
 if __name__ == "__main__":
     features = ['noun', 'pron', 'verb', 'noun2verb', 'pron2noun']
+    # feature_dict = build_features('./mono', features)
     for f in features:
         feature_dict = build_features('./mono', f)
         out_file = f'./features/{f}.csv'
