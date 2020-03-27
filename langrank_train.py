@@ -98,14 +98,26 @@ def train_sa(exclude_lang=None, feature='base'):
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'emotion_dist',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    # TODO: include MWE feature
+    elif feature == 'mwe':
+        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
+                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'mwe_dist',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     # NOTE: order of features must be consistent with the list in `distance_vec`
     elif feature == 'all':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
-                        'emotion_dist',
+                        'emotion_dist', 'mwe_dist'
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    elif feature == 'syn_only':
+        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory']
+    elif feature == 'cult_only':
+        feature_name = ['transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
+                        'emotion_dist', 'mwe_dist'
+                        'geographical']
 
     print(f'Features used are {feature_name}')
     train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="SA")
@@ -114,7 +126,9 @@ def train_sa(exclude_lang=None, feature='base'):
 # TODO: into shell file
 if __name__ == '__main__':
     # langs= ['ara', 'dan', 'ell', 'eng', 'tur']
-    langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
+    langs = ['ara', 'ces', 'deu', 'eng', 'fas',
+             'fra', 'hin', 'jpn', 'kor', 'nld',
+             'pol', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
     feature = 'base' # base, pos
     for exclude in langs:
         print(f'Start training with {exclude} excluded')
