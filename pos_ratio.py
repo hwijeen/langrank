@@ -7,10 +7,13 @@ from collections import Counter
 from test_pos_tagger import *
 
 lang2code = {
-    'ara': 'ar', 'deu': 'de', 'eng': 'en',
-    'fas': 'fa', 'fra': 'fr', 'hin': 'hi',
-    'jpn': 'ja', 'kor': 'ko', 'nld': 'nl',
-    'rus': 'ru', 'spa': 'es', 'tam': 'ta',
+    'ara': 'ar', 'ces': 'cs',
+    'deu': 'de', 'eng': 'en',
+    'fas': 'fa', 'fra': 'fr',
+    'hin': 'hi', 'jpn': 'ja',
+    'kor': 'ko', 'nld': 'nl',
+    'rus': 'ru', 'pol': 'pl',
+    'spa': 'es', 'tam': 'ta',
     'tur': 'tr', 'zho': 'zh-Hans'
 }
 
@@ -20,21 +23,21 @@ NOUN_TAGS = {
     # 'nld': ['noun.N(soort,ev,basis,zijd,stan)',
     #         'noun.N(soort,ev,basis,onz,stan)',
     #         'noun.N(soort,mv,basis)'],
-    'zho': ['n', 'an', 'f', 's']
+    # 'zho': ['n', 'an', 'f', 's']
 }
 PRONOUN_TAGS = {
     'kor': ['NP'],
     'jpn': ['代名詞'],
     # 'nld': ['pron.VNW(pers,pron,nomin,red,1,mv)',
     #         'pron.VNW(pers,pron,nomin,vol,1,ev)'],
-    'zho': ['rz', 'rr', 'r']
+    # 'zho': ['rz', 'rr', 'r']
 }
 VERB_TAGS = {
     'kor': ['VV'],
     'jpn': ['動詞'],
     # 'nld': ['verb.WW(inf,vrij,zonder)',
     #         'verb.WW(pv,tgw,mv)'],
-    'zho': ['v', 'vn']
+    # 'zho': ['v', 'vn']
 }
 
 
@@ -165,6 +168,7 @@ def pos_features(lang, feature, data_dir='./mono'):
 
 if __name__ == "__main__":
     features = ['noun', 'pron', 'verb', 'noun2verb', 'pron2noun']
+    # feature_dict = build_features('./mono', features)
     for f in features:
         feature_dict = build_features('./mono', f)
         out_file = f'./features/{f}.csv'
