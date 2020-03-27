@@ -4,7 +4,7 @@ import numpy as np
 from collections import Counter
 
 import sys; sys.path.append('/home/hwijeen/lang-selection')
-from nv_ratio import nv_features
+from new_features import pos_features
 
 def read_data(fn):
     with open(fn) as inp:
@@ -44,7 +44,7 @@ features = {}
 #features["eng"]["word_vocab"] = en_v
 #features["eng"]["subword_vocab"] = en_sub_v
 
-exclude_langs = {'tha', 'jpn', 'fas'}
+exclude_langs = {'tha'}
 for filename in os.listdir(dataset_dir):
     if filename.endswith('.pkl'): continue
     #print(filename)
@@ -80,7 +80,12 @@ for filename in os.listdir(dataset_dir):
     features[key]["type_token_ratio"] = features[key]["type_number"]/float(features[key]["token_number"])
 
     source_lines = open(filename).readlines()
-    features[key]["noun_ratio"], features[key]["verb_ratio"], features[key]["n2v_ratio"] = nv_features(language, "SA", source_lines)
+    features[key]["noun_ratio"] = pos_features(language, 'noun')
+    features[key]["verb_ratio"] = pos_features(language, 'verb')
+    features[key]["pron_ratio"] = pos_features(language, 'pron')
+    features[key]["n2v_ratio"] = pos_features(language, 'noun2verb')
+    features[key]["p2n_ratio"] = pos_features(language, 'pron2noun')
+
 
 indexed = "indexed/SA"
 outputfile = os.path.join(indexed, "sa.npy")

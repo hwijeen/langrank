@@ -9,11 +9,12 @@ from scipy.stats import rankdata
 
 
 def rerank(rank, without_idx=None):
-    for i, r in enumerate(rank):
+    reranked = []
+    for r in rank:
         r.pop(without_idx)
-        reranked = rankdata(r) - 1
-        rank[i] = reranked
-    return rank
+        rr = rankdata(r) - 1
+        reranked.append(rr)
+    return reranked
 
 def train_olid(exclude_lang=None, feature='base'):
     langs= ['ara', 'dan', 'ell', 'eng', 'tur']
@@ -60,17 +61,22 @@ def train_sa(exclude_lang=None, feature='base'):
     langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     data_dir = 'datasets/sa/'
     datasets = [os.path.join(data_dir, f'{l}.txt') for l in langs]
-    ranking_f = open(os.path.join(data_dir, 'rankings_wo_jpn_per_tha.pkl'), 'rb') # FIXME: temporary
+    # ranking_f = open(os.path.join(data_dir, 'rankings/sa.pkl'), 'rb') # FIXME: temporary
+    ranking_f = open('rankings/sa.pkl', 'rb') # FIXME: temporary
     rank = pickle.load(ranking_f)
 
     if exclude_lang is not None: # exclude for cross validation
         exclude_idx = langs.index(exclude_lang)
         langs.pop(exclude_idx)
+        rank.pop(exclude_idx)
         rank = rerank(rank, exclude_idx)
     else:
         exclude_lang = 'all' # for model file name
 
     model_save_dir = f'pretrained/SA/{feature}/'
+    if not os.path.exists(model_save_dir):
+        os.mkdir(model_save_dir)
+
     tmp_dir = 'tmp'
     preprocess = None
     prepare_train_file(datasets=datasets, langs=langs, rank=rank, tmp_dir=tmp_dir, task="SA", preprocess=preprocess,
@@ -87,23 +93,31 @@ def train_sa(exclude_lang=None, feature='base'):
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    # TODO: include MWE feature, emotion feature
+    elif feature == 'emot':
+        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
+                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'emotion_dist',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    # TODO: include MWE feature
     # NOTE: order of features must be consistent with the list in `distance_vec`
     elif feature == 'all':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
+                        'emotion_dist',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
 
     print(f'Features used are {feature_name}')
     train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="SA")
     assert os.path.isfile(output_model)
 
-
+# TODO: into shell file
 if __name__ == '__main__':
-    langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     # langs= ['ara', 'dan', 'ell', 'eng', 'tur']
+    langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
+    feature = 'base' # base, pos
     for exclude in langs:
         print(f'Start training with {exclude} excluded')
+        print(f'Features: {feature}')
         # train_olid(exclude_lang=exclude)
-        train_sa(exclude_lang=exclude)
+        train_sa(exclude_lang=exclude, feature=feature)
