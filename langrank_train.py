@@ -132,7 +132,9 @@ def train_sa(exclude_lang=None, feature='base'):
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory']
     elif feature == 'cult_only':
         feature_name = ['transfer_ttr', 'task_ttr', 'distance_ttr',
-                        'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
+                        # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
+                        # 'pron_to_noun', 'distance_pron', 'distance_verb',
+                        'distance_pron', 'distance_verb',
                         'emotion_dist', 'mwe_dist'
                         'geographical']
 
@@ -143,9 +145,11 @@ def train_sa(exclude_lang=None, feature='base'):
 # TODO: into shell file
 if __name__ == '__main__':
     # langs= ['ara', 'dan', 'ell', 'eng', 'tur']
-    langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
-    # features = ['base', 'nogeo', 'pos', 'emot', 'all']
-    features = ['nogeo']
+    langs = ['ara', 'ces', 'deu', 'eng', 'fas', 
+             'fra', 'hin', 'jpn', 'kor', 'nld', 
+             'pol', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
+    features = ['base', 'nogeo', 'pos', 'emot', 'mwe', 'all', 'syn_only', 'cult_only']
+    # features = ['nogeo']
     for f in features:
         for exclude in langs:
             print(f'\nStart training with {exclude} excluded')
