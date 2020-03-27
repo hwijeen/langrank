@@ -354,6 +354,7 @@ def distance_vec(test, transfer, uriel_features, task, feature):
             return np.array(data_specific_features + typo_features)
         elif feature == 'cult_only':
             data_specific_features = ttr_features + pos_distance + [emotion_dist, mwe_dist]
+            return np.array(data_specific_features + geo_features)
         elif feature == 'all':
             data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
             data_specific_features += [emotion_dist]
@@ -364,8 +365,6 @@ def distance_vec(test, transfer, uriel_features, task, feature):
             data_specific_features += [emotion_dist]
         elif feature == 'mwe':
             data_specific_features += [mwe_dist]
-
-
     return np.array(data_specific_features + uriel_features)
 
 def lgbm_rel_exp(BLEU_level, cutoff):
