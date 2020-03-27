@@ -167,7 +167,7 @@ def pos_features(lang, feature, data_dir='./mono'):
     return feature_dict[lang]
 
 # FIXME: read only once
-def emo_features(lang1, lang2, fpath='features/', pairwise=True):
+def emo_features(lang1, lang2, fpath='./features/', pairwise=True):
     if pairwise:
         fpath = os.path.join(fpath, 'emo-diffs-cosine-5.txt')
     else:
@@ -192,11 +192,22 @@ def emo_features(lang1, lang2, fpath='features/', pairwise=True):
     #         feature_dict[(lang1_code, lang2_code)] = emo_score
     # return feature_dict[(lang_to_code[lang1], lang_to_code[lang2])]
 
+def mwe_features(lang1, lang2, fpath='./features/', norm=True):
+    if norm:
+        fpath = os.path.join(fpath, 'ltq_either.txt')
+    else:
+        fpath = os.path.join(fpath, 'ltq_either_norm.txt')
 
+    lang_to_code = copy(lang2code)
+    lang_to_code['zho'] = 'zh'
 
-
-
-
+    # if asymmetric score is correct
+    feature_dict = defaultdict(dict)
+    with open(fpath) as f:
+        for line in f:
+            lang1_code, lang2_code, mwe_score = line.split('\t')
+            feature_dict[lang1_code][lang2_code] = mwe_score
+    return feature_dict[lang_to_code[lang1]][lang_to_code[lang2]].strip()
 
 if __name__ == "__main__":
     features = ['noun', 'pron', 'verb', 'noun2verb', 'pron2noun']
