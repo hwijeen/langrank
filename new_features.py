@@ -178,6 +178,8 @@ def emo_features(lang1, lang2, fpath='./features/', pairwise=True):
     lang_to_code = copy(lang2code)
     lang_to_code['zho'] = 'zh'
 
+    # code_to_lang = {v:k for k,v in lang_to_code.items()}
+    print(lang1, lang2)
     # if asymmetric score is correct
     feature_dict = defaultdict(dict)
     with open(fpath) as f:

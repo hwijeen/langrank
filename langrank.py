@@ -319,7 +319,7 @@ def distance_vec(test, transfer, uriel_features, task, feature):
 
         emotion_dist = emo_features(test['lang'], transfer['lang'])
         mwe_dist = mwe_features(test['lang'], transfer['lang'])
-        mwe_dist = mwe_features(test['lang'], transfer['lang'], norm=False)
+        # mwe_dist = mwe_features(test['lang'], transfer['lang'], norm=False)
 
     # TODO: var name - this is no longer data_specific_features
     genetic, syntactic, featural, phonological, inventory, geographic = tuple(uriel_features)
@@ -351,7 +351,8 @@ def distance_vec(test, transfer, uriel_features, task, feature):
             data_specific_features = ortho_features + data_features
             return np.array(data_specific_features + typo_features)
         elif feature == 'cult_only':
-            data_specific_features = ttr_features + pos_distance + [emotion_dist, mwe_dist]
+            # data_specific_features = ttr_features + pos_distance + [emotion_dist, mwe_dist]
+            data_specific_features = ttr_features + [distance_pron, distance_verb] + [emotion_dist, mwe_dist]
             return np.array(data_specific_features + geo_features)
         elif feature == 'all':
             # data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
@@ -360,7 +361,8 @@ def distance_vec(test, transfer, uriel_features, task, feature):
             data_specific_features += [emotion_dist]
             data_specific_features += [mwe_dist]
         elif feature == 'pos': # TODO: if this is not good enough, using raw ratio as well as distances
-            data_specific_features += pos_distance
+            # data_specific_features += pos_distance
+            data_specific_features += [distance_pron, distance_verb]
         elif feature == 'emot':
             data_specific_features += [emotion_dist]
         elif feature == 'mwe':
@@ -568,8 +570,8 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
         elif feature == 'cult_only':
             sort_sign_list = [-1, -1, 0, 1, 1, 1, 1, 1, 1, 1]
             feature_name = ["Transfer lang TTR", "Target lang TTR", "Transfer target TTR distance",
-                            "N2V ratio distance", "P2N ratio distance",
-                            "Noun ratio distance", "Pron ratio distance", "Verb ratio distance",
+                            # "N2V ratio distance", "P2N ratio distance", "Noun ratio distance",
+                            "Pron ratio distance", "Verb ratio distance",
                             "Emotion distance", "MWE distance"]
 
 
