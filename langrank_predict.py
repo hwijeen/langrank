@@ -89,7 +89,7 @@ def load_gold(task, target_lang):
     return gold_list[target_lang_idx]
 
 def summarize_result(result, features):
-    base, nogeo, pos, emot, mwe, syn_only, cult_only, all_ = 0, 0, 0, 0, 0, 0, 0
+    base, nogeo, pos, emot, mwe, syn_only, cult_only, all_ = 0, 0, 0, 0, 0, 0, 0, 0
     for l, res_by_feat in result.items():
         if 'base' in features:
             base += res_by_feat['base']
@@ -146,9 +146,8 @@ if __name__ == '__main__':
 
     # params = parse_args()
     result = defaultdict(dict)
-    langs = ['ara', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    # features = ['base', 'pos', 'emot', 'all']
-    features = ['nogeo']
+    langs = ['ara', 'ces', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
+    features = ['base', 'pos', 'emot', 'mwe', 'syn_only']#, 'cult_only']
     for l in langs:
         for f in features:
             params = make_args(l, f)

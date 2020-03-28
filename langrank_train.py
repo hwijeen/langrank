@@ -117,26 +117,28 @@ def train_sa(exclude_lang=None, feature='base'):
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'mwe_dist',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    # NOTE: order of features must be consistent with the list in `distance_vec`
-    elif feature == 'all':
-        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
-                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
-                        # 'pron_to_noun', 'distance_pron', 'distance_verb',
-                        'distance_pron', 'distance_verb',
-                        'emotion_dist',
-                        'mwe_dist'
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'syn_only':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory']
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory'] # nogeo
     elif feature == 'cult_only':
-        feature_name = ['transfer_ttr', 'task_ttr', 'distance_ttr',
+        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
+                        'transfer_ttr', 'task_ttr', 'distance_ttr',
                         # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
                         # 'pron_to_noun', 'distance_pron', 'distance_verb',
                         'distance_pron', 'distance_verb',
-                        'emotion_dist', 'mwe_dist'
+                        'emotion_dist', 'mwe_dist',
                         'geographical']
+    # NOTE: order of features must be consistent with the list in `distance_vec`
+    elif feature == 'all':
+        # feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
+        #                 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
+        #                 # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
+        #                 # 'pron_to_noun', 'distance_pron', 'distance_verb',
+        #                 'distance_pron', 'distance_verb',
+        #                 'emotion_dist',
+        #                 'mwe_dist'
+        #                 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+        raise Exception('Not implemented')
 
     print(f'Features used are {feature_name}')
     train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="SA")
@@ -145,11 +147,12 @@ def train_sa(exclude_lang=None, feature='base'):
 # TODO: into shell file
 if __name__ == '__main__':
     # langs= ['ara', 'dan', 'ell', 'eng', 'tur']
-    langs = ['ara', 'ces', 'deu', 'eng', 'fas', 
-             'fra', 'hin', 'jpn', 'kor', 'nld', 
-             'pol', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
-    # features = ['base', 'nogeo', 'pos', 'emot', 'mwe', 'all', 'syn_only', 'cult_only']
-    features = ['emot', 'mwe', 'syn_only', 'cult_only']
+    # langs = ['ara', 'ces', 'deu', 'eng', 'fas',
+    #          'fra', 'hin', 'jpn', 'kor', 'nld',
+    #          'pol', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
+    langs = ['fra', 'hin', 'jpn', 'kor', 'nld']
+    features = ['base', 'nogeo', 'pos']
+    # features = ['base', 'nogeo', 'pos', 'emot', 'mwe', 'syn_only', 'cult_only']
     for f in features:
         for exclude in langs:
             print(f'\nStart training with {exclude} excluded')

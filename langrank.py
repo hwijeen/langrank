@@ -321,7 +321,7 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         mwe_dist = mwe_features(test['lang'], transfer['lang'])
         # mwe_dist = mwe_features(test['lang'], transfer['lang'], norm=False)
 
-    # TODO: var name - this is no longer data_specific_features
+    # # TODO: var name - this is no longer data_specific_features
     genetic, syntactic, featural, phonological, inventory, geographic = tuple(uriel_features)
     typo_features = [genetic, syntactic, featural, phonological, inventory]
     geo_features = [geographic]
@@ -339,33 +339,58 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     elif task == "EL":
         # data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size]
         data_specific_features = ortho_features + data_features
+
     elif task == "OLID" or task == "SA":
         data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
                                   transfer_ttr, task_ttr, distance_ttr]
         if feature == 'base':
-            return np.array(data_specific_features + uriel_features)
+            feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
+                                      transfer_ttr, task_ttr, distance_ttr]
+            feats += uriel_features
+            return np.array(feats)
+        elif feature == 'nogeo':
+            feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
+                                      transfer_ttr, task_ttr, distance_ttr]
+            feats += uriel_features[:-1]
+            return np.array(feats)
+        elif feature == 'pos': # TODO: if this is not good enough, using raw ratio as well as distances
+            feats = [word_overlap, transfer_dataset_size, task_data_size,
+                     ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+            # data_specific_features += [distance_p2n, distance_pron, distance_verb] # 3
+            feats += [distance_pron, distance_verb] # 2
+            feats += uriel_features
+            return np.array(feats)
+        elif feature == 'emot':
+            feats = [word_overlap, transfer_dataset_size, task_data_size,
+                     ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+            feats += [emotion_dist]
+            feats += uriel_features
+            return np.array(feats)
+        elif feature == 'mwe':
+            feats = [word_overlap, transfer_dataset_size, task_data_size,
+                     ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+            feats += [mwe_dist]
+            feats += uriel_features
+            return np.array(feats)
         elif feature == 'syn_only':
-            # remove geographic & ttr feature
-            data_specific_features = ortho_features + data_features
-            return np.array(data_specific_features + typo_features)
+            feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size]
+            feats += uriel_features[:-1]
+            return np.array(feats)
         elif feature == 'cult_only':
-            # data_specific_features = ttr_features + pos_distance + [emotion_dist, mwe_dist]
-            # data_specific_features = ttr_features + [distance_p2n, distance_pron, distance_verb] + [emotion_dist, mwe_dist] # 3
-            data_specific_features = ttr_features + [distance_pron, distance_verb] + [emotion_dist, mwe_dist] # 2
-            return np.array(data_specific_features + geo_features)
+            feats = [transfer_dataset_size, task_data_size, ratio_dataset_size]
+            feats += [transfer_ttr, task_ttr, distance_ttr]
+            feats += [distance_pron, distance_verb]
+            feats += [emotion_dist, mwe_dist]
+            feats += [uriel_features[-1]] # geo
+            return np.array(feats)
         elif feature == 'all':
+            raise Exception('Not implemented')
             # data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
             # data_specific_features += [distance_p2n, distance_pron, distance_verb]
-            data_specific_features += [distance_pron, distance_verb]
-            data_specific_features += [emotion_dist]
-            data_specific_features += [mwe_dist]
-        elif feature == 'pos': # TODO: if this is not good enough, using raw ratio as well as distances
-            # data_specific_features += [distance_p2n, distance_pron, distance_verb] # 3
-            data_specific_features += [distance_pron, distance_verb] # 2
-        elif feature == 'emot':
-            data_specific_features += [emotion_dist]
-        elif feature == 'mwe':
-            data_specific_features += [mwe_dist]
+            # data_specific_features += [distance_pron, distance_verb]
+            # data_specific_features += [emotion_dist]
+            # data_specific_features += [mwe_dist]
+
     return np.array(data_specific_features + uriel_features)
 
 def lgbm_rel_exp(BLEU_level, cutoff):
@@ -497,80 +522,81 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
     predict_scores = predict_contribs.sum(-1)
 
 
-    # 0 means we ignore this feature (don't compute single-feature result of it)
-    if task == "MT":
-        sort_sign_list = [-1, -1, -1, 0, -1, 0, 0, 1, 1, 1, 1, 1, 1, 1]
-        feature_name = ["Overlap word-level", "Overlap subword-level", "Transfer lang dataset size",
-                    "Target lang dataset size", "Transfer over target size ratio", "Transfer lang TTR",
-                    "Target lang TTR", "Transfer target TTR distance", "GENETIC",
-                    "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
-    elif task == "POS" or task == "DEP":
-        sort_sign_list = [-1, 0, -1, 0, -1, 0, 0, 1, 1, 1, 1, 1, 1]
-        feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
-                        "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
-                        "Transfer target TTR distance", "GENETIC", "SYNTACTIC", "FEATURAL",
-                        "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
-    elif task == "EL":
-        sort_sign_list = [-1, -1, 0, -1, 1, 1, 1, 1, 1, 1]
-        feature_name = ["Entity overlap", "Transfer lang dataset size", "Target lang dataset size",
-                        "Transfer over target size ratio", "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL",
-                        "INVENTORY", "GEOGRAPHIC"]
-    # TODO: emotion distance?
-    elif task == "OLID" or task == "SA":
-        if feature == 'base':
-            sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1]
-            feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
-                            "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
-                            "Transfer target TTR distance",
-                            "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
-        elif feature =='nogeo':
-            sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1]
-            feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
-                            "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
-                            "Transfer target TTR distance",
-                            "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY"]
-        elif feature == 'pos':
-            sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1]
-            feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
-                            "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
-                            "Transfer target TTR distance",
-                            # "p2n dist", "pron dist", "verb dist", # 2
-                            "pron dist", "verb dist", # 2
-                            "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
-        elif feature == 'emot':
-            sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
-            feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
-                            "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
-                            "Transfer target TTR distance",
-                            "Emotion distance",
-                            "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
-        elif feature == 'mwe':
-            sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
-            feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
-                            "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
-                            "Transfer target TTR distance",
-                            "MWE distance",
-                            "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
-        elif feature == 'all':
-            sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-            feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
-                            "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
-                            "Transfer target TTR distance",
-                            # "p2n dist", "pron dist", "verb dist", # 3
-                            "pron dist", "verb dist", # 2
-                            "Emotion distance", "MWE distance",
-                            "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
-        elif feature == 'syn_only':
-            sort_sign_list = [-1, -1, 0, -1, 1, 1, 1, 1, 1]
-            feature_name = ["Overlap word-level",
-                            "Transfer lang dataset size", "Target lang dataset size", "Transfer over target size ratio",
-                            "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY"]
-        elif feature == 'cult_only':
-            sort_sign_list = [-1, -1, 0, 1, 1, 1, 1, 1, 1, 1]
-            feature_name = ["Transfer lang TTR", "Target lang TTR", "Transfer target TTR distance",
-                            # "p2n dist", "pron dist", "verb dist", # 3
-                            "pron dist", "verb dist", # 2
-                            "Emotion distance", "MWE distance"]
+    # # 0 means we ignore this feature (don't compute single-feature result of it)
+    # if task == "MT":
+    #     sort_sign_list = [-1, -1, -1, 0, -1, 0, 0, 1, 1, 1, 1, 1, 1, 1]
+    #     feature_name = ["Overlap word-level", "Overlap subword-level", "Transfer lang dataset size",
+    #                 "Target lang dataset size", "Transfer over target size ratio", "Transfer lang TTR",
+    #                 "Target lang TTR", "Transfer target TTR distance", "GENETIC",
+    #                 "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+    # elif task == "POS" or task == "DEP":
+    #     sort_sign_list = [-1, 0, -1, 0, -1, 0, 0, 1, 1, 1, 1, 1, 1]
+    #     feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+    #                     "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+    #                     "Transfer target TTR distance", "GENETIC", "SYNTACTIC", "FEATURAL",
+    #                     "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+    # elif task == "EL":
+    #     sort_sign_list = [-1, -1, 0, -1, 1, 1, 1, 1, 1, 1]
+    #     feature_name = ["Entity overlap", "Transfer lang dataset size", "Target lang dataset size",
+    #                     "Transfer over target size ratio", "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL",
+    #                     "INVENTORY", "GEOGRAPHIC"]
+    # # TODO: emotion distance?
+    # elif task == "OLID" or task == "SA":
+    #     if feature == 'base':
+    #         sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1]
+    #         feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+    #                         "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+    #                         "Transfer target TTR distance",
+    #                         "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+    #     elif feature =='nogeo':
+    #         sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1]
+    #         feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+    #                         "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+    #                         "Transfer target TTR distance",
+    #                         "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY"]
+    #     elif feature == 'pos':
+    #         sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1]
+    #         feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+    #                         "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+    #                         "Transfer target TTR distance",
+    #                         # "p2n dist", "pron dist", "verb dist", # 2
+    #                         "pron dist", "verb dist", # 2
+    #                         "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+    #     elif feature == 'emot':
+    #         sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+    #         feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+    #                         "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+    #                         "Transfer target TTR distance",
+    #                         "Emotion distance",
+    #                         "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+    #     elif feature == 'mwe':
+    #         sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+    #         feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+    #                         "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+    #                         "Transfer target TTR distance",
+    #                         "MWE distance",
+    #                         "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+    #     elif feature == 'all':
+    #         sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    #         feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
+    #                         "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
+    #                         "Transfer target TTR distance",
+    #                         # "p2n dist", "pron dist", "verb dist", # 3
+    #                         "pron dist", "verb dist", # 2
+    #                         "Emotion distance", "MWE distance",
+    #                         "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
+    #     elif feature == 'syn_only':
+    #         sort_sign_list = [-1, -1, 0, -1, 1, 1, 1, 1, 1]
+    #         feature_name = ["Overlap word-level",
+    #                         "Transfer lang dataset size", "Target lang dataset size", "Transfer over target size ratio",
+    #                         "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY"]
+    #     elif feature == 'cult_only':
+    #         sort_sign_list = [-1, -1, 0, 1, 1, 1, 1, 1, 1, 1]
+    #         feature_name = ["Transfer lang TTR", "Target lang TTR", "Transfer target TTR distance",
+    #                         # "p2n dist", "pron dist", "verb dist", # 3
+    #                         "pron dist", "verb dist", # 2
+    #                         "Emotion distance", "MWE distance",
+    #                         "GEOGRAPHIC"]
 
 
 
