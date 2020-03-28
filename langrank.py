@@ -413,7 +413,6 @@ def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
         features[lang] = prepare_new_dataset(lang=lang, task=task, dataset_source=lines,
                                              dataset_subword_source=seg_lines)
     uriel = uriel_distance_vec(langs)
-    import ipdb; ipdb.set_trace(context=5)
 
     if not os.path.exists(tmp_dir):
         os.mkdir(tmp_dir)
@@ -422,6 +421,7 @@ def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
     train_file_f = open(train_file, "w")
     train_size = os.path.join(tmp_dir, f"train_{task}_size.csv")
     train_size_f = open(train_size, "w")
+
     for i, lang1 in enumerate(langs):
         for j, lang2 in enumerate(langs):
             if i != j:
