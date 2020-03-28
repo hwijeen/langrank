@@ -169,11 +169,13 @@ def pos_features(lang, feature, data_dir='./mono'):
 # FIXME: read only once
 def emo_features(lang1, lang2, fpath='./features/', pairwise=True):
     if pairwise:
-        fpath = os.path.join(fpath, 'emo-diffs-cosine-5.txt') # old
+        # fpath = os.path.join(fpath, 'emo-diffs-cosine-5.txt') # old
         # fpath = os.path.join(fpath, 'emo-diffs-en-cc-cosine-5-norm.txt') # new
         # fpath = os.path.join(fpath, 'emo-diffs-en-cosine-5.txt') # en
+        fpath = os.path.join(fpath, 'emo-diffs-cc-cos-5iter-norm.txt') # en
+        # fpath = os.path.join(fpath, 'emo-diffs-cc-cos-5iter-zero-one-norm.txt') # en
     else:
-        fpath = os.path.join(fpath, 'emo-diffs-en-cosine-5.txt')
+        pass
 
     lang_to_code = copy(lang2code)
     lang_to_code['zho'] = 'zh'
