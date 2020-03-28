@@ -104,8 +104,8 @@ def train_sa(exclude_lang=None, feature='base'):
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
-                        # 'pron_to_noun', 'distance_pron', 'distance_verb',
-                        'distance_pron', 'distance_verb',
+                        'pron_to_noun', 'distance_pron', 'distance_verb',
+                        # 'distance_pron', 'distance_verb',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'emot':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
@@ -147,12 +147,11 @@ def train_sa(exclude_lang=None, feature='base'):
 # TODO: into shell file
 if __name__ == '__main__':
     # langs= ['ara', 'dan', 'ell', 'eng', 'tur']
-    # langs = ['ara', 'ces', 'deu', 'eng', 'fas',
-    #          'fra', 'hin', 'jpn', 'kor', 'nld',
-    #          'pol', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
-    langs = ['fra', 'hin', 'jpn', 'kor', 'nld']
-    features = ['base', 'nogeo', 'pos']
-    # features = ['base', 'nogeo', 'pos', 'emot', 'mwe', 'syn_only', 'cult_only']
+    langs = ['ara', 'ces', 'deu', 'eng', 'fas',
+             'fra', 'hin', 'jpn', 'kor', 'nld',
+             'pol', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
+    # features = ['emot', 'mwe']
+    features = ['cult_only']
     for f in features:
         for exclude in langs:
             print(f'\nStart training with {exclude} excluded')

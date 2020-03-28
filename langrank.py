@@ -356,8 +356,8 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         elif feature == 'pos': # TODO: if this is not good enough, using raw ratio as well as distances
             feats = [word_overlap, transfer_dataset_size, task_data_size,
                      ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
-            # data_specific_features += [distance_p2n, distance_pron, distance_verb] # 3
-            feats += [distance_pron, distance_verb] # 2
+            data_specific_features += [distance_p2n, distance_pron, distance_verb] # 3
+            # feats += [distance_pron, distance_verb] # 2
             feats += uriel_features
             return np.array(feats)
         elif feature == 'emot':

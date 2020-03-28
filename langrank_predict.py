@@ -147,7 +147,8 @@ if __name__ == '__main__':
     # params = parse_args()
     result = defaultdict(dict)
     langs = ['ara', 'ces', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    features = ['base', 'pos', 'emot', 'mwe', 'syn_only']#, 'cult_only']
+    # features = ['base', 'pos', 'emot', 'mwe', 'syn_only']#, 'cult_only']
+    features = ['emot', 'mwe']
     for l in langs:
         for f in features:
             params = make_args(l, f)

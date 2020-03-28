@@ -172,8 +172,8 @@ def emo_features(lang1, lang2, fpath='./features/', pairwise=True):
         # fpath = os.path.join(fpath, 'emo-diffs-cosine-5.txt') # old
         # fpath = os.path.join(fpath, 'emo-diffs-en-cc-cosine-5-norm.txt') # new
         # fpath = os.path.join(fpath, 'emo-diffs-en-cosine-5.txt') # en
-        fpath = os.path.join(fpath, 'emo-diffs-cc-cos-5iter-norm.txt') # en
-        # fpath = os.path.join(fpath, 'emo-diffs-cc-cos-5iter-zero-one-norm.txt') # en
+        # fpath = os.path.join(fpath, 'emo-diffs-cc-cos-5iter-norm.txt') # en
+        fpath = os.path.join(fpath, 'emo-diffs-cc-cos-5iter-zero-one-norm.txt') # en
     else:
         pass
 
@@ -199,7 +199,8 @@ def emo_features(lang1, lang2, fpath='./features/', pairwise=True):
 
 def mwe_features(lang1, lang2, fpath='./features/', norm=True):
     if norm:
-        fpath = os.path.join(fpath, 'ltq_either.txt')
+        fpath = os.path.join(fpath, 'ltq_either_norm.txt')
+        # fpath = os.path.join(fpath, 'ltq_either.txt')
     else:
         fpath = os.path.join(fpath, 'ltq_either_norm.txt')
 
