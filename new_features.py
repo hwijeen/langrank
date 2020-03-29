@@ -4,6 +4,7 @@ import sys
 import ast
 from copy import copy
 from collections import Counter, defaultdict
+from tqdm import tqdm
 
 from test_pos_tagger import *
 
@@ -15,30 +16,20 @@ lang2code = {
     'kor': 'ko', 'nld': 'nl',
     'rus': 'ru', 'pol': 'pl',
     'spa': 'es', 'tam': 'ta',
-    'tur': 'tr', 'zho': 'zh-Hans'
+    'tur': 'tr', 'zho': 'zh'
 }
 
 NOUN_TAGS = {
     'kor': ['NNG'],
-    'jpn': ['名詞'],
-    # 'nld': ['noun.N(soort,ev,basis,zijd,stan)',
-    #         'noun.N(soort,ev,basis,onz,stan)',
-    #         'noun.N(soort,mv,basis)'],
-    # 'zho': ['n', 'an', 'f', 's']
+    'jpn': ['名詞']
 }
 PRONOUN_TAGS = {
     'kor': ['NP'],
-    'jpn': ['代名詞'],
-    # 'nld': ['pron.VNW(pers,pron,nomin,red,1,mv)',
-    #         'pron.VNW(pers,pron,nomin,vol,1,ev)'],
-    # 'zho': ['rz', 'rr', 'r']
+    'jpn': ['代名詞']
 }
 VERB_TAGS = {
     'kor': ['VV'],
-    'jpn': ['動詞'],
-    # 'nld': ['verb.WW(inf,vrij,zonder)',
-    #         'verb.WW(pv,tgw,mv)'],
-    # 'zho': ['v', 'vn']
+    'jpn': ['動詞']
 }
 
 
@@ -65,7 +56,7 @@ def parse_pos(line, lang):
 
 def count_pos(lines, lang):
     counts = Counter()
-    for l in lines:
+    for l in tqdm(lines, desc=lang):
         counts.update(parse_pos(l, lang))
     return counts
 
@@ -217,8 +208,8 @@ def mwe_features(lang1, lang2, fpath='./features/', norm=True):
 
 if __name__ == "__main__":
     features = ['noun', 'pron', 'verb', 'noun2verb', 'pron2noun']
-    # feature_dict = build_features('./mono', features)
+    feature_dict = build_features('./mono-news-processed-pos', features)
     for f in features:
-        feature_dict = build_features('./mono', f)
+        # feature_dict = build_features('./mono', f)
         out_file = f'./features/{f}.csv'
         write_output(feature_dict, f, out_file)
