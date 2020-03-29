@@ -124,8 +124,8 @@ def train_sa(exclude_lang=None, feature='base'):
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'transfer_ttr', 'task_ttr', 'distance_ttr',
                         # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
-                        # 'pron_to_noun', 'distance_pron', 'distance_verb',
-                        'distance_pron', 'distance_verb',
+                        'pron_to_noun', 'distance_pron', 'distance_verb', # 3
+                        # 'distance_pron', 'distance_verb', # 2
                         'emotion_dist', 'mwe_dist',
                         'geographical']
     # NOTE: order of features must be consistent with the list in `distance_vec`
@@ -151,7 +151,7 @@ if __name__ == '__main__':
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
     # features = ['emot', 'mwe']
-    features = ['cult_only']
+    features = ['pos','nogeo', 'cult_only']
     for f in features:
         for exclude in langs:
             print(f'\nStart training with {exclude} excluded')
