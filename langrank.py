@@ -4,7 +4,7 @@ import pkg_resources
 import os
 import lightgbm as lgb
 from sklearn.datasets import load_svmlight_file
-from new_features import pos_features, emo_features, mwe_features
+from new_features import pos_features, emo_features, ltq_features
 
 TASKS = ["MT", "DEP", "EL", "POS", "OLID", "SA"]
 
@@ -325,8 +325,8 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         distance_p2n = transfer_p2n / task_p2n
 
         emotion_dist = emo_features(test['lang'], transfer['lang'])
-        mwe_dist = mwe_features(test['lang'], transfer['lang'])
-        # mwe_dist = mwe_features(test['lang'], transfer['lang'], norm=False)
+        ltq_dist = ltq_features(test['lang'], transfer['lang'])
+        # ltq_dist = ltq_features(test['lang'], transfer['lang'], norm=False)
 
     # # TODO: var name - this is no longer data_specific_features
     genetic, syntactic, featural, phonological, inventory, geographic = tuple(uriel_features)
@@ -373,10 +373,10 @@ def distance_vec(test, transfer, uriel_features, task, feature):
             feats += [emotion_dist]
             feats += uriel_features
             return np.array(feats)
-        elif feature == 'mwe':
+        elif feature == 'ltq':
             feats = [word_overlap, transfer_dataset_size, task_data_size,
                      ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
-            feats += [mwe_dist]
+            feats += [ltq_dist]
             feats += uriel_features
             return np.array(feats)
         elif feature == 'syn_only':
@@ -388,7 +388,7 @@ def distance_vec(test, transfer, uriel_features, task, feature):
             feats += [transfer_ttr, task_ttr, distance_ttr]
             feats += [distance_p2n, distance_pron, distance_verb] # 3
             # feats += [distance_pron, distance_verb] # 2
-            feats += [emotion_dist, mwe_dist]
+            feats += [emotion_dist, ltq_dist]
             feats += [uriel_features[-1]] # geo
             return np.array(feats)
         elif feature == 'all':
@@ -397,7 +397,7 @@ def distance_vec(test, transfer, uriel_features, task, feature):
             # data_specific_features += [distance_p2n, distance_pron, distance_verb]
             # data_specific_features += [distance_pron, distance_verb]
             # data_specific_features += [emotion_dist]
-            # data_specific_features += [mwe_dist]
+            # data_specific_features += [ltq_dist]
 
     return np.array(data_specific_features + uriel_features)
 
@@ -577,12 +577,12 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
     #                         "Transfer target TTR distance",
     #                         "Emotion distance",
     #                         "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
-    #     elif feature == 'mwe':
+    #     elif feature == 'ltq':
     #         sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
     #         feature_name = ["Overlap word-level", "Transfer lang dataset size", "Target lang dataset size",
     #                         "Transfer over target size ratio", "Transfer lang TTR", "Target lang TTR",
     #                         "Transfer target TTR distance",
-    #                         "MWE distance",
+    #                         "ltq distance",
     #                         "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
     #     elif feature == 'all':
     #         sort_sign_list = [-1, -1, 0, -1, -1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
@@ -591,7 +591,7 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
     #                         "Transfer target TTR distance",
     #                         # "p2n dist", "pron dist", "verb dist", # 3
     #                         "pron dist", "verb dist", # 2
-    #                         "Emotion distance", "MWE distance",
+    #                         "Emotion distance", "ltq distance",
     #                         "GENETIC", "SYNTACTIC", "FEATURAL", "PHONOLOGICAL", "INVENTORY", "GEOGRAPHIC"]
     #     elif feature == 'syn_only':
     #         sort_sign_list = [-1, -1, 0, -1, 1, 1, 1, 1, 1]
@@ -603,7 +603,7 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
     #         feature_name = ["Transfer lang TTR", "Target lang TTR", "Transfer target TTR distance",
     #                         # "p2n dist", "pron dist", "verb dist", # 3
     #                         "pron dist", "verb dist", # 2
-    #                         "Emotion distance", "MWE distance",
+    #                         "Emotion distance", "ltq distance",
     #                         "GEOGRAPHIC"]
 
 
