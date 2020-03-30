@@ -4,3 +4,5 @@ indexed/
 .ipynb_checkpoints
 .DS_Store
 tmp
+*.tar.gz
+*.png
