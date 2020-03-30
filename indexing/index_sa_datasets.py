@@ -3,7 +3,7 @@ import subprocess
 import numpy as np
 from collections import Counter
 
-import sys; sys.path.append('/home/hwijeen/lang-selection')
+import sys; sys.path.append('/home/hwijeen/langrank')
 from new_features import pos_features
 
 def read_data(fn):

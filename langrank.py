@@ -379,6 +379,15 @@ def distance_vec(test, transfer, uriel_features, task, feature):
             feats += [mwe_dist]
             feats += uriel_features
             return np.array(feats)
+        elif feature == 'all':
+            feats = [word_overlap, transfer_dataset_size, task_data_size,
+                     ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+            # feats += [distance_p2n, distance_pron, distance_verb] # 3
+            feats += [distance_pron, distance_verb] # 2
+            feats += [emotion_dist]
+            feats += [mwe_dist]
+            feats += uriel_features
+            return np.array(feats)
         elif feature == 'syn_only':
             feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size]
             feats += uriel_features[:-1]
@@ -391,13 +400,6 @@ def distance_vec(test, transfer, uriel_features, task, feature):
             feats += [emotion_dist, mwe_dist]
             feats += [uriel_features[-1]] # geo
             return np.array(feats)
-        elif feature == 'all':
-            raise Exception('Not implemented')
-            # data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
-            # data_specific_features += [distance_p2n, distance_pron, distance_verb]
-            # data_specific_features += [distance_pron, distance_verb]
-            # data_specific_features += [emotion_dist]
-            # data_specific_features += [mwe_dist]
 
     return np.array(data_specific_features + uriel_features)
 
