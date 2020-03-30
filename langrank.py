@@ -398,7 +398,6 @@ def distance_vec(test, transfer, uriel_features, task, feature):
             # data_specific_features += [distance_pron, distance_verb]
             # data_specific_features += [emotion_dist]
             # data_specific_features += [ltq_dist]
-
     return np.array(data_specific_features + uriel_features)
 
 def lgbm_rel_exp(BLEU_level, cutoff):

@@ -152,7 +152,7 @@ def write_output(feature_dict, col_name, out_file):
     print(f'Results saved as {out_file}')
 
 
-def pos_features(lang, feature, feature_dir='./feature', data_dir='./mono'):
+def pos_features(lang, feature, feature_dir='./features-news', data_dir='./mono'):
     assert feature in POS_FEATURES
     out_file = os.path.join(feature_dir, f'{feature}.csv')
 
