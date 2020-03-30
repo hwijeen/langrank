@@ -32,6 +32,7 @@ VERB_TAGS = {
     'jpn': ['動詞']
 }
 
+POS_FEATURES = ['noun', 'pron', 'verb', 'noun2verb', 'pron2noun']
 
 def fetch_files(cond, data_dir):
     return sorted([os.path.join(data_dir, f) for f
@@ -101,13 +102,17 @@ def get_feature(lang, counter, name):
         raise ValueError('Feature name should be noun, pron, verb, noun2verb or pron2noun.')
 
 
-def build_features(data_dir, feature_name):
-    if os.path.isfile('./features/pos-ratio.csv'):
+def build_features(data_dir, feature_dir, feature_name):
+    pos_fpath = os.path.join(feature_dir, 'pos-ratio.csv')
+    feature_fpath = os.path.join(feature_dir, f'{feature_name}.csv')
+    if os.path.isfile(pos_fpath):
         import pandas as pd
-        df = pd.read_csv('./features/pos-ratio.csv', index_col=0)
-        feature_df = df[[feature_name]]
-        feature_df.to_csv(f'./features/{feature_name}.csv')
-        feature_dict = read_features(f'./features/{feature_name}.csv')
+        df = pd.read_csv(pos_fpath, index_col=0)
+        feature_df = df[feature_name]
+        feature_df.to_csv(feature_fpath)
+        feature_dict = read_features(feature_fpath)
+    elif os.path.isfile(feature_fpath):
+        feature_dict = read_features(feature_fpath)
     else:
         if isinstance(feature_name, str):
             feature_name = [feature_name]
@@ -138,21 +143,24 @@ def write_output(feature_dict, col_name, out_file):
     with open(out_file, 'w') as f:
         f.write(header)
         for lang, features in feature_dict.items():
-            row = [lang] + list(map(str, features))
+            if isinstance(features, list):
+                row = [lang] + list(map(str, features))
+            else:
+                row = [lang, str(features)]
             row = ','.join(row)
             print(row, file=f)
     print(f'Results saved as {out_file}')
 
 
-def pos_features(lang, feature, data_dir='./mono'):
-    col_name = ['noun', 'pron', 'verb', 'noun2verb', 'pron2noun']
-    assert feature in col_name
-
-    out_file = f'./features/{feature}.csv'
+def pos_features(lang, feature, feature_dir='./feature', data_dir='./mono'):
+    assert feature in POS_FEATURES
+    out_file = os.path.join(feature_dir, f'{feature}.csv')
 
     if not os.path.isfile(out_file):
-        feature_dict = build_features(data_dir, feature)
-        write_output(feature_dict, col_name, out_file)
+        if 'news' in feature_dir:
+            data_dir = './mono-news-processed'
+        feature_dict = build_features(data_dir, feature_dir, feature)
+        write_output(feature_dict, feature, out_file)
     else:
         feature_dict = read_features(out_file)
     return feature_dict[lang]
@@ -208,8 +216,11 @@ def mwe_features(lang1, lang2, fpath='./features/', norm=True):
 
 if __name__ == "__main__":
     features = ['noun', 'pron', 'verb', 'noun2verb', 'pron2noun']
-    feature_dict = build_features('./mono-news-processed-pos', features)
-    for f in features:
-        # feature_dict = build_features('./mono', f)
-        out_file = f'./features/{f}.csv'
-        write_output(feature_dict, f, out_file)
+    # feature_dict = build_features('./mono-news-processed-pos', './features-news', features)
+    # for f in features:
+    #     feature_dict = build_features('./mono-news-processed-pos', './features-news', f)
+    #     out_file = f'./features-news/{f}.csv'
+    #     write_output(feature_dict, f, out_file)
+
+    print(pos_features('zho', 'noun', './features-news'))
+    print(pos_features('zho', 'verb', './features-news'))
