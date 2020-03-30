@@ -310,12 +310,19 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         # task_n2v = test["n2v_ratio"]
         task_p2n = test["p2n_ratio"]
 
-
+        # Unused POS features
         # distance_noun = (1 - transfer_nr / task_nr) ** 2
-        distance_verb = (1 - transfer_vr / task_vr) ** 2
-        distance_pron = (1 - transfer_pr / task_pr) ** 2
         # distance_n2v = (1 - transfer_n2v / task_n2v) ** 2
-        distance_p2n = (1 - transfer_p2n / task_p2n) ** 2
+
+        # Two choices available for distance computation
+        # distance_verb = (1 - transfer_vr / task_vr) ** 2
+        distance_verb = transfer_vr / task_vr
+
+        # distance_pron = (1 - transfer_pr / task_pr) ** 2
+        distance_pron = transfer_pr / task_pr
+
+        # distance_p2n = (1 - transfer_p2n / task_p2n) ** 2
+        distance_p2n = transfer_p2n / task_p2n
 
         emotion_dist = emo_features(test['lang'], transfer['lang'])
         mwe_dist = mwe_features(test['lang'], transfer['lang'])
