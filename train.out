@@ -1,0 +1,480 @@
+
+Start training with ara excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_ara.txt
+
+Start training with ces excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_ces.txt
+
+Start training with deu excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_deu.txt
+
+Start training with eng excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_eng.txt
+
+Start training with fas excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_fas.txt
+
+Start training with fra excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_fra.txt
+
+Start training with hin excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_hin.txt
+
+Start training with jpn excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_jpn.txt
+
+Start training with kor excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_kor.txt
+
+Start training with nld excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_nld.txt
+
+Start training with pol excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_pol.txt
+
+Start training with rus excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_rus.txt
+
+Start training with spa excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_spa.txt
+
+Start training with tam excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_tam.txt
+
+Start training with tur excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_tur.txt
+
+Start training with zho excluded for task sa
+Features: base
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/base//lgbm_model_sa_zho.txt
+
+Start training with ara excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_ara.txt
+
+Start training with ces excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_ces.txt
+
+Start training with deu excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_deu.txt
+
+Start training with eng excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_eng.txt
+
+Start training with fas excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_fas.txt
+
+Start training with fra excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_fra.txt
+
+Start training with hin excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_hin.txt
+
+Start training with jpn excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_jpn.txt
+
+Start training with kor excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_kor.txt
+
+Start training with nld excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_nld.txt
+
+Start training with pol excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_pol.txt
+
+Start training with rus excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_rus.txt
+
+Start training with spa excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_spa.txt
+
+Start training with tam excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_tam.txt
+
+Start training with tur excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_tur.txt
+
+Start training with zho excluded for task sa
+Features: pos
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/pos//lgbm_model_sa_zho.txt
+
+Start training with ara excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_ara.txt
+
+Start training with ces excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_ces.txt
+
+Start training with deu excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_deu.txt
+
+Start training with eng excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_eng.txt
+
+Start training with fas excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_fas.txt
+
+Start training with fra excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_fra.txt
+
+Start training with hin excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_hin.txt
+
+Start training with jpn excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_jpn.txt
+
+Start training with kor excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_kor.txt
+
+Start training with nld excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_nld.txt
+
+Start training with pol excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_pol.txt
+
+Start training with rus excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_rus.txt
+
+Start training with spa excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_spa.txt
+
+Start training with tam excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_tam.txt
+
+Start training with tur excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_tur.txt
+
+Start training with zho excluded for task sa
+Features: emot
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'emotion_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/emot//lgbm_model_sa_zho.txt
+
+Start training with ara excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_ara.txt
+
+Start training with ces excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_ces.txt
+
+Start training with deu excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_deu.txt
+
+Start training with eng excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_eng.txt
+
+Start training with fas excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_fas.txt
+
+Start training with fra excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_fra.txt
+
+Start training with hin excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_hin.txt
+
+Start training with jpn excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_jpn.txt
+
+Start training with kor excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_kor.txt
+
+Start training with nld excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_nld.txt
+
+Start training with pol excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_pol.txt
+
+Start training with rus excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_rus.txt
+
+Start training with spa excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_spa.txt
+
+Start training with tam excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_tam.txt
+
+Start training with tur excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_tur.txt
+
+Start training with zho excluded for task sa
+Features: ltq
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/ltq//lgbm_model_sa_zho.txt
+
+Start training with ara excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_ara.txt
+
+Start training with ces excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_ces.txt
+
+Start training with deu excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_deu.txt
+
+Start training with eng excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_eng.txt
+
+Start training with fas excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_fas.txt
+
+Start training with fra excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_fra.txt
+
+Start training with hin excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_hin.txt
+
+Start training with jpn excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_jpn.txt
+
+Start training with kor excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_kor.txt
+
+Start training with nld excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_nld.txt
+
+Start training with pol excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_pol.txt
+
+Start training with rus excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_rus.txt
+
+Start training with spa excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_spa.txt
+
+Start training with tam excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_tam.txt
+
+Start training with tur excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_tur.txt
+
+Start training with zho excluded for task sa
+Features: all
+Features used are ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr', 'distance_pron', 'distance_verb', 'emotion_dist', 'ltq_dist', 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+Training in prog...
+Model saved at pretrained/SA/all//lgbm_model_sa_zho.txt
