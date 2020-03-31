@@ -68,16 +68,10 @@ def sort_prediction(cand_list, neg_scores):
     return pred
 
 def load_gold(task, target_lang):
-    if params.task == 'SA':
-        fpath = 'rankings/sa.pkl'
-        f = open(fpath, 'rb')
-        gold_list = pickle.load(f)
-    else:
-        gold_list = [[0, 4, 2, 1, 3],
-                     [2, 0, 4, 1, 3],
-                     [2, 4, 0, 1, 3],
-                     [3, 1, 4, 0, 2],
-                     [3, 1, 4, 2, 0]]
+    import ipdb; ipdb.set_trace(context=5)
+    fpath = f'rankings/{task.lower()}.pkl'
+    f = open(fpath, 'rb')
+    gold_list = pickle.load(f)
 
     for l in gold_list:
         l.pop(l.index(0)) # drop self
@@ -145,13 +139,13 @@ def format_print(result, features):
 if __name__ == '__main__':
 
     # params = parse_args()
-    result = defaultdict(dict)
+    task = 'sa' # 'sa'
     langs = ['ara', 'ces', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    # features = ['base', 'pos', 'emot', 'mwe', 'syn_only']#, 'cult_only']
-    features = ['all']
+    features = ['base', 'pos', 'emot', 'mwe']
+    result = defaultdict(dict)
     for l in langs:
         for f in features:
-            params = make_args(l, f)
+            params = make_args(l, f, f'{task.upper()}')
             assert os.path.isfile(params.orig)
             assert (params.seg is None or os.path.isfile(params.seg))
             lines = read_file(params.orig)
@@ -160,21 +154,25 @@ if __name__ == '__main__':
             prepared = lr.prepare_new_dataset(params.lang, task=params.task,
                                               dataset_source=lines, dataset_subword_source=bpelines)
             candidates = "all" if params.candidates == "all" else params.candidates.split(";")
-            task = params.task
-            cand_langs, neg_predicted_scores = lr.rank(prepared, task=task, candidates=candidates, print_topK=params.num,
+            cand_langs, neg_predicted_scores = lr.rank(prepared, task=params.task, candidates=candidates, print_topK=params.num,
                                                        model=params.model, feature=params.feature)
             pred = sort_prediction(cand_langs, neg_predicted_scores)
             gold = load_gold(params.task, params.lang)
             ndcg_score = evaluate(pred, gold)
 
             result[params.lang][params.feature] = ndcg_score
+            pred_langs = [cand_langs[i] for i in np.argsort(pred)[:3]]
+            gold_langs = [cand_langs[i] for i in np.argsort(gold)[:3]]
             print('*'*80)
-            print(f'Prediction for lang {params.lang} with {params.feature} features')
+            print(f'Prediction for lang {params.lang} with {params.feature} features, {task} task')
             print(f'Prediction is {pred}')
+            print(f'Top 3 prediction langs: {pred_langs}')
             print(f'Gold is {gold}')
+            print(f'Top 3 gold langs: {gold_langs}')
             print(f'ndcg is {ndcg_score}')
             print('*'*80, end='\n\n')
 
     summarize_result(result, features)
     format_print(result, features)
+
 

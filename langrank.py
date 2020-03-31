@@ -6,49 +6,33 @@ import lightgbm as lgb
 from sklearn.datasets import load_svmlight_file
 from new_features import pos_features, emo_features, ltq_features
 
-TASKS = ["MT", "DEP", "EL", "POS", "OLID", "SA"]
+TASKS = ["DEP", "SA"]
 
-
-MT_DATASETS = {
-    "ted" : "ted.npy",
-}
-POS_DATASETS = {
-    "ud" : "ud.npy"
-}
-EL_DATASETS = {
-    "wiki" : "wiki.npy"
-}
 DEP_DATASETS = {
     "conll" : "conll.npy"
-}
-OLID_DATASETS = {
-    "olid" : "olid.npy"
 }
 SA_DATASETS = {
     "sa": "sa.npy"
 }
 
-MT_MODELS = {
-    "all" : "all.lgbm",
-    "geo" : "geo.lgbm",
-    "aze" : "lgbm_model_mt_aze.txt",
-    "fin" : "lgbm_model_mt_fin.txt",
-    "ben" : "lgbm_model_mt_ben.txt",
-    "best": "lgbm_model_mt_all.txt",
-}
-POS_MODELS = {
-        "best": "lgbm_model_pos_all.txt"
-}
-EL_MODELS = {}
-DEP_MODELS = {}
-
-OLID_MODELS = {
-    "best": "lgbm_model_olid_all.txt",
-    "ara":"lgbm_model_olid_ara.txt",
-    "dan":"lgbm_model_olid_dan.txt",
-    "ell":"lgbm_model_olid_ell.txt",
-    "eng":"lgbm_model_olid_eng.txt",
-    "tur":"lgbm_model_olid_tur.txt",
+DEP_MODELS = {
+    "all":"lgbm_model_dep_all.txt",
+    "ara":"lgbm_model_dep_ara.txt",
+    "ces":"lgbm_model_dep_ces.txt",
+    "deu":"lgbm_model_dep_deu.txt",
+    "eng":"lgbm_model_dep_eng.txt",
+    "fas":"lgbm_model_dep_fas.txt",
+    "fra":"lgbm_model_dep_fra.txt",
+    "hin":"lgbm_model_dep_hin.txt",
+    "jpn":"lgbm_model_dep_jpn.txt",
+    "kor":"lgbm_model_dep_kor.txt",
+    "nld":"lgbm_model_dep_nld.txt",
+    "pol":"lgbm_model_dep_pol.txt",
+    "rus":"lgbm_model_dep_rus.txt",
+    "spa":"lgbm_model_dep_spa.txt",
+    "tam":"lgbm_model_dep_tam.txt",
+    "tur":"lgbm_model_dep_tur.txt",
+    "zho":"lgbm_model_dep_zho.txt"
 }
 SA_MODELS = {
     "all":"lgbm_model_sa_all.txt",
@@ -73,7 +57,7 @@ SA_MODELS = {
 # checks
 def check_task(task):
     if task not in TASKS:
-        raise Exception("Unknown task " + task + ". Only 'MT', 'DEP', 'EL', 'POS', 'OLID', 'SA' are supported.")
+        raise Exception("Unknown task " + task + ". Only 'DEP', 'SA' are supported.")
 
 def check_task_model(task, model):
     check_task(task)
@@ -92,32 +76,16 @@ def check_task_model_data(task, model, data):
 
 # utils
 def map_task_to_data(task):
-    if task == "MT":
-        return MT_DATASETS
-    elif task == "POS":
-        return POS_DATASETS
-    elif task == "EL":
-        return EL_DATASETS
-    elif task == "DEP":
+    if task == "DEP":
         return DEP_DATASETS
-    elif task == "OLID":
-        return OLID_DATASETS
     elif task == "SA":
         return SA_DATASETS
     else:
         raise Exception("Unknown task")
 
 def map_task_to_models(task):
-    if task == "MT":
-        return MT_MODELS
-    elif task == "POS":
-        return POS_MODELS
-    elif task == "EL":
-        return EL_MODELS
-    elif task == "DEP":
+    if task == "DEP":
         return DEP_MODELS
-    elif task == "OLID":
-        return OLID_MODELS
     elif task == "SA":
         return SA_MODELS
     else:
@@ -147,12 +115,16 @@ def get_candidates(task, languages=None):
         fn = pkg_resources.resource_filename(__name__, os.path.join('indexed', task, datasets_dict[dt]))
         d = np.load(fn, encoding='latin1', allow_pickle=True).item()
         # languages with * means to exclude
-        cands += [(key,d[key]) for key in d if '*' + key.split('/')[2][:3] not in languages]
+        if task == 'SA':
+            cands += [(key,d[key]) for key in d if '*' + key.split('/')[2][:3] not in languages]
+        elif task == 'DEP':
+            cands += [(key,d[key]) for key in d if '*' + key.split('_')[1] not in languages]
+        cands = sorted(cands, key=lambda x: x[0])
     cand_langs = [i[0] for i in cands]
+    import ipdb; ipdb.set_trace(context=5)
     print(f"Candidate languages are: {cand_langs}")
 
     # Possibly restrict to a subset of candidate languages
-    # FIXME: why limits to 2?
     # cands = cands[:2]
 
     if languages is not None and task == "MT":
@@ -175,7 +147,7 @@ def get_candidates(task, languages=None):
     return cands
 
 # extract dataset dependent feautures
-def prepare_new_dataset(lang, task="MT", dataset_source=None,
+def prepare_new_dataset(lang, task="SA", dataset_source=None,
                         dataset_target=None, dataset_subword_source=None,
                         dataset_subword_target=None):
     features = {}
@@ -201,39 +173,23 @@ def prepare_new_dataset(lang, task="MT", dataset_source=None,
         source_lines = dataset_source
     else:
         raise Exception("dataset_source should either be a filnename (str) or a list of sentences.")
-    '''
-    if isinstance(dataset_target, str):
-        with open(dataset_target) as inp:
-            target_lines = inp.readlines()
-    elif isinstance(dataset_target, list):
-        source_lines = dataset_target
-    else:
-        raise Exception("dataset_target should either be a filnename (str) or a list of sentences.")
-    '''
     if source_lines:
-        if task != "EL":
-            features["dataset_size"] = len(source_lines)
-            tokens = [w for s in source_lines for w in s.strip().split()]
-            features["token_number"] = len(tokens)
-            types = set(tokens)
-            features["type_number"] = len(types)
-            features["word_vocab"] = types
-            features["type_token_ratio"] = features["type_number"]/float(features["token_number"])
-        elif task == "EL":
-            features["dataset_size"] = len(source_lines)
-            tokens = [w for s in source_lines for w in s.strip().split()]
-            types = set(tokens)
-            features["word_vocab"] = types
+        features["dataset_size"] = len(source_lines)
+        tokens = [w for s in source_lines for w in s.strip().split()]
+        features["token_number"] = len(tokens)
+        types = set(tokens)
+        features["type_number"] = len(types)
+        features["word_vocab"] = types
+        features["type_token_ratio"] = features["type_number"]/float(features["token_number"])
 
-    if task in ["SA", "OLID", "DEP", "POS"]:
-        # read all pos features even if we might not use everything
-        # features["noun_ratio"] = pos_features(lang, 'noun')
-        features["verb_ratio"] = pos_features(lang, 'verb')
-        features["pron_ratio"] = pos_features(lang, 'pron')
-        # features["n2v_ratio"] = pos_features(lang, 'noun2verb')
-        features["p2n_ratio"] = pos_features(lang, 'pron2noun')
+    # read all pos features even if we might not use everything
+    # features["noun_ratio"] = pos_features(lang, 'noun')
+    features["verb_ratio"] = pos_features(lang, 'verb')
+    features["pron_ratio"] = pos_features(lang, 'pron')
+    # features["n2v_ratio"] = pos_features(lang, 'noun2verb')
+    features["p2n_ratio"] = pos_features(lang, 'pron2noun')
 
-    if task == "MT":
+    if task == "MT": # TODO: if subword overlap is needed, use this code
         # Only use subword overlap features for the MT task
         if isinstance(dataset_subword_source, str):
             with open(dataset_subword_source) as inp:
@@ -254,7 +210,6 @@ def prepare_new_dataset(lang, task="MT", dataset_source=None,
             features["subword_type_number"] = len(types)
             features["subword_vocab"] = types
             features["subword_type_token_ratio"] = features["subword_type_number"]/float(features["subword_token_number"])
-
     return features
 
 def uriel_distance_vec(languages):
@@ -282,129 +237,91 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     task_data_size = test["dataset_size"]
     ratio_dataset_size = float(transfer_dataset_size)/task_data_size
     # TTR
-    if task != "EL":
-        transfer_ttr = transfer["type_token_ratio"]
-        task_ttr = test["type_token_ratio"]
-        distance_ttr = (1 - transfer_ttr/task_ttr) ** 2
+    transfer_ttr = transfer["type_token_ratio"]
+    task_ttr = test["type_token_ratio"]
+    distance_ttr = (1 - transfer_ttr/task_ttr) ** 2
 
     # Word overlap
-    if task != "EL":
-        word_overlap = float(len(set(transfer["word_vocab"]).intersection(set(test["word_vocab"])))) / (transfer["type_number"] + test["type_number"])
-    elif task == "EL":
-        word_overlap = float(len(set(transfer["word_vocab"]).intersection(set(test["word_vocab"]))))
+    word_overlap = float(len(set(transfer["word_vocab"]).intersection(set(test["word_vocab"])))) / (transfer["type_number"] + test["type_number"])
     # Subword overlap
     if task == "MT":
         subword_overlap = float(len(set(transfer["subword_vocab"]).intersection(set(test["subword_vocab"])))) / (transfer["subword_type_number"] + test["subword_type_number"])
 
     # POS related features
-    if task == "SA" or task == "OLID":
-        # transfer_nr = transfer["noun_ratio"]
-        transfer_vr = transfer["verb_ratio"]
-        transfer_pr = transfer["pron_ratio"]
-        # transfer_n2v = transfer["n2v_ratio"]
-        transfer_p2n = transfer["p2n_ratio"]
+    # transfer_nr = transfer["noun_ratio"]
+    transfer_vr = transfer["verb_ratio"]
+    transfer_pr = transfer["pron_ratio"]
+    # transfer_n2v = transfer["n2v_ratio"]
+    transfer_p2n = transfer["p2n_ratio"]
 
-        # task_nr = test["noun_ratio"]
-        task_vr = test["verb_ratio"]
-        task_pr = test["pron_ratio"]
-        # task_n2v = test["n2v_ratio"]
-        task_p2n = test["p2n_ratio"]
+    # task_nr = test["noun_ratio"]
+    task_vr = test["verb_ratio"]
+    task_pr = test["pron_ratio"]
+    # task_n2v = test["n2v_ratio"]
+    task_p2n = test["p2n_ratio"]
 
-        # Unused POS features
-        # distance_noun = (1 - transfer_nr / task_nr) ** 2
-        # distance_n2v = (1 - transfer_n2v / task_n2v) ** 2
+    # Unused POS features
+    # distance_noun = (1 - transfer_nr / task_nr) ** 2
+    # distance_n2v = (1 - transfer_n2v / task_n2v) ** 2
 
-        # Two choices available for distance computation
-        # distance_verb = (1 - transfer_vr / task_vr) ** 2
-        distance_verb = transfer_vr / task_vr
+    # Two choices available for distance computation
+    # distance_verb = (1 - transfer_vr / task_vr) ** 2
+    distance_verb = transfer_vr / task_vr
 
-        # distance_pron = (1 - transfer_pr / task_pr) ** 2
-        distance_pron = transfer_pr / task_pr
+    # distance_pron = (1 - transfer_pr / task_pr) ** 2
+    distance_pron = transfer_pr / task_pr
 
-        # distance_p2n = (1 - transfer_p2n / task_p2n) ** 2
-        distance_p2n = transfer_p2n / task_p2n
+    # distance_p2n = (1 - transfer_p2n / task_p2n) ** 2
+    distance_p2n = transfer_p2n / task_p2n
 
-        emotion_dist = emo_features(test['lang'], transfer['lang'])
-        ltq_dist = ltq_features(test['lang'], transfer['lang'])
-        # ltq_dist = ltq_features(test['lang'], transfer['lang'], norm=False)
+    emotion_dist = emo_features(test['lang'], transfer['lang'])
+    mwe_dist = ltq_features(test['lang'], transfer['lang'])
 
-    # # TODO: var name - this is no longer data_specific_features
-    genetic, syntactic, featural, phonological, inventory, geographic = tuple(uriel_features)
-    typo_features = [genetic, syntactic, featural, phonological, inventory]
-    geo_features = [geographic]
-    ortho_features = [word_overlap]
-    data_features = [transfer_dataset_size, task_data_size, ratio_dataset_size]
-    ttr_features = [transfer_ttr, task_ttr, distance_ttr]
-
-    if task == "MT":
-        # data_specific_features = [word_overlap, subword_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
-        ortho_features = [word_overlap, subword_overlap]
-        data_specific_features = ortho_features + data_features + ttr_features
-    elif task == "POS" or task == "DEP":
-        # data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
-        data_specific_features = ortho_features + data_features + ttr_features
-    elif task == "EL":
-        # data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size]
-        data_specific_features = ortho_features + data_features
-
-    elif task == "OLID" or task == "SA":
-        data_specific_features = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
+    if feature == 'base':
+        feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
                                   transfer_ttr, task_ttr, distance_ttr]
-        if feature == 'base':
-            feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
-                                      transfer_ttr, task_ttr, distance_ttr]
-            feats += uriel_features
-            return np.array(feats)
-        elif feature == 'nogeo':
-            feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
-                                      transfer_ttr, task_ttr, distance_ttr]
-            feats += uriel_features[:-1]
-            return np.array(feats)
-        elif feature == 'pos': # TODO: if this is not good enough, using raw ratio as well as distances
-            feats = [word_overlap, transfer_dataset_size, task_data_size,
-                     ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
-            feats += [distance_p2n, distance_pron, distance_verb] # 3
-            # feats += [distance_pron, distance_verb] # 2
-            feats += uriel_features
-            return np.array(feats)
-        elif feature == 'emot':
-            feats = [word_overlap, transfer_dataset_size, task_data_size,
-                     ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
-            feats += [emotion_dist]
-            feats += uriel_features
-            return np.array(feats)
-        elif feature == 'ltq':
-            feats = [word_overlap, transfer_dataset_size, task_data_size,
-                     ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
-            feats += [ltq_dist]
-            feats += uriel_features
-            return np.array(feats)
-        elif feature == 'syn_only':
-            feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size]
-            feats += uriel_features[:-1]
-            return np.array(feats)
-        elif feature == 'cult_only':
-            feats = [transfer_dataset_size, task_data_size, ratio_dataset_size]
-            feats += [transfer_ttr, task_ttr, distance_ttr]
-            feats += [distance_p2n, distance_pron, distance_verb] # 3
-            # feats += [distance_pron, distance_verb] # 2
-            feats += [emotion_dist, ltq_dist]
-            feats += [uriel_features[-1]] # geo
-            return np.array(feats)
-        elif feature == 'all':
-            raise Exception('Not implemented')
-            # data_specific_features += [distance_n2v, distance_p2n, distance_noun, distance_pron, distance_verb]
-            # data_specific_features += [distance_p2n, distance_pron, distance_verb]
-            # data_specific_features += [distance_pron, distance_verb]
-            # data_specific_features += [emotion_dist]
-            # data_specific_features += [ltq_dist]
-    return np.array(data_specific_features + uriel_features)
-
-def lgbm_rel_exp(BLEU_level, cutoff):
-    if isinstance(BLEU_level, np.ndarray):
-        return np.where(BLEU_level >= cutoff, BLEU_level - cutoff + 1, 0)
-    else:
-        return BLEU_level - cutoff + 1 if BLEU_level >= cutoff else 0
+<<<<<<< HEAD
+        feats += uriel_features
+    elif feature == 'pos':
+        feats = [word_overlap, transfer_dataset_size, task_data_size,
+                 ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+        # feats += [distance_p2n, distance_pron, distance_verb] # 3
+        feats += [distance_pron, distance_verb] # 2
+        feats += uriel_features
+    elif feature == 'emot':
+        feats = [word_overlap, transfer_dataset_size, task_data_size,
+                 ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+        feats += [emotion_dist]
+        feats += uriel_features
+    elif feature == 'mwe':
+        feats = [word_overlap, transfer_dataset_size, task_data_size,
+                 ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+        feats += [mwe_dist]
+        feats += uriel_features
+    elif feature == 'all':
+        feats = [word_overlap, transfer_dataset_size, task_data_size,
+                 ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+        # feats += [distance_p2n, distance_pron, distance_verb] # 3
+        feats += [distance_pron, distance_verb] # 2
+        feats += [emotion_dist]
+        feats += [mwe_dist]
+        feats += uriel_features
+    # below is for analyses
+    elif feature == 'nogeo':
+        feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
+                                  transfer_ttr, task_ttr, distance_ttr]
+        feats += uriel_features[:-1]
+    elif feature == 'syn_only':
+        feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size]
+        feats += uriel_features[:-1]
+    elif feature == 'cult_only':
+        feats = [transfer_dataset_size, task_data_size, ratio_dataset_size]
+        feats += [transfer_ttr, task_ttr, distance_ttr]
+        feats += [distance_p2n, distance_pron, distance_verb] # 3
+        # feats += [distance_pron, distance_verb] # 2
+        feats += [emotion_dist, mwe_dist]
+        feats += [uriel_features[-1]] # geo
+    return np.array(feats)
 
 # TODO: cutoff when data is big!
 def rank_to_relevance(rank, num_lang): # so that lower ranks are given higher relevance
@@ -414,20 +331,16 @@ def rank_to_relevance(rank, num_lang): # so that lower ranks are given higher re
 
 # preparing the file for training
 def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
-                       task="MT", tmp_dir="tmp", preprocess=None, feature='all'):
+                       task="SA", tmp_dir="tmp", preprocess=None, feature='all'):
     """
     dataset: [ted_aze, ted_tur, ted_ben]
     lang: [aze, tur, ben]
     rank: [[0, 1, 2], [1, 0, 2], [1, 2, 0]]
     """
     num_langs = len(langs)
-    # REL_EXP_CUTOFF = num_langs - 1 - 9
-    # REL_EXP_CUTOFF = num_langs - 3 # no cutoff
 
     if not isinstance(rank, np.ndarray):
         rank = np.array(rank)
-    # BLEU_level = -rank + len(langs)
-    # rel_BLEU_level = lgbm_rel_exp(BLEU_level, REL_EXP_CUTOFF)
     relevance = rank_to_relevance(rank, len(langs))
 
     features = {}
@@ -460,7 +373,6 @@ def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
                 uriel_features = [u[i, j] for u in uriel]
                 distance_vector = distance_vec(features[lang1], features[lang2], uriel_features, task, feature)
                 distance_vector = ["{}:{}".format(i, d) for i, d in enumerate(distance_vector)]
-                # line = " ".join([str(rel_BLEU_level[i, j])] + distance_vector) # svmlight format
                 line = " ".join([str(relevance[i, j])] + distance_vector) # svmlight format
                 train_file_f.write(line + "\n")
         train_size_f.write("{}\n".format(num_langs-1))
@@ -469,7 +381,7 @@ def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
     # print("Dump train file to {} ...".format(train_file_f))
     # print("Dump train size file to {} ...".format(train_size_f))
 
-def train(tmp_dir, output_model, feature_name='auto', task='OLID'):
+def train(tmp_dir, output_model, feature_name='auto', task='SA'):
     train_file = os.path.join(tmp_dir, f"train_{task}.csv")
     train_size = os.path.join(tmp_dir, f"train_{task}_size.csv")
     X_train, y_train = load_svmlight_file(train_file)
@@ -482,7 +394,7 @@ def train(tmp_dir, output_model, feature_name='auto', task='OLID'):
     model.booster_.save_model(output_model)
     print(f'Model saved at {output_model}')
 
-def rank(test_dataset_features, task="MT", candidates="all", model="best", feature='base', print_topK=3):
+def rank(test_dataset_features, task="SA", candidates="all", model="best", feature='base', print_topK=3):
     '''
     est_dataset_features : the output of prepare_new_dataset(). Basically a dictionary with the necessary dataset features.
     '''
@@ -517,7 +429,6 @@ def rank(test_dataset_features, task="MT", candidates="all", model="best", featu
     # load model
     model_dict = map_task_to_models(task) # this loads the dict that will give us the name of the pretrained model
     model_fname = model_dict[model] # this gives us the filename (needs to be joined, see below)
-    # modelfilename = pkg_resources.resource_filename(__name__, os.path.join('pretrained', task, model_fname))
     modelfilename = pkg_resources.resource_filename(__name__, os.path.join('pretrained', task, feature, model_fname))
     print(f"Loading model... {modelfilename}")
 
