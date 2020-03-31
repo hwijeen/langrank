@@ -280,6 +280,7 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     if feature == 'base':
         feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
                                   transfer_ttr, task_ttr, distance_ttr]
+<<<<<<< HEAD
         feats += uriel_features
     elif feature == 'pos':
         feats = [word_overlap, transfer_dataset_size, task_data_size,
