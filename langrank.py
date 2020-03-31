@@ -121,7 +121,6 @@ def get_candidates(task, languages=None):
             cands += [(key,d[key]) for key in d if '*' + key.split('_')[1] not in languages]
         cands = sorted(cands, key=lambda x: x[0])
     cand_langs = [i[0] for i in cands]
-    import ipdb; ipdb.set_trace(context=5)
     print(f"Candidate languages are: {cand_langs}")
 
     # Possibly restrict to a subset of candidate languages
@@ -280,7 +279,6 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     if feature == 'base':
         feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
                                   transfer_ttr, task_ttr, distance_ttr]
-<<<<<<< HEAD
         feats += uriel_features
     elif feature == 'pos':
         feats = [word_overlap, transfer_dataset_size, task_data_size,

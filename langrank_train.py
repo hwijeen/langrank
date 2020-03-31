@@ -71,10 +71,6 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    elif feature == 'nogeo':
-        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
-                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory']
     elif feature == 'pos':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
@@ -96,10 +92,14 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         # 'pron_to_noun', 'distance_pron', 'distance_verb', # 3
-                        'distance_pron', 'distance_verb',
+                        'distance_pron', 'distance_verb', # 2
                         'emotion_dist',
                         'mwe_dist',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    elif feature == 'nogeo':
+        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
+                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory']
     elif feature == 'syn_only':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory'] # nogeo
@@ -120,8 +120,7 @@ if __name__ == '__main__':
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    # features = ['base', 'pos', 'emot', 'mwe', 'all']
-    features = ['pos', 'emot', 'mwe', 'all']
+    features = ['base', 'pos', 'emot', 'mwe', 'all']
     for f in features:
         for exclude in langs:
             print(f'\nStart training with {exclude} excluded for task {task}')

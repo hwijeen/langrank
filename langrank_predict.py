@@ -68,7 +68,6 @@ def sort_prediction(cand_list, neg_scores):
     return pred
 
 def load_gold(task, target_lang):
-    import ipdb; ipdb.set_trace(context=5)
     fpath = f'rankings/{task.lower()}.pkl'
     f = open(fpath, 'rb')
     gold_list = pickle.load(f)
@@ -76,9 +75,9 @@ def load_gold(task, target_lang):
     for l in gold_list:
         l.pop(l.index(0)) # drop self
 
-    langs = ['ara', 'ces', 'deu', 'eng', 'fas', 'fra',
-             'hin', 'jpn', 'kor', 'nld', 'pol', 'rus',
-             'spa', 'tam', 'tur', 'zho']
+    langs = ['ara', 'ces', 'deu', 'eng', 'fas',
+             'fra', 'hin', 'jpn', 'kor', 'nld',
+             'pol', 'rus', 'spa', 'tam', 'tur', 'zho']
     target_lang_idx = langs.index(target_lang)
     return gold_list[target_lang_idx]
 
@@ -141,7 +140,8 @@ if __name__ == '__main__':
     # params = parse_args()
     task = 'sa' # 'sa'
     langs = ['ara', 'ces', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    features = ['base', 'pos', 'emot', 'mwe']
+    # features = ['base', 'pos', 'emot', 'mwe', 'all']
+    features = ['all']
     result = defaultdict(dict)
     for l in langs:
         for f in features:
