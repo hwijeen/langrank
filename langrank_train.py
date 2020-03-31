@@ -6,6 +6,22 @@ import numpy as np
 from langrank import prepare_train_file, train, rank_to_relevance
 from scipy.stats import rankdata
 
+code_convert = { 'ara': 'ar',
+                 'ces': 'cs',
+                 'deu': 'de',
+                 'eng': 'en',
+                 'spa': 'es',
+                 'fas': 'fa',
+                 'fra': 'fr',
+                 'hin': 'hi',
+                 'jpn': 'ja',
+                 'kor': 'ko',
+                 'nld': 'nl',
+                 'pol': 'pl',
+                 'rus': 'ru',
+                 'tam': 'ta',
+                 'tur': 'tr',
+                 'zho': 'zh'}
 
 def rerank(rank, without_idx=None):
     reranked = []
@@ -15,59 +31,18 @@ def rerank(rank, without_idx=None):
         reranked.append(rr)
     return reranked
 
-def train_olid(exclude_lang=None, feature='base'):
-    langs= ['ara', 'dan', 'ell', 'eng', 'tur']
-    data_dir = 'datasets/olid/'
-    datasets = [os.path.join(data_dir, f'{l}.txt') for l in langs]
-    rank = [[0, 4, 2, 1, 3], # manually
-            [2, 0, 4, 1, 3],
-            [2, 4, 0, 1, 3],
-            [3, 1, 4, 0, 2],
-            [3, 1, 4, 2, 0]]
-
-    if exclude_lang is not None: # for cross validation
-        exclude_idx = langs.index(exclude_lang)
-        langs.pop(exclude_idx)
-        rank = rerank(rank, exclude_idx)
-    else:
-        exclude_lang = 'all' # for model file name
-
-    model_save_dir = f'pretrained/OLID/{feature}/'
-    tmp_dir = "tmp"
-    preprocess = build_preprocess() # preprocessing for tweeter data
-    prepare_train_file(datasets=datasets, langs=langs, rank=rank,
-                       tmp_dir=tmp_dir, task="OLID", preprocess=preprocess, feature=feature)
-    output_model = f"{model_save_dir}/lgbm_model_olid_{exclude_lang}.txt"
-    feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
-                    'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                    'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    if feature == 'pos':
-        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
-                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
-                        # 'pron_to_noun', 'distance_pron', 'distance_verb',
-                        'distance_pron', 'distance_verb',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    elif feature == 'all':
-        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
-                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
-                        # 'pron_to_noun', 'distance_pron', 'distance_verb',
-                        'distance_pron', 'distance_verb',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    print(f'Features used are: {feature_name}')
-    train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="OLID")
-    assert os.path.isfile(output_model)
-
-
-def train_sa(exclude_lang=None, feature='base'):
+def train_langrank(task='sa', exclude_lang=None, feature='base'):
+    data_dir = f'datasets/{task}/'
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    data_dir = 'datasets/sa/'
-    datasets = [os.path.join(data_dir, f'{l}.txt') for l in langs]
-    # ranking_f = open(os.path.join(data_dir, 'rankings/sa.pkl'), 'rb') # FIXME: temporary
-    ranking_f = open('rankings/sa.pkl', 'rb') # FIXME: temporary
+    if task =='sa':
+        datasets = [os.path.join(data_dir, f'{l}.txt') for l in langs]
+    elif task =='dep':
+        lang_codes = [code_convert[l] for l in langs]
+        datasets = [os.path.join(data_dir, f'{l}_train.conllu') for l in lang_codes]
+
+    ranking_f = open(f'rankings/{task}.pkl', 'rb')
     rank = pickle.load(ranking_f)
 
     if exclude_lang is not None: # exclude for cross validation
@@ -75,31 +50,31 @@ def train_sa(exclude_lang=None, feature='base'):
         langs.pop(exclude_idx)
         rank.pop(exclude_idx)
         rank = rerank(rank, exclude_idx)
+        datasets.pop(exclude_idx)
     else:
         exclude_lang = 'all' # for model file name
 
-    model_save_dir = f'pretrained/SA/{feature}/'
+    model_save_dir = f'pretrained/{task.upper()}/{feature}/'
     if not os.path.exists(model_save_dir):
         os.mkdir(model_save_dir)
 
     tmp_dir = 'tmp'
     preprocess = None
-    prepare_train_file(datasets=datasets, langs=langs, rank=rank, tmp_dir=tmp_dir, task="SA", preprocess=preprocess,
+    prepare_train_file(datasets=datasets, langs=langs, rank=rank,
+                       tmp_dir=tmp_dir, task=task.upper(), preprocess=preprocess,
                        feature=feature)
 
-    output_model = f"{model_save_dir}/lgbm_model_sa_{exclude_lang}.txt"
+    output_model = f"{model_save_dir}/lgbm_model_{task}_{exclude_lang}.txt"
 
     # NOTE: order of features must be consistent with the list in `distance_vec`
     if feature == 'base':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-
     elif feature == 'nogeo':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory']
-
     elif feature == 'pos':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
@@ -137,17 +112,18 @@ def train_sa(exclude_lang=None, feature='base'):
                         'emotion_dist', 'mwe_dist',
                         'geographical']
     print(f'Features used are {feature_name}')
-    train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task="SA")
+    train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task=f"{task.upper()}")
     assert os.path.isfile(output_model)
 
 if __name__ == '__main__':
+    task = 'sa' # 'sa'
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
-             'pol', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
-    features = ['all']
+             'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
+    # features = ['base', 'pos', 'emot', 'mwe', 'all']
+    features = ['pos', 'emot', 'mwe', 'all']
     for f in features:
         for exclude in langs:
-            print(f'\nStart training with {exclude} excluded')
+            print(f'\nStart training with {exclude} excluded for task {task}')
             print(f'Features: {f}')
-            # train_olid(exclude_lang=exclude)
-            train_sa(exclude_lang=exclude, feature=f)
+            train_langrank(task=task, exclude_lang=exclude, feature=f)

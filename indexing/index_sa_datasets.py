@@ -79,16 +79,15 @@ for filename in os.listdir(dataset_dir):
     features[key]["word_vocab"] = unique
     features[key]["type_token_ratio"] = features[key]["type_number"]/float(features[key]["token_number"])
 
-    source_lines = open(filename).readlines()
     features[key]["noun_ratio"] = pos_features(language, 'noun')
     features[key]["verb_ratio"] = pos_features(language, 'verb')
     features[key]["pron_ratio"] = pos_features(language, 'pron')
     features[key]["n2v_ratio"] = pos_features(language, 'noun2verb')
     features[key]["p2n_ratio"] = pos_features(language, 'pron2noun')
 
-
 indexed = "indexed/SA"
 outputfile = os.path.join(indexed, "sa.npy")
+import ipdb; ipdb.set_trace(context=5)
 np.save(outputfile, features)
 
 

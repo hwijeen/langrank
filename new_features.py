@@ -196,7 +196,7 @@ def emo_features(lang1, lang2, fpath='./features/', pairwise=True):
     #         feature_dict[(lang1_code, lang2_code)] = emo_score
     # return feature_dict[(lang_to_code[lang1], lang_to_code[lang2])]
 
-def mwe_features(lang1, lang2, fpath='./features/', norm=True):
+def ltq_features(lang1, lang2, fpath='./features/', norm=True):
     if norm:
         fpath = os.path.join(fpath, 'ltq_either_norm.txt')
         # fpath = os.path.join(fpath, 'ltq_either.txt')
@@ -210,8 +210,8 @@ def mwe_features(lang1, lang2, fpath='./features/', norm=True):
     feature_dict = defaultdict(dict)
     with open(fpath) as f:
         for line in f:
-            lang1_code, lang2_code, mwe_score = line.split('\t')
-            feature_dict[lang1_code][lang2_code] = mwe_score
+            lang1_code, lang2_code, ltq_score = line.split('\t')
+            feature_dict[lang1_code][lang2_code] = ltq_score
     return feature_dict[lang_to_code[lang1]][lang_to_code[lang2]].strip()
 
 if __name__ == "__main__":
