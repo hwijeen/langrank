@@ -6,9 +6,6 @@ import numpy as np
 from langrank import prepare_train_file, train, rank_to_relevance
 from scipy.stats import rankdata
 
-langs = ['ara', 'ces', 'deu', 'eng', 'fas',
-         'fra', 'hin', 'jpn', 'kor', 'nld',
-         'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
 
 code_convert = { 'ara': 'ar',
                  'ces': 'cs',
@@ -36,6 +33,9 @@ def rerank(rank, without_idx=None):
     return reranked
 
 def train_langrank(task='sa', exclude_lang=None, feature='base'):
+    langs = ['ara', 'ces', 'deu', 'eng', 'fas',
+             'fra', 'hin', 'jpn', 'kor', 'nld',
+             'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     data_dir = f'datasets/{task}/'
     datasets = [os.path.join(data_dir, f'{l}.txt') for l in langs]
 
@@ -113,6 +113,9 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
     assert os.path.isfile(output_model)
 
 if __name__ == '__main__':
+    langs = ['ara', 'ces', 'deu', 'eng', 'fas',
+             'fra', 'hin', 'jpn', 'kor', 'nld',
+             'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     task = 'dep' # 'sa'
     features = ['base', 'pos', 'emot', 'ltq', 'all']
     for f in features:
