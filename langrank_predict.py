@@ -68,7 +68,7 @@ def sort_prediction(cand_list, neg_scores):
     return pred
 
 def load_gold(task, target_lang):
-    import ipdb; ipdb.set_trace(context=5)
+    # import ipdb; ipdb.set_trace(context=5)
     fpath = f'rankings/{task.lower()}.pkl'
     f = open(fpath, 'rb')
     gold_list = pickle.load(f)
@@ -83,7 +83,7 @@ def load_gold(task, target_lang):
     return gold_list[target_lang_idx]
 
 def summarize_result(result, features):
-    base, nogeo, pos, emot, mwe, syn_only, cult_only, all_ = 0, 0, 0, 0, 0, 0, 0, 0
+    base, nogeo, pos, emot, ltq, syn_only, cult_only, all_ = 0, 0, 0, 0, 0, 0, 0, 0
     for l, res_by_feat in result.items():
         if 'base' in features:
             base += res_by_feat['base']
@@ -93,8 +93,8 @@ def summarize_result(result, features):
             pos += res_by_feat['pos']
         if 'emot' in features:
             emot += res_by_feat['emot']
-        if 'mwe' in features:
-            mwe += res_by_feat['mwe']
+        if 'ltq' in features:
+            ltq += res_by_feat['ltq']
         if 'syn_only' in features:
             syn_only += res_by_feat['syn_only']
         if 'cult_only' in features:
@@ -103,7 +103,7 @@ def summarize_result(result, features):
             all_ += res_by_feat['all']
     print('Averaged result')
     num_lang= len(result)
-    print(f'Base: {base/len(result)}, Nogeo: {nogeo/len(result)}, Pos: {pos/len(result)}, Emot: {emot/len(result)}, MWE: {mwe/len(result)}, Syn_only: {syn_only/len(result)}, Cult_only: {cult_only/len(result)} All: {all_/len(result)}', end='\n\n')
+    print(f'Base: {base/len(result)}, Nogeo: {nogeo/len(result)}, Pos: {pos/len(result)}, Emot: {emot/len(result)}, ltq: {ltq/len(result)}, Syn_only: {syn_only/len(result)}, Cult_only: {cult_only/len(result)} All: {all_/len(result)}', end='\n\n')
 
 def format_print(result, features):
     result = sorted([(l, res_by_feat) for l, res_by_feat in result.items()], key=lambda x: x[0])
@@ -121,9 +121,9 @@ def format_print(result, features):
         if 'emot' in res_by_feat:
             emot = res_by_feat['emot']
             print(f'{emot}', end='\t')
-        if 'mwe' in res_by_feat:
-            mwe = res_by_feat['mwe']
-            print(f'{mwe}', end='\t')
+        if 'ltq' in res_by_feat:
+            ltq = res_by_feat['ltq']
+            print(f'{ltq}', end='\t')
         if 'syn_only' in res_by_feat:
             syn_only = res_by_feat['syn_only']
             print(f'{syn_only}', end='\t')
@@ -139,9 +139,9 @@ def format_print(result, features):
 if __name__ == '__main__':
 
     # params = parse_args()
-    task = 'sa' # 'sa'
+    task = 'dep' #'sa'
     langs = ['ara', 'ces', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    features = ['base', 'pos', 'emot', 'mwe']
+    features = ['all'] #['base', 'pos', 'emot', 'ltq']
     result = defaultdict(dict)
     for l in langs:
         for f in features:

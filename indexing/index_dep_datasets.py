@@ -4,6 +4,7 @@ import numpy as np
 from collections import Counter
 
 import sys; sys.path.append('/home/hwijeen/langrank')
+sys.path.append('/Users/jimin/Documents/research/langrank')
 from new_features import pos_features
 
 def read_data(fn):
@@ -20,7 +21,7 @@ def read_data(fn):
 
 
 # dataset_dir = "parsing/data"
-dataset_dir = "datasets/dep"
+dataset_dir = "./datasets/dep"
 
 # Not needed now
 #eng_vocab_f = "datasets/eng/word.vocab"
@@ -34,7 +35,7 @@ dataset_dir = "datasets/dep"
 def get_vocab(filename):
     with open(filename) as inp:
         lines = inp.readlines()
-        all_words = [l.strip().split('\t')[1] for l in lines if len(l.split()) != 0]
+    all_words = [w for l in lines for w in l.strip().split()]
     return all_words
 
 
@@ -60,42 +61,40 @@ features = {}
 #features["eng"] = {}
 #features["eng"]["word_vocab"] = en_v
 #features["eng"]["subword_vocab"] = en_sub_v
-
-for filename in os.listdir(dataset_dir):
+files = [f for f in os.listdir(dataset_dir) if f.endswith('txt')]
+for filename in files:
     #print(filename)
-    temp = filename.split("_")
+    temp = filename.split(".")
     language = temp[0]
-    if "train" == temp[1][:5]:
-        # Get number of lines in training data
-        #filename = "ted-train.orig."+temp[0]
-        if len(language) == 2:
-            language = LETTER_CODES[language]
-        filename = os.path.join(dataset_dir,filename)
-        bashCommand = "wc -l " + filename
-        process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-        output, error = process.communicate()
-        lines = int(output.strip().split()[0])
-        print(filename + " " + str(lines))
+    # Get number of lines in training data
+    if len(language) == 2:
+        language = LETTER_CODES[language]
+    filename = os.path.join(dataset_dir,filename)
+    bashCommand = "wc -l " + filename
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    output, error = process.communicate()
+    lines = int(output.strip().split()[0])
+    print(filename + " " + str(lines))
 
-        all_words = get_vocab(filename)
-        c = Counter(all_words)
-        key = "conll_"+language
-        features[key] = {}
-        features[key]["lang"] = language
-        features[key]["dataset_size"] = lines
+    all_words = get_vocab(filename)
+    c = Counter(all_words)
+    key = "conll_"+language
+    features[key] = {}
+    features[key]["lang"] = language
+    features[key]["dataset_size"] = lines
 
-        unique = list(c)
-        # Get number of types and tokens
-        features[key]["token_number"] = len(all_words)
-        features[key]["type_number"] = len(unique)
-        features[key]["word_vocab"] = unique
-        features[key]["type_token_ratio"] = features[key]["type_number"]/float(features[key]["token_number"])
+    unique = list(c)
+    # Get number of types and tokens
+    features[key]["token_number"] = len(all_words)
+    features[key]["type_number"] = len(unique)
+    features[key]["word_vocab"] = unique
+    features[key]["type_token_ratio"] = features[key]["type_number"]/float(features[key]["token_number"])
 
-        features[key]["noun_ratio"] = pos_features(language, 'noun')
-        features[key]["verb_ratio"] = pos_features(language, 'verb')
-        features[key]["pron_ratio"] = pos_features(language, 'pron')
-        features[key]["n2v_ratio"] = pos_features(language, 'noun2verb')
-        features[key]["p2n_ratio"] = pos_features(language, 'pron2noun')
+    features[key]["noun_ratio"] = pos_features(language, 'noun')
+    features[key]["verb_ratio"] = pos_features(language, 'verb')
+    features[key]["pron_ratio"] = pos_features(language, 'pron')
+    features[key]["n2v_ratio"] = pos_features(language, 'noun2verb')
+    features[key]["p2n_ratio"] = pos_features(language, 'pron2noun')
 
 indexed = "indexed/DEP"
 outputfile = os.path.join(indexed, "conll.npy")
