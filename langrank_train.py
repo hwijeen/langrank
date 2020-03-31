@@ -116,9 +116,9 @@ if __name__ == '__main__':
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    task = 'dep' # 'sa'
+    task = 'sa' # 'sa'
     # features = ['base', 'pos', 'emot', 'ltq', 'all']
-    features = ['pos']
+    features = ['all']
     for f in features:
         for exclude in langs:
             print(f'\nStart training with {exclude} excluded for task {task}')
