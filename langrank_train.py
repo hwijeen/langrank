@@ -144,10 +144,10 @@ if __name__ == '__main__':
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho', None] # no tha
-    features = ['all']
+    features = ['base']
     for f in features:
         for exclude in langs:
             print(f'\nStart training with {exclude} excluded')
             print(f'Features: {f}')
             # train_olid(exclude_lang=exclude)
-            train_sa(exclude_lang=exclude, feature=f)
+            # train_sa(exclude_lang=exclude, feature=f)
