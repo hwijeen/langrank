@@ -87,7 +87,6 @@ for filename in os.listdir(dataset_dir):
 
 indexed = "indexed/SA"
 outputfile = os.path.join(indexed, "sa.npy")
-import ipdb; ipdb.set_trace(context=5)
 np.save(outputfile, features)
 
 

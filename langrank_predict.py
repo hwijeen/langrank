@@ -141,7 +141,7 @@ if __name__ == '__main__':
     task = 'sa' # 'sa'
     langs = ['ara', 'ces', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     # features = ['base', 'pos', 'emot', 'mwe', 'all']
-    features = ['all']
+    features = ['pos', 'all']
     result = defaultdict(dict)
     for l in langs:
         for f in features:
