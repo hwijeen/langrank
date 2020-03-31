@@ -275,12 +275,11 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     distance_p2n = transfer_p2n / task_p2n
 
     emotion_dist = emo_features(test['lang'], transfer['lang'])
-    mwe_dist = ltq_features(test['lang'], transfer['lang'])
+    ltq_dist = ltq_features(test['lang'], transfer['lang'])
 
     if feature == 'base':
         feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
                                   transfer_ttr, task_ttr, distance_ttr]
-<<<<<<< HEAD
         feats += uriel_features
     elif feature == 'pos':
         feats = [word_overlap, transfer_dataset_size, task_data_size,
@@ -293,10 +292,10 @@ def distance_vec(test, transfer, uriel_features, task, feature):
                  ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
         feats += [emotion_dist]
         feats += uriel_features
-    elif feature == 'mwe':
+    elif feature == 'ltq':
         feats = [word_overlap, transfer_dataset_size, task_data_size,
                  ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
-        feats += [mwe_dist]
+        feats += [ltq_dist]
         feats += uriel_features
     elif feature == 'all':
         feats = [word_overlap, transfer_dataset_size, task_data_size,
@@ -304,7 +303,7 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         # feats += [distance_p2n, distance_pron, distance_verb] # 3
         feats += [distance_pron, distance_verb] # 2
         feats += [emotion_dist]
-        feats += [mwe_dist]
+        feats += [ltq_dist]
         feats += uriel_features
     # below is for analyses
     elif feature == 'nogeo':
@@ -319,7 +318,7 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         feats += [transfer_ttr, task_ttr, distance_ttr]
         feats += [distance_p2n, distance_pron, distance_verb] # 3
         # feats += [distance_pron, distance_verb] # 2
-        feats += [emotion_dist, mwe_dist]
+        feats += [emotion_dist, ltq_dist]
         feats += [uriel_features[-1]] # geo
     return np.array(feats)
 
