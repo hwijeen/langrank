@@ -68,7 +68,6 @@ def sort_prediction(cand_list, neg_scores):
     return pred
 
 def load_gold(task, target_lang):
-    # import ipdb; ipdb.set_trace(context=5)
     fpath = f'rankings/{task.lower()}.pkl'
     f = open(fpath, 'rb')
     gold_list = pickle.load(f)
@@ -76,9 +75,9 @@ def load_gold(task, target_lang):
     for l in gold_list:
         l.pop(l.index(0)) # drop self
 
-    langs = ['ara', 'ces', 'deu', 'eng', 'fas', 'fra',
-             'hin', 'jpn', 'kor', 'nld', 'pol', 'rus',
-             'spa', 'tam', 'tur', 'zho']
+    langs = ['ara', 'ces', 'deu', 'eng', 'fas',
+             'fra', 'hin', 'jpn', 'kor', 'nld',
+             'pol', 'rus', 'spa', 'tam', 'tur', 'zho']
     target_lang_idx = langs.index(target_lang)
     return gold_list[target_lang_idx]
 
@@ -103,7 +102,7 @@ def summarize_result(result, features):
             all_ += res_by_feat['all']
     print('Averaged result')
     num_lang= len(result)
-    print(f'Base: {base/len(result)}, Nogeo: {nogeo/len(result)}, Pos: {pos/len(result)}, Emot: {emot/len(result)}, ltq: {ltq/len(result)}, Syn_only: {syn_only/len(result)}, Cult_only: {cult_only/len(result)} All: {all_/len(result)}', end='\n\n')
+    print(f'Base: {base/len(result)}, Nogeo: {nogeo/len(result)}, Pos: {pos/len(result)}, Emot: {emot/len(result)}, Ltq: {ltq/len(result)}, Syn_only: {syn_only/len(result)}, Cult_only: {cult_only/len(result)} All: {all_/len(result)}', end='\n\n')
 
 def format_print(result, features):
     result = sorted([(l, res_by_feat) for l, res_by_feat in result.items()], key=lambda x: x[0])
@@ -139,9 +138,10 @@ def format_print(result, features):
 if __name__ == '__main__':
 
     # params = parse_args()
-    task = 'dep' #'sa'
+    task = 'sa' # 'sa'
     langs = ['ara', 'ces', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    features = ['all'] #['base', 'pos', 'emot', 'ltq']
+    # features = ['base', 'pos', 'emot', 'mwe', 'all']
+    features = ['all']
     result = defaultdict(dict)
     for l in langs:
         for f in features:

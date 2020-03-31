@@ -6,6 +6,10 @@ import numpy as np
 from langrank import prepare_train_file, train, rank_to_relevance
 from scipy.stats import rankdata
 
+langs = ['ara', 'ces', 'deu', 'eng', 'fas',
+         'fra', 'hin', 'jpn', 'kor', 'nld',
+         'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
+
 code_convert = { 'ara': 'ar',
                  'ces': 'cs',
                  'deu': 'de',
@@ -33,15 +37,7 @@ def rerank(rank, without_idx=None):
 
 def train_langrank(task='sa', exclude_lang=None, feature='base'):
     data_dir = f'datasets/{task}/'
-    langs = ['ara', 'ces', 'deu', 'eng', 'fas',
-             'fra', 'hin', 'jpn', 'kor', 'nld',
-             'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     datasets = [os.path.join(data_dir, f'{l}.txt') for l in langs]
-    # if task =='sa':
-    #     datasets = [os.path.join(data_dir, f'{l}.txt') for l in langs]
-    # elif task =='dep':
-    #     lang_codes = [code_convert[l] for l in langs]
-    #     datasets = [os.path.join(data_dir, f'{l}_train.conllu') for l in lang_codes]
 
     ranking_f = open(f'rankings/{task}.pkl', 'rb')
     rank = pickle.load(ranking_f)
@@ -72,10 +68,6 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    elif feature == 'nogeo':
-        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
-                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory']
     elif feature == 'pos':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
@@ -97,10 +89,14 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         # 'pron_to_noun', 'distance_pron', 'distance_verb', # 3
-                        'distance_pron', 'distance_verb',
+                        'distance_pron', 'distance_verb', # 2
                         'emotion_dist',
                         'ltq_dist',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    elif feature == 'nogeo':
+        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
+                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory']
     elif feature == 'syn_only':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory'] # nogeo
@@ -118,11 +114,7 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
 
 if __name__ == '__main__':
     task = 'dep' # 'sa'
-    langs = ['ara', 'ces', 'deu', 'eng', 'fas',
-             'fra', 'hin', 'jpn', 'kor', 'nld',
-             'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     features = ['base', 'pos', 'emot', 'ltq', 'all']
-    # features = ['pos', 'emot', 'ltq', 'all']
     for f in features:
         for exclude in langs:
             print(f'\nStart training with {exclude} excluded for task {task}')
