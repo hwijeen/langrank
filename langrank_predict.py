@@ -113,6 +113,7 @@ if __name__ == '__main__':
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     features = ['base', 'dataset', 'uriel', 'pos', 'emot', 'ltq', 'all']
+    features = ['pos', 'all']
     result = defaultdict(dict)
     for l in langs:
         for f in features:
