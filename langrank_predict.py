@@ -90,7 +90,7 @@ def summarize_result(result, features):
     print('Averaged result')
     num_lang= len(result)
     for feat in features:
-        avg = res[f] / num_lang
+        avg = res[feat] / num_lang
         print(f'{f}: {avg:.4f}', end='\t')
     print('\n')
 
@@ -98,10 +98,10 @@ def format_print(result, features):
     result = sorted([(l, res_by_feat) for l, res_by_feat in result.items()], key=lambda x: x[0])
     print('\t'.join(features))
     for lang, res_by_feat in result:
-        print(f'{lang}', end=' ')
+        print(f'{lang}', end='')
         for feat in features:
             score = res_by_feat[feat]
-            print(f'{score:.4f}', end='\t')
+            print(f'\t{score:.4f}', end='')
         print()
 
 
@@ -109,7 +109,9 @@ if __name__ == '__main__':
 
     # params = parse_args()
     task = 'sa' # 'sa'
-    langs = ['ara', 'ces', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
+    langs = ['ara', 'ces', 'deu', 'eng', 'fas',
+             'fra', 'hin', 'jpn', 'kor', 'nld',
+             'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     features = ['base', 'dataset', 'uriel', 'pos', 'emot', 'ltq', 'all']
     result = defaultdict(dict)
     for l in langs:
