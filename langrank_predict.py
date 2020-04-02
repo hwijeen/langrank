@@ -81,28 +81,32 @@ def load_gold(task, target_lang):
     target_lang_idx = langs.index(target_lang)
     return gold_list[target_lang_idx]
 
+
 def summarize_result(result, features):
-    base, nogeo, pos, emot, ltq, syn_only, cult_only, all_ = 0, 0, 0, 0, 0, 0, 0, 0
+    res = defaultdict(lambda: 0)
     for l, res_by_feat in result.items():
         if 'base' in features:
-            base += res_by_feat['base']
+            res['base'] += res_by_feat['base']
         if 'nogeo' in features:
-            nogeo += res_by_feat['nogeo']
+            res['nogeo'] += res_by_feat['nogeo']
         if 'pos' in features:
-            pos += res_by_feat['pos']
+            res['pos'] += res_by_feat['pos']
         if 'emot' in features:
-            emot += res_by_feat['emot']
-        if 'ltq' in features:
-            ltq += res_by_feat['ltq']
+            res['emot'] += res_by_feat['emot']
+        if 'mwe' in features:
+            res['mwe'] += res_by_feat['mwe']
         if 'syn_only' in features:
-            syn_only += res_by_feat['syn_only']
+            res['syn_only'] += res_by_feat['syn_only']
         if 'cult_only' in features:
-            cult_only += res_by_feat['cult_only']
+            res['cult_only'] += res_by_feat['cult_only']
         if 'all' in features:
-            all_ += res_by_feat['all']
+            res['all_'] += res_by_feat['all']
     print('Averaged result')
     num_lang= len(result)
-    print(f'Base: {base/len(result)}, Nogeo: {nogeo/len(result)}, Pos: {pos/len(result)}, Emot: {emot/len(result)}, Ltq: {ltq/len(result)}, Syn_only: {syn_only/len(result)}, Cult_only: {cult_only/len(result)} All: {all_/len(result)}', end='\n\n')
+    for feat in features:
+        avg = res[f] / num_lang
+        print(f'{f}: {avg:.4f}', end='\t')
+    print('\n')
 
 def format_print(result, features):
     result = sorted([(l, res_by_feat) for l, res_by_feat in result.items()], key=lambda x: x[0])
