@@ -3,6 +3,7 @@ __pycache__
 indexed/
 .ipynb_checkpoints
 datasets
+pretrained
 .DS_Store
 tmp
 *.tar.gz
