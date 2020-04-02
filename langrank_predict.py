@@ -84,23 +84,9 @@ def load_gold(task, target_lang):
 
 def summarize_result(result, features):
     res = defaultdict(lambda: 0)
-    for l, res_by_feat in result.items():
-        if 'base' in features:
-            res['base'] += res_by_feat['base']
-        if 'nogeo' in features:
-            res['nogeo'] += res_by_feat['nogeo']
-        if 'pos' in features:
-            res['pos'] += res_by_feat['pos']
-        if 'emot' in features:
-            res['emot'] += res_by_feat['emot']
-        if 'mwe' in features:
-            res['mwe'] += res_by_feat['mwe']
-        if 'syn_only' in features:
-            res['syn_only'] += res_by_feat['syn_only']
-        if 'cult_only' in features:
-            res['cult_only'] += res_by_feat['cult_only']
-        if 'all' in features:
-            res['all_'] += res_by_feat['all']
+    for feat in features:
+        for l, res_by_feat in result.items():
+            res[feat] += res_by_feat[feat]
     print('Averaged result')
     num_lang= len(result)
     for feat in features:
@@ -110,42 +96,21 @@ def summarize_result(result, features):
 
 def format_print(result, features):
     result = sorted([(l, res_by_feat) for l, res_by_feat in result.items()], key=lambda x: x[0])
+    print('\t'.join(features))
     for lang, res_by_feat in result:
         print(f'{lang}', end=' ')
-        if 'base' in res_by_feat:
-            base = res_by_feat['base']
-            print(f'{base}', end='\t')
-        if 'nogeo' in res_by_feat:
-            nogeo = res_by_feat['nogeo']
-            print(f'{nogeo}', end='\t')
-        if 'pos' in res_by_feat:
-            pos = res_by_feat['pos']
-            print(f'{pos}', end='\t')
-        if 'emot' in res_by_feat:
-            emot = res_by_feat['emot']
-            print(f'{emot}', end='\t')
-        if 'ltq' in res_by_feat:
-            ltq = res_by_feat['ltq']
-            print(f'{ltq}', end='\t')
-        if 'syn_only' in res_by_feat:
-            syn_only = res_by_feat['syn_only']
-            print(f'{syn_only}', end='\t')
-        if 'cult_only' in res_by_feat:
-            cult_only = res_by_feat['cult_only']
-            print(f'{cult_only}', end='\t')
-        if 'all' in res_by_feat:
-            all_ = res_by_feat['all']
-            print(f'{all_}', end='\t')
+        for feat in features:
+            score = res_by_feat[feat]
+            print(f'{score:.4f}', end='\t')
         print()
 
 
 if __name__ == '__main__':
 
     # params = parse_args()
-    task = 'dep' # 'sa'
+    task = 'sa' # 'sa'
     langs = ['ara', 'ces', 'deu', 'eng', 'fas', 'fra', 'hin', 'jpn', 'kor', 'nld', 'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    features = ['base', 'pos', 'emot', 'ltq', 'all']
-    # features = ['pos', 'all']
+    features = ['base', 'dataset', 'uriel', 'pos', 'emot', 'ltq', 'all']
     result = defaultdict(dict)
     for l in langs:
         for f in features:

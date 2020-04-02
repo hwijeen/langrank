@@ -282,6 +282,12 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
                                   transfer_ttr, task_ttr, distance_ttr]
         feats += uriel_features
+    if feature == 'dataset':
+        feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
+                                  transfer_ttr, task_ttr, distance_ttr]
+    if feature == 'uriel':
+        feats = uriel_features
+
     elif feature == 'pos':
         feats = [word_overlap, transfer_dataset_size, task_data_size,
                  ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
