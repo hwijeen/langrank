@@ -4,6 +4,7 @@ indexed/
 .ipynb_checkpoints
 pretrained
 .DS_Store
+.idea
 tmp
 *.tar.gz
 *.png

@@ -77,9 +77,8 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
     elif feature == 'pos':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
-                        # 'pron_to_noun', 'distance_pron', 'distance_verb', # 3
-                        'distance_pron', 'distance_verb', # 2
+                        'pron_to_noun', 'distance_pron', 'distance_verb', # 3
+                        # 'distance_pron', 'distance_verb', # 2
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'emot':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
@@ -94,8 +93,8 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
     elif feature == 'all':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        # 'pron_to_noun', 'distance_pron', 'distance_verb', # 3
-                        'distance_pron', 'distance_verb', # 2
+                        'pron_to_noun', 'distance_pron', 'distance_verb', # 3
+                        # 'distance_pron', 'distance_verb', # 2
                         'emotion_dist',
                         'ltq_dist',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
@@ -125,7 +124,7 @@ if __name__ == '__main__':
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     task = 'sa' # 'sa'
     # features = ['base', 'pos', 'emot', 'ltq', 'all']
-    features = ['dataset', 'uriel']
+    features = ['pos', 'all']
     for f in features:
         for exclude in langs:
             print(f'\nStart training with {exclude} excluded for task {task}')
