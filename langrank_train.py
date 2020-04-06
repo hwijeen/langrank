@@ -68,31 +68,37 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    if feature == 'dataset':
+        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
+                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr']
+    if feature == 'uriel':
+        feature_name = ['genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+
     elif feature == 'pos':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
                         # 'pron_to_noun', 'distance_pron', 'distance_verb', # 3
-                        'distance_pron', 'distance_verb', # 2
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+                        'distance_pron', 'distance_verb'] # 2
+                        # 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'emot':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        'emotion_dist',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+                        'emotion_dist']
+                        # 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'ltq':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        'ltq_dist',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+                        'ltq_dist']
+                        # 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'all':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         # 'pron_to_noun', 'distance_pron', 'distance_verb', # 3
                         'distance_pron', 'distance_verb', # 2
                         'emotion_dist',
-                        'ltq_dist',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+                        'ltq_dist']
+                        # 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+
     elif feature == 'nogeo':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
@@ -116,9 +122,9 @@ if __name__ == '__main__':
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    task = 'dep' # 'sa'
+    task = 'sa' # 'sa'
     # features = ['base', 'pos', 'emot', 'ltq', 'all']
-    features = ['pos']
+    features = ['all']
     for f in features:
         for exclude in langs:
             print(f'\nStart training with {exclude} excluded for task {task}')

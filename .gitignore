@@ -2,8 +2,10 @@
 __pycache__
 indexed/
 .ipynb_checkpoints
-datasets
+pretrained
 .DS_Store
+.idea
 tmp
 *.tar.gz
 *.png
+*.out

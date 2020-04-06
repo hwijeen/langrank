@@ -282,22 +282,28 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
                                   transfer_ttr, task_ttr, distance_ttr]
         feats += uriel_features
+    if feature == 'dataset':
+        feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
+                                  transfer_ttr, task_ttr, distance_ttr]
+    if feature == 'uriel':
+        feats = uriel_features
+
     elif feature == 'pos':
         feats = [word_overlap, transfer_dataset_size, task_data_size,
                  ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
         # feats += [distance_p2n, distance_pron, distance_verb] # 3
         feats += [distance_pron, distance_verb] # 2
-        feats += uriel_features
+        # feats += uriel_features
     elif feature == 'emot':
         feats = [word_overlap, transfer_dataset_size, task_data_size,
                  ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
         feats += [emotion_dist]
-        feats += uriel_features
+        # feats += uriel_features
     elif feature == 'ltq':
         feats = [word_overlap, transfer_dataset_size, task_data_size,
                  ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
         feats += [ltq_dist]
-        feats += uriel_features
+        # feats += uriel_features
     elif feature == 'all':
         feats = [word_overlap, transfer_dataset_size, task_data_size,
                  ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
@@ -305,7 +311,7 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         feats += [distance_pron, distance_verb] # 2
         feats += [emotion_dist]
         feats += [ltq_dist]
-        feats += uriel_features
+        # feats += uriel_features
     # below is for analyses
     elif feature == 'nogeo':
         feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
