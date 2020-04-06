@@ -91,7 +91,7 @@ def summarize_result(result, features):
     num_lang= len(result)
     for feat in features:
         avg = res[feat] / num_lang
-        print(f'{f}: {avg:.4f}', end='\t')
+        print(f'{feat}: {avg:.4f}', end='\t')
     print('\n')
 
 def format_print(result, features):
@@ -113,7 +113,6 @@ if __name__ == '__main__':
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     features = ['base', 'dataset', 'uriel', 'pos', 'emot', 'ltq', 'all']
-    features = ['pos', 'all']
     result = defaultdict(dict)
     for l in langs:
         for f in features:
