@@ -4,6 +4,7 @@ import numpy as np
 from collections import Counter
 
 import sys; sys.path.append('/home/hwijeen/langrank')
+sys.path.append('/Users/jimin/Documents/research/langrank')
 from new_features import pos_features
 
 def read_data(fn):
@@ -19,7 +20,7 @@ def read_data(fn):
     return v,c
 
 
-dataset_dir = "datasets/sa"
+dataset_dir = "./datasets/sa"
 
 # Not needed now
 #eng_vocab_f = "datasets/eng/word.vocab"

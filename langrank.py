@@ -276,7 +276,7 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     distance_p2n = transfer_p2n / task_p2n
 
     emotion_dist = emo_features(test['lang'], transfer['lang'])
-    ltq_dist = ltq_features(test['lang'], transfer['lang'])
+    ltq_score = ltq_features(test['lang'], transfer['lang'])
 
     if feature == 'base':
         feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
@@ -302,7 +302,7 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     elif feature == 'ltq':
         feats = [word_overlap, transfer_dataset_size, task_data_size,
                  ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
-        feats += [ltq_dist]
+        feats += [ltq_score]
         # feats += uriel_features
     elif feature == 'all':
         feats = [word_overlap, transfer_dataset_size, task_data_size,
@@ -310,23 +310,31 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         # feats += [distance_p2n, distance_pron, distance_verb] # 3
         feats += [distance_pron, distance_verb] # 2
         feats += [emotion_dist]
-        feats += [ltq_dist]
+        feats += [ltq_score]
         # feats += uriel_features
     # below is for analyses
     elif feature == 'nogeo':
         feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
-                                  transfer_ttr, task_ttr, distance_ttr]
+                 transfer_ttr, task_ttr, distance_ttr]
         feats += uriel_features[:-1]
-    elif feature == 'syn_only':
-        feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size]
-        feats += uriel_features[:-1]
-    elif feature == 'cult_only':
+    elif feature == 'typo_group':
+        # feature_name = ['genetic', 'syntactic', 'featural', 'phonological', 'inventory']
+        feats = uriel_features[:-1]
+    elif feature == 'geo_group':
+        # feature_name = ['geographical']
+        feats = uriel_features[-1:]
+    elif feature == 'cult_group':
+        # feature_name = ['transfer_ttr', 'task_ttr', 'distance_ttr',
+        #                 'distance_pron', 'distance_verb', 'ltq_score', 'emotion_dist']
+        feats = [transfer_ttr, task_ttr, distance_ttr,
+                 distance_pron, distance_verb, ltq_score, emotion_dist]
+    elif feature == 'ortho_group':
+        # feature_name = ['word_overlap']
+        feats = [word_overlap]
+    elif feature == 'data_group':
+        # feature_name = ['transfer_data_size', 'task_data_size', 'ratio_data_size']
         feats = [transfer_dataset_size, task_data_size, ratio_dataset_size]
-        feats += [transfer_ttr, task_ttr, distance_ttr]
-        feats += [distance_p2n, distance_pron, distance_verb] # 3
-        # feats += [distance_pron, distance_verb] # 2
-        feats += [emotion_dist, ltq_dist]
-        feats += [uriel_features[-1]] # geo
+
     return np.array(feats)
 
 # TODO: cutoff when data is big!

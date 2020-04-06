@@ -88,7 +88,7 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
     elif feature == 'ltq':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        'ltq_dist']
+                        'ltq_score']
                         # 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'all':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
@@ -96,24 +96,24 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
                         # 'pron_to_noun', 'distance_pron', 'distance_verb', # 3
                         'distance_pron', 'distance_verb', # 2
                         'emotion_dist',
-                        'ltq_dist']
+                        'ltq_score']
                         # 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-
     elif feature == 'nogeo':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory']
-    elif feature == 'syn_only':
-        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size', 'ratio_data_size',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory'] # nogeo
-    elif feature == 'cult_only':
-        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
-                        'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        # 'noun_to_verb', 'pron_to_noun', 'distance_noun', 'distance_pron', 'distance_verb',
-                        'pron_to_noun', 'distance_pron', 'distance_verb', # 3
-                        # 'distance_pron', 'distance_verb', # 2
-                        'emotion_dist', 'ltq_dist',
-                        'geographical']
+    elif feature == 'typo_group':
+        feature_name = ['genetic', 'syntactic', 'featural', 'phonological', 'inventory']
+    elif feature == 'geo_group':
+        feature_name = ['geographical']
+    elif feature == 'cult_group':
+        feature_name = ['transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'distance_pron', 'distance_verb', 'ltq_score', 'emotion_dist']
+    elif feature == 'ortho_group':
+        feature_name = ['word_overlap']
+    elif feature == 'data_group':
+        feature_name = ['transfer_data_size', 'task_data_size', 'ratio_data_size']
+
     print(f'Features used are {feature_name}')
     train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task=f"{task.upper()}")
     assert os.path.isfile(output_model)
@@ -124,7 +124,8 @@ if __name__ == '__main__':
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     task = 'sa' # 'sa'
     # features = ['base', 'pos', 'emot', 'ltq', 'all']
-    features = ['all']
+    # features = ['all']
+    features = ['base', 'typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group', 'all']
     for f in features:
         for exclude in langs:
             print(f'\nStart training with {exclude} excluded for task {task}')

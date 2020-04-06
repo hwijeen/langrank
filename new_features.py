@@ -177,9 +177,6 @@ def emo_features(lang1, lang2, fpath='./features/', pairwise=True):
     else:
         pass
 
-    lang_to_code = copy(lang2code)
-    lang_to_code['zho'] = 'zh'
-
     # code_to_lang = {v:k for k,v in lang_to_code.items()}
     # if asymmetric score is correct
     feature_dict = defaultdict(dict)
@@ -187,7 +184,9 @@ def emo_features(lang1, lang2, fpath='./features/', pairwise=True):
         for line in f:
             lang1_code, lang2_code, emo_score = line.split('\t')
             feature_dict[lang1_code][lang2_code] = emo_score
-    return feature_dict[lang_to_code[lang1]][lang_to_code[lang2]].strip()
+    if lang1 == lang2:
+        return 0.0
+    return feature_dict[lang2code[lang1]][lang2code[lang2]].strip()
 
     # # if symmetric score is correct
     # feature_dict = dict()
@@ -204,16 +203,15 @@ def ltq_features(lang1, lang2, fpath='./features/', norm=True):
     else:
         fpath = os.path.join(fpath, 'ltq_either_norm.txt')
 
-    lang_to_code = copy(lang2code)
-    lang_to_code['zho'] = 'zh'
-
     # if asymmetric score is correct
     feature_dict = defaultdict(dict)
     with open(fpath) as f:
         for line in f:
             lang1_code, lang2_code, ltq_score = line.split('\t')
             feature_dict[lang1_code][lang2_code] = ltq_score
-    return feature_dict[lang_to_code[lang1]][lang_to_code[lang2]].strip()
+    if lang1 == lang2:
+        return 0.0
+    return feature_dict[lang2code[lang1]][lang2code[lang2]].strip()
 
 if __name__ == "__main__":
     features = ['noun', 'pron', 'verb', 'noun2verb', 'pron2noun']
