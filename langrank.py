@@ -279,59 +279,65 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     ltq_score = ltq_features(test['lang'], transfer['lang'])
 
     if feature == 'base':
-        feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
-                                  transfer_ttr, task_ttr, distance_ttr]
+        feats = [word_overlap,
+                 transfer_dataset_size, task_data_size, ratio_dataset_size,
+                 transfer_ttr, task_ttr, distance_ttr]
         feats += uriel_features
     if feature == 'dataset':
-        feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
-                                  transfer_ttr, task_ttr, distance_ttr]
+        feats = [word_overlap,
+                 transfer_dataset_size, task_data_size, ratio_dataset_size,
+                 transfer_ttr, task_ttr, distance_ttr]
     if feature == 'uriel':
         feats = uriel_features
 
     elif feature == 'pos':
-        feats = [word_overlap, transfer_dataset_size, task_data_size,
-                 ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+        feats = [#word_overlap,
+                 transfer_dataset_size, task_data_size, ratio_dataset_size]
+                # transfer_ttr, task_ttr, distance_ttr]
         # feats += [distance_p2n, distance_pron, distance_verb] # 3
         feats += [distance_pron, distance_verb] # 2
         # feats += uriel_features
     elif feature == 'emot':
-        feats = [word_overlap, transfer_dataset_size, task_data_size,
-                 ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+        feats = [#word_overlap,
+                 transfer_dataset_size, task_data_size, ratio_dataset_size]
+                 # transfer_ttr, task_ttr, distance_ttr]
         feats += [emotion_dist]
         # feats += uriel_features
     elif feature == 'ltq':
-        feats = [word_overlap, transfer_dataset_size, task_data_size,
-                 ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+        feats = [#word_overlap,
+                 transfer_dataset_size, task_data_size, ratio_dataset_size]
+                 # transfer_ttr, task_ttr, distance_ttr]
         feats += [ltq_score]
         # feats += uriel_features
     elif feature == 'all':
+<<<<<<< HEAD
         feats = [word_overlap, transfer_dataset_size, task_data_size,
                  ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+=======
+        feats = [word_overlap,
+                 transfer_dataset_size, task_data_size, ratio_dataset_size,
+                 transfer_ttr, task_ttr, distance_ttr]
+        # feats += [distance_p2n, distance_pron, distance_verb] # 3
+>>>>>>> 488584cdcdeb606aef4b7613ccfa627d4f836873
         feats += [distance_pron, distance_verb] # 2
         feats += [emotion_dist]
         feats += [ltq_score]
         feats += uriel_features
+<<<<<<< HEAD
+=======
+
+>>>>>>> 488584cdcdeb606aef4b7613ccfa627d4f836873
     # below is for analyses
-    elif feature == 'nogeo':
-        feats = [word_overlap, transfer_dataset_size, task_data_size, ratio_dataset_size,
-                 transfer_ttr, task_ttr, distance_ttr]
-        feats += uriel_features[:-1]
     elif feature == 'typo_group':
-        # feature_name = ['genetic', 'syntactic', 'featural', 'phonological', 'inventory']
         feats = uriel_features[:-1]
     elif feature == 'geo_group':
-        # feature_name = ['geographical']
         feats = uriel_features[-1:]
     elif feature == 'cult_group':
-        # feature_name = ['transfer_ttr', 'task_ttr', 'distance_ttr',
-        #                 'distance_pron', 'distance_verb', 'ltq_score', 'emotion_dist']
         feats = [transfer_ttr, task_ttr, distance_ttr,
                  distance_pron, distance_verb, ltq_score, emotion_dist]
     elif feature == 'ortho_group':
-        # feature_name = ['word_overlap']
         feats = [word_overlap]
     elif feature == 'data_group':
-        # feature_name = ['transfer_data_size', 'task_data_size', 'ratio_data_size']
         feats = [transfer_dataset_size, task_data_size, ratio_dataset_size]
 
     return np.array(feats)
