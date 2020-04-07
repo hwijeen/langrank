@@ -108,7 +108,7 @@ def format_print(result, features):
 if __name__ == '__main__':
 
     # params = parse_args()
-    task = 'sa' # 'sa'
+    task = 'dep' # 'sa'
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
