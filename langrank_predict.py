@@ -96,7 +96,7 @@ def summarize_result(result, features):
 
 def format_print(result, features):
     result = sorted([(l, res_by_feat) for l, res_by_feat in result.items()], key=lambda x: x[0])
-    print('\t'.join(features))
+    print('\t' + '\t'.join(features))
     for lang, res_by_feat in result:
         print(f'{lang}', end='')
         for feat in features:
@@ -112,7 +112,7 @@ if __name__ == '__main__':
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    features = ['base', 'dataset', 'uriel', 'pos', 'emot', 'ltq', 'all']
+    features = ,'uriel', 'pos', 'emot', 'ltq', 'all', 'ours']
     result = defaultdict(dict)
     for l in langs:
         for f in features:
