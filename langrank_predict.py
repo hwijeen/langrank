@@ -112,9 +112,8 @@ if __name__ == '__main__':
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    # features = ['base', 'dataset', 'uriel', 'pos', 'emot', 'ltq', 'all']
-    # features = ['base', 'typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group', 'all']
-    features = ['base']
+    features = ['base', 'pos', 'emot', 'ltq', 'all', 'dataset', 'uriel',]
+    features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
     result = defaultdict(dict)
     for l in langs:
         for f in features:
