@@ -108,12 +108,23 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
         feature_name = ['word_overlap',
                         'transfer_data_size', 'task_data_size', 'ratio_data_size',
                         'transfer_ttr', 'task_ttr', 'distance_ttr',
+<<<<<<< HEAD
+                        'distance_pron', 'distance_verb',
+                        'emotion_dist',
+                        'ltq_score',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    elif feature == 'nogeo':
+        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
+                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory']
+=======
                         # 'pron_to_noun', 'distance_pron', 'distance_verb', # 3
                         'distance_pron', 'distance_verb', # 2
                         'emotion_dist',
                         'ltq_score',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
 
+>>>>>>> 488584cdcdeb606aef4b7613ccfa627d4f836873
     elif feature == 'typo_group':
         feature_name = ['genetic', 'syntactic', 'featural', 'phonological', 'inventory']
     elif feature == 'geo_group':

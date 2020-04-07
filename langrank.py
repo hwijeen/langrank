@@ -318,15 +318,23 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         feats += [ltq_score]
 
     elif feature == 'all':
+<<<<<<< HEAD
+        feats = [word_overlap, transfer_dataset_size, task_data_size,
+                 ratio_dataset_size, transfer_ttr, task_ttr, distance_ttr]
+=======
         feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size,
                  transfer_ttr, task_ttr, distance_ttr]
         # feats += [distance_p2n, distance_pron, distance_verb] # 3
+>>>>>>> 488584cdcdeb606aef4b7613ccfa627d4f836873
         feats += [distance_pron, distance_verb] # 2
         feats += [emotion_dist]
         feats += [ltq_score]
         feats += uriel_features
+<<<<<<< HEAD
+=======
 
+>>>>>>> 488584cdcdeb606aef4b7613ccfa627d4f836873
     # below is for analyses
     elif feature == 'typo_group':
         feats = uriel_features[:-1]
