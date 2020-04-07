@@ -91,13 +91,13 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
                         'ltq_score']
                         # 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'all':
-        feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
-                        'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        # 'pron_to_noun', 'distance_pron', 'distance_verb', # 3
-                        'distance_pron', 'distance_verb', # 2
+        feature_name = ['word_overlap',
+                        'transfer_data_size', 'task_data_size', 'ratio_data_size',
+                        'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'distance_pron', 'distance_verb',
                         'emotion_dist',
-                        'ltq_score']
-                        # 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+                        'ltq_score',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'nogeo':
         feature_name = ['word_overlap', 'transfer_data_size', 'task_data_size',
                         'ratio_data_size', 'transfer_ttr', 'task_ttr', 'distance_ttr',
