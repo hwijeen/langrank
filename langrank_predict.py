@@ -91,12 +91,12 @@ def summarize_result(result, features):
     num_lang= len(result)
     for feat in features:
         avg = res[feat] / num_lang
-        print(f'{f}: {avg:.4f}', end='\t')
+        print(f'{feat}: {avg:.4f}', end='\t')
     print('\n')
 
 def format_print(result, features):
     result = sorted([(l, res_by_feat) for l, res_by_feat in result.items()], key=lambda x: x[0])
-    print('\t'.join(features))
+    print('\t' + '\t'.join(features))
     for lang, res_by_feat in result:
         print(f'{lang}', end='')
         for feat in features:
@@ -112,8 +112,9 @@ if __name__ == '__main__':
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    features = ['base', 'dataset', 'uriel', 'pos', 'emot', 'ltq', 'all']
-    features = ['pos', 'all']
+    # features = ['base', 'dataset', 'uriel', 'pos', 'emot', 'ltq', 'all']
+    # features = ['base', 'typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group', 'all']
+    features = ['base']
     result = defaultdict(dict)
     for l in langs:
         for f in features:
