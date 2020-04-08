@@ -116,7 +116,7 @@ def get_candidates(task, languages=None):
         d = np.load(fn, encoding='latin1', allow_pickle=True).item()
         # languages with * means to exclude
         if task == 'SA':
-            cands += [(key,d[key]) for key in d if '*' + key.split('/')[2][:3] not in languages]
+            cands += [(key,d[key]) for key in d if '*' + key.split('/')[3][:3] not in languages]
         elif task == 'DEP':
             cands += [(key,d[key]) for key in d if '*' + key.split('_')[1] not in languages]
         cands = sorted(cands, key=lambda x: x[0])
