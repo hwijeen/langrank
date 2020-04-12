@@ -9,7 +9,24 @@ from scipy.stats import rankdata
 import numpy as np
 from collections import defaultdict
 
-def evaluate(pred_rank, gold_rank, k=3):
+
+def ap_score(pred_rank, gold_rank, k=3):
+    prec_scores = [precision(pred_rank, gold_rank, rank) for idx, rank in enumerate(pred_rank) if rank <= k]
+    return np.mean(prec_scores)
+
+
+def precision(pred_rank, gold_rank, k):
+    relevant_idx = [idx for idx, r in enumerate(gold_rank) if r <= k]
+    tp = 0
+    for idx, rank in enumerate(pred_rank):
+        if rank <= k and idx in relevant_idx:
+            tp += 1
+        else:
+            pass
+    return tp / k
+
+
+def ndcg_score(pred_rank, gold_rank, k=3):
     # NDCG@3 as default
     num_lang = len(pred_rank)
     pred_rel = rank_to_relevance(pred_rank, num_lang)
@@ -17,6 +34,13 @@ def evaluate(pred_rank, gold_rank, k=3):
     pred_rel = np.expand_dims(pred_rel, axis=0)
     gold_rel = np.expand_dims(gold_rel, axis=0)
     return ndcg(y_score=pred_rel, y_true=gold_rel, k=k)
+
+
+def evaluate(pred_rank, gold_rank):
+    ndcg_3 = ndcg_score(pred_rank, gold_rank, 3)
+    ap_3 = ap_score(pred_rank, gold_rank, 3)
+    return ndcg_3, ap_3
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Langrank parser.')
@@ -107,6 +131,8 @@ def format_print(result, features):
 
 if __name__ == '__main__':
 
+
+    raise ValueError
     # params = parse_args()
     task = 'sa' # 'sa'
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
@@ -115,7 +141,9 @@ if __name__ == '__main__':
     # features = ['base', 'pos', 'emot', 'ltq', 'all', 'dataset', 'uriel',]
     # features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
     features = ['ours']
-    result = defaultdict(dict)
+    eval_metric = ['ndcg', 'ap']
+    result_map = defaultdict(dict)
+    result_ndcg = defaultdict(dict)
     for l in langs:
         for f in features:
             params = make_args(l, f, f'{task.upper()}')
@@ -131,9 +159,13 @@ if __name__ == '__main__':
                                                        model=params.model, feature=params.feature)
             pred = sort_prediction(cand_langs, neg_predicted_scores)
             gold = load_gold(params.task, params.lang)
-            ndcg_score = evaluate(pred, gold)
+            ndcg_3, ap_3 = evaluate(pred, gold)
 
-            result[params.lang][params.feature] = ndcg_score
+            # NDCG@3 score
+            result_ndcg[params.lang][params.feature]['ndcg'] = ndcg_3
+            # AP@3 score
+            result_map[params.lang][params.feature]['ap'] = ap_3
+
             pred_langs = [cand_langs[i] for i in np.argsort(pred)[:3]]
             gold_langs = [cand_langs[i] for i in np.argsort(gold)[:3]]
             print('*'*80)
@@ -142,10 +174,14 @@ if __name__ == '__main__':
             print(f'Top 3 prediction langs: {pred_langs}')
             print(f'Gold is {gold}')
             print(f'Top 3 gold langs: {gold_langs}')
-            print(f'ndcg is {ndcg_score}')
+            print(f'ndcg is {ndcg_3}')
+            print(f'ap is {ap_3}')
             print('*'*80, end='\n\n')
 
-    summarize_result(result, features)
-    format_print(result, features)
+    summarize_result(result_map, features)
+    summarize_result(result_ndcg, features)
+
+    format_print(result_map, features)
+    format_print(result_ndcg, features)
 
 
