@@ -12,6 +12,8 @@ from collections import defaultdict
 
 def ap_score(pred_rank, gold_rank, k=3):
     prec_scores = [precision(pred_rank, gold_rank, rank) for idx, rank in enumerate(pred_rank) if rank <= k]
+    if prec_scores == []:
+        return 0
     return np.mean(prec_scores)
 
 
@@ -130,17 +132,14 @@ def format_print(result, features):
 
 
 if __name__ == '__main__':
-
-
-    raise ValueError
     # params = parse_args()
     task = 'sa' # 'sa'
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     # features = ['base', 'pos', 'emot', 'ltq', 'all', 'dataset', 'uriel',]
-    # features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
-    features = ['ours']
+    features = ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
+    # features = ['ours']
     eval_metric = ['ndcg', 'ap']
     result_map = defaultdict(dict)
     result_ndcg = defaultdict(dict)
