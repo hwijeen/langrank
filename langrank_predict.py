@@ -6,6 +6,7 @@ import argparse
 from utils import ndcg
 import pickle
 from scipy.stats import rankdata
+from sklearn.metrics import average_precision_score
 import numpy as np
 from collections import defaultdict
 
@@ -17,6 +18,9 @@ def evaluate(pred_rank, gold_rank, k=3):
     pred_rel = np.expand_dims(pred_rel, axis=0)
     gold_rel = np.expand_dims(gold_rel, axis=0)
     return ndcg(y_score=pred_rel, y_true=gold_rel, k=k)
+
+def evaluate_map(pred_rank, gold_rank):
+    pass
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Langrank parser.')
@@ -114,7 +118,7 @@ if __name__ == '__main__':
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     # features = ['base', 'pos', 'emot', 'ltq', 'all', 'dataset', 'uriel',]
     # features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
-    features = ['ours']
+    features = ['base', 'cult_group']
     result = defaultdict(dict)
     for l in langs:
         for f in features:
@@ -132,6 +136,7 @@ if __name__ == '__main__':
             pred = sort_prediction(cand_langs, neg_predicted_scores)
             gold = load_gold(params.task, params.lang)
             ndcg_score = evaluate(pred, gold)
+            evaluate_map(pred, gold)
 
             result[params.lang][params.feature] = ndcg_score
             pred_langs = [cand_langs[i] for i in np.argsort(pred)[:3]]
