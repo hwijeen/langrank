@@ -162,9 +162,9 @@ if __name__ == '__main__':
             ndcg_3, ap_3 = evaluate(pred, gold)
 
             # NDCG@3 score
-            result_ndcg[params.lang][params.feature]['ndcg'] = ndcg_3
+            result_ndcg[params.lang][params.feature] = ndcg_3
             # AP@3 score
-            result_map[params.lang][params.feature]['ap'] = ap_3
+            result_map[params.lang][params.feature] = ap_3
 
             pred_langs = [cand_langs[i] for i in np.argsort(pred)[:3]]
             gold_langs = [cand_langs[i] for i in np.argsort(gold)[:3]]
