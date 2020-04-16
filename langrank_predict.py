@@ -10,7 +10,26 @@ from sklearn.metrics import average_precision_score
 import numpy as np
 from collections import defaultdict
 
-def evaluate(pred_rank, gold_rank, k=3):
+
+def ap_score(pred_rank, gold_rank, k=3):
+    prec_scores = [precision(pred_rank, gold_rank, rank) for idx, rank in enumerate(pred_rank) if rank <= k]
+    if prec_scores == []:
+        return 0
+    return np.mean(prec_scores)
+
+
+def precision(pred_rank, gold_rank, k):
+    relevant_idx = [idx for idx, r in enumerate(gold_rank) if r <= k]
+    tp = 0
+    for idx, rank in enumerate(pred_rank):
+        if rank <= k and idx in relevant_idx:
+            tp += 1
+        else:
+            pass
+    return tp / k
+
+
+def ndcg_score(pred_rank, gold_rank, k=3):
     # NDCG@3 as default
     num_lang = len(pred_rank)
     pred_rel = rank_to_relevance(pred_rank, num_lang)
@@ -19,8 +38,12 @@ def evaluate(pred_rank, gold_rank, k=3):
     gold_rel = np.expand_dims(gold_rel, axis=0)
     return ndcg(y_score=pred_rel, y_true=gold_rel, k=k)
 
-def evaluate_map(pred_rank, gold_rank):
-    pass
+
+def evaluate(pred_rank, gold_rank):
+    ndcg_3 = ndcg_score(pred_rank, gold_rank, 3)
+    ap_3 = ap_score(pred_rank, gold_rank, 3)
+    return ndcg_3, ap_3
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Langrank parser.')
@@ -68,7 +91,8 @@ def sort_prediction(cand_list, neg_scores):
         pass
     sorted_list = sorted(zip(cand_list, neg_scores), key=lambda x: x[0])
     pred_neg_scores = [z[1] for z in sorted_list]
-    pred = rankdata(pred_neg_scores)
+    pred = rankdata(pred_neg_scores, method='min')
+    # pred = rankdata(pred_neg_scores, method='max')
     return pred
 
 def load_gold(task, target_lang):
@@ -110,16 +134,18 @@ def format_print(result, features):
 
 
 if __name__ == '__main__':
-
     # params = parse_args()
-    task = 'sa' # 'sa'
+    task = 'dep' # 'sa'
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    # features = ['base', 'pos', 'emot', 'ltq', 'all', 'dataset', 'uriel',]
-    # features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
-    features = ['base', 'cult_group']
+    features = ['base', 'nocult', 'pos', 'emot', 'ltq', 'ours', 'all']
+    features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
+
     result = defaultdict(dict)
+    eval_metric = ['ndcg', 'ap']
+    result_map = defaultdict(dict)
+    result_ndcg = defaultdict(dict)
     for l in langs:
         for f in features:
             params = make_args(l, f, f'{task.upper()}')
@@ -135,10 +161,13 @@ if __name__ == '__main__':
                                                        model=params.model, feature=params.feature)
             pred = sort_prediction(cand_langs, neg_predicted_scores)
             gold = load_gold(params.task, params.lang)
-            ndcg_score = evaluate(pred, gold)
-            evaluate_map(pred, gold)
+            ndcg_3, ap_3 = evaluate(pred, gold)
 
-            result[params.lang][params.feature] = ndcg_score
+            # NDCG@3 score
+            result_ndcg[params.lang][params.feature] = ndcg_3
+            # AP@3 score
+            result_map[params.lang][params.feature] = ap_3
+
             pred_langs = [cand_langs[i] for i in np.argsort(pred)[:3]]
             gold_langs = [cand_langs[i] for i in np.argsort(gold)[:3]]
             print('*'*80)
@@ -147,10 +176,14 @@ if __name__ == '__main__':
             print(f'Top 3 prediction langs: {pred_langs}')
             print(f'Gold is {gold}')
             print(f'Top 3 gold langs: {gold_langs}')
-            print(f'ndcg is {ndcg_score}')
+            print(f'ndcg is {ndcg_3}')
+            print(f'ap is {ap_3}')
             print('*'*80, end='\n\n')
 
-    summarize_result(result, features)
-    format_print(result, features)
+    summarize_result(result_map, features)
+    summarize_result(result_ndcg, features)
+
+    format_print(result_map, features)
+    format_print(result_ndcg, features)
 
 
