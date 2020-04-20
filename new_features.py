@@ -198,7 +198,8 @@ def emo_features(lang1, lang2, fpath='./features/', pairwise=True):
 
 def ltq_features(lang1, lang2, fpath='./features/', norm=True):
     if norm:
-        fpath = os.path.join(fpath, 'ltq_either_norm.txt')
+        fpath = os.path.join(fpath, 'ltq_500_norm_download.txt')
+        # fpath = os.path.join(fpath, 'ltq_either_norm.txt')
         # fpath = os.path.join(fpath, 'ltq_either.txt')
     else:
         fpath = os.path.join(fpath, 'ltq_either_norm.txt')

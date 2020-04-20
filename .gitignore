@@ -1,8 +1,6 @@
 *.swp
 __pycache__
-indexed/
 .ipynb_checkpoints
-pretrained
 .DS_Store
 .idea
 tmp
