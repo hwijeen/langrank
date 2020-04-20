@@ -136,14 +136,12 @@ def format_print(result, features):
 if __name__ == '__main__':
     # params = parse_args()
     task = 'sa' # 'sa'
-    # langs = ['ara', 'ces', 'deu', 'eng', 'fas',
-    #          'fra', 'hin', 'jpn', 'kor', 'nld',
-    #          'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
+    langs = ['ara', 'ces', 'deu', 'eng', 'fas',
+             'fra', 'hin', 'jpn', 'kor', 'nld',
+             'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
     # features = ['base', 'nocult', 'pos', 'emot', 'ltq', 'ours', 'all']
     # features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
-    features = ['base', 'ours', 'all']
-    langs = ['tur'] # no tha
-    # features = ['base', 'nocult', 'pos', 'emot', 'ltq', 'ours', 'all']
+    features = ['ltq', 'ours', 'all']
     features += ['cult_group']
 
     result = defaultdict(dict)
@@ -172,10 +170,8 @@ if __name__ == '__main__':
             # AP@3 score
             result_map[params.lang][params.feature] = ap_3
 
-            # pred_langs = [cand_langs[i] for i in np.argsort(pred)[:3]]
-            # gold_langs = [cand_langs[i] for i in np.argsort(gold)[:3]]
-            pred_langs = [cand_langs[i] for i in np.argsort(pred)]
-            gold_langs = [cand_langs[i] for i in np.argsort(gold)]
+            pred_langs = [cand_langs[i] for i in np.argsort(pred)[:3]]
+            gold_langs = [cand_langs[i] for i in np.argsort(gold)[:3]]
             print('*'*80)
             print(f'Prediction for lang {params.lang} with {params.feature} features, {task} task')
             print(f'Prediction is {pred}')

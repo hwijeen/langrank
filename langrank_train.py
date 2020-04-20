@@ -139,9 +139,12 @@ if __name__ == '__main__':
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    task = 'dep' # 'sa'
-    features = ['base', 'nocult', 'pos', 'emot', 'ltq', 'ours', 'all']
-    features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
+    task = 'sa' # 'sa'
+    # features = ['base', 'nocult', 'pos', 'emot', 'ltq', 'ours', 'all']
+    # features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
+    features = ['ltq', 'ours', 'all']
+    features += ['cult_group']
+
     for f in features:
         for exclude in langs:
             print(f'\nStart training with {exclude} excluded for task {task}')
