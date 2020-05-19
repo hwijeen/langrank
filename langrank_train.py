@@ -1,3 +1,4 @@
+import argparse
 import pickle
 import os, sys
 root=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,7 +33,9 @@ def rerank(rank, without_idx=None):
         reranked.append(rr)
     return reranked
 
-def train_langrank(task='sa', exclude_lang=None, feature='base'):
+def train_langrank(task='sa', exclude_lang=None, feature='base',
+                   num_leaves=16, max_depth=-1, learning_rate=0.1,
+                   n_estimators=100, min_child_samples=5):
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
@@ -76,34 +79,39 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
     elif feature == 'uriel':
         feature_name = ['genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
 
+    elif feature == 'nocult':
+        feature_name = ['word_overlap',
+                        'transfer_data_size', 'task_data_size', 'ratio_data_size',
+                        # 'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'pos':
-        feature_name = [#'word_overlap',
+        feature_name = ['word_overlap',
                         'transfer_data_size', 'task_data_size', 'ratio_data_size',
                         # 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         # 'pron_to_noun', 'distance_pron', 'distance_verb', # 3
-                        'distance_pron', 'distance_verb'] # 2
-                        # 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+                        'distance_pron', 'distance_verb', # 2
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'emot':
-        feature_name = [#'word_overlap',
+        feature_name = ['word_overlap',
                         'transfer_data_size', 'task_data_size', 'ratio_data_size',
                         # 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        'emotion_dist']
-                        # 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+                        'emotion_dist',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'ltq':
-        feature_name = [#'word_overlap',
+        feature_name = ['word_overlap',
                         'transfer_data_size', 'task_data_size', 'ratio_data_size',
                         # 'transfer_ttr', 'task_ttr', 'distance_ttr',
-                        'ltq_score']
-                        # 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+                        'ltq_score',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'ours':
-        feature_name = [#'word_overlap',
+        feature_name = ['word_overlap',
                         'transfer_data_size', 'task_data_size', 'ratio_data_size',
                         # 'transfer_ttr', 'task_ttr', 'distance_ttr',
                         # 'pron_to_noun', 'distance_pron', 'distance_verb', # 3
                         'distance_pron', 'distance_verb', # 2
                         'emotion_dist',
-                        'ltq_score']
-                        # 'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+                        'ltq_score',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'all':
         feature_name = ['word_overlap',
                         'transfer_data_size', 'task_data_size', 'ratio_data_size',
@@ -127,19 +135,39 @@ def train_langrank(task='sa', exclude_lang=None, feature='base'):
         feature_name = ['transfer_data_size', 'task_data_size', 'ratio_data_size']
 
     print(f'Features used are {feature_name}')
-    train(tmp_dir=tmp_dir, output_model=output_model, feature_name=feature_name, task=f"{task.upper()}")
+    train(tmp_dir=tmp_dir, output_model=output_model, num_leaves=num_leaves,
+          max_depth=max_depth, learning_rate=learning_rate,
+          n_estimators=n_estimators, min_child_samples=min_child_samples,
+          feature_name=feature_name, task=f"{task.upper()}")
     assert os.path.isfile(output_model)
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--task', default='sa')
+    parser.add_argument('--features', nargs='+')
+    parser.add_argument('--num_leaves', type=int, default=16)
+    parser.add_argument('--max_depth', type=int, default=-1)
+    parser.add_argument('--learning_rate', type=float, default=0.1)
+    parser.add_argument('--n_estimators', type=int, default=100)
+    parser.add_argument('--min_child_samples', type=int, default=5)
+    return parser.parse_args()
+
 
 if __name__ == '__main__':
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    task = 'sa' # 'sa'
-    # features = ['base', 'pos', 'emot', 'ltq', 'ours', 'all', 'dataset', 'uriel',]
+    args = parse_args()
+    # task = 'sa' # 'sa'
+    # features = ['base', 'pos', 'emot', 'ltq', 'all', 'dataset', 'uriel',]
     # features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
-    features = ['ours']
-    for f in features:
+    # features = ['base', 'all']
+    for f in args.features:
         for exclude in langs:
-            print(f'\nStart training with {exclude} excluded for task {task}')
+            print(f'\nStart training with {exclude} excluded for task {args.task}')
             print(f'Features: {f}')
-            train_langrank(task=task, exclude_lang=exclude, feature=f)
+            train_langrank(task=args.task, exclude_lang=exclude, feature=f,
+                           num_leaves=args.num_leaves, max_depth=args.max_depth,
+                           learning_rate=args.learning_rate,
+                           n_estimators=args.n_estimators,
+                           min_child_samples=args.min_child_samples)

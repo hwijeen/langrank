@@ -283,40 +283,45 @@ def distance_vec(test, transfer, uriel_features, task, feature):
                  transfer_dataset_size, task_data_size, ratio_dataset_size,
                  transfer_ttr, task_ttr, distance_ttr]
         feats += uriel_features
-    if feature == 'dataset':
+    elif feature == 'dataset':
         feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size,
                  transfer_ttr, task_ttr, distance_ttr]
-    if feature == 'uriel':
+    elif feature == 'uriel':
         feats = uriel_features
 
+    elif feature == 'nocult':
+        feats = [word_overlap,
+                 transfer_dataset_size, task_data_size, ratio_dataset_size]
+                 # transfer_ttr, task_ttr, distance_ttr]
+        feats += uriel_features
     elif feature == 'pos':
-        feats = [#word_overlap,
+        feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size]
                 # transfer_ttr, task_ttr, distance_ttr]
         # feats += [distance_p2n, distance_pron, distance_verb] # 3
         feats += [distance_pron, distance_verb] # 2
-        # feats += uriel_features
+        feats += uriel_features
     elif feature == 'emot':
-        feats = [#word_overlap,
+        feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size]
                  # transfer_ttr, task_ttr, distance_ttr]
         feats += [emotion_dist]
-        # feats += uriel_features
+        feats += uriel_features
     elif feature == 'ltq':
-        feats = [#word_overlap,
+        feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size]
                  # transfer_ttr, task_ttr, distance_ttr]
         feats += [ltq_score]
-        # feats += uriel_features
+        feats += uriel_features
     elif feature == 'ours':
-        feats = [#word_overlap,
+        feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size]
                  # transfer_ttr, task_ttr, distance_ttr]
         feats += [distance_pron, distance_verb] # 2
         feats += [emotion_dist]
         feats += [ltq_score]
-
+        feats += uriel_features
     elif feature == 'all':
         feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size,
@@ -399,14 +404,15 @@ def prepare_train_file(datasets, langs, rank, segmented_datasets=None,
     # print("Dump train file to {} ...".format(train_file_f))
     # print("Dump train size file to {} ...".format(train_size_f))
 
-def train(tmp_dir, output_model, feature_name='auto', task='SA'):
+def train(tmp_dir, output_model, num_leaves=16, max_depth=-1, learning_rate=0.1,
+          n_estimators=100, min_child_samples=5, feature_name='auto', task='SA'):
     train_file = os.path.join(tmp_dir, f"train_{task}.csv")
     train_size = os.path.join(tmp_dir, f"train_{task}_size.csv")
     X_train, y_train = load_svmlight_file(train_file)
     print('Training in prog...')
-    model = lgb.LGBMRanker(boosting_type='gbdt', num_leaves=16,
-                        max_depth=-1, learning_rate=0.1, n_estimators=100,
-                        min_child_samples=5)
+    model = lgb.LGBMRanker(boosting_type='gbdt', num_leaves=num_leaves,
+                           max_depth=max_depth, learning_rate=learning_rate,
+                           n_estimators=n_estimators, min_child_samples=min_child_samples)
     model.fit(X_train, y_train, group=np.loadtxt(train_size),
               feature_name=feature_name)
     model.booster_.save_model(output_model)

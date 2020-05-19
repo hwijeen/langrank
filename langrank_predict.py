@@ -6,6 +6,7 @@ import argparse
 from utils import ndcg
 import pickle
 from scipy.stats import rankdata
+from sklearn.metrics import average_precision_score
 import numpy as np
 from collections import defaultdict
 
@@ -37,36 +38,39 @@ def ndcg_score(pred_rank, gold_rank, k=3):
     gold_rel = np.expand_dims(gold_rel, axis=0)
     return ndcg(y_score=pred_rel, y_true=gold_rel, k=k)
 
-
 def evaluate(pred_rank, gold_rank):
     ndcg_3 = ndcg_score(pred_rank, gold_rank, 3)
     ap_3 = ap_score(pred_rank, gold_rank, 3)
     return ndcg_3, ap_3
 
-
 def parse_args():
-    parser = argparse.ArgumentParser(description='Langrank parser.')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--task', default='sa')
+    parser.add_argument('--features', nargs='+')
+    return parser.parse_args()
+
+    # parser = argparse.ArgumentParser(description='Langrank parser.')
     # parser.add_argument('-o', '--orig', type=str, required=True, help='unsegmented dataset')
-    parser.add_argument('-s', '--seg', type=str, help='segmented dataset')
-    parser.add_argument('-l', '--lang', type=str, required=True, help='language code')
-    parser.add_argument('-n', '--num', type=int, default=3, help='print top N')
-    parser.add_argument('-c', '--candidates', type=str, default="all",
-                        help="candidates of transfer languages, seperated by ;, use *abc to exclude language abc")
-    parser.add_argument('-t', '--task', type=str, default="SA", choices=["MT", "POS", "EL", "DEP", "OLID", "SA"],
-                        help="The task of interested. Current options support 'MT': machine translation,"
-                        "'DEP': Dependency Parsing, 'POS': POS-tagging, 'EL': Entity Linking,"
-                        "'OLID': Offensive Language Identification, and 'SA': Sentiment Analysis.")
-    # QUESTION: when to use "all"?
-    parser.add_argument('-m', '--model', type=str, default="all", help="model to be used for prediction")
-    parser.add_argument('-f', '--feature', type=str, default="base", choices=['base', 'pos', 'emot', 'all'],
-                        help="set of features to use for prediction")
-    params = parser.parse_args()
-    params.orig = f'datasets/sa/{params.lang}.txt'
-    return params
+    # parser.add_argument('-s', '--seg', type=str, help='segmented dataset')
+    # parser.add_argument('-l', '--lang', type=str, required=True, help='language code')
+    # parser.add_argument('-n', '--num', type=int, default=3, help='print top N')
+    # parser.add_argument('-c', '--candidates', type=str, default="all",
+    #                     help="candidates of transfer languages, seperated by ;, use *abc to exclude language abc")
+    # parser.add_argument('-t', '--task', type=str, default="SA", choices=["MT", "POS", "EL", "DEP", "OLID", "SA"],
+    #                     help="The task of interested. Current options support 'MT': machine translation,"
+    #                     "'DEP': Dependency Parsing, 'POS': POS-tagging, 'EL': Entity Linking,"
+    #                     "'OLID': Offensive Language Identification, and 'SA': Sentiment Analysis.")
+    # # QUESTION: when to use "all"?
+    # parser.add_argument('-m', '--model', type=str, default="all", help="model to be used for prediction")
+    # parser.add_argument('-f', '--feature', type=str, default="base", choices=['base', 'pos', 'emot', 'all'],
+    #                     help="set of features to use for prediction")
+    # params = parser.parse_args()
+    # params.orig = f'datasets/sa/{params.lang}.txt'
+    # return params
 
 def make_args(lang, feature, task='SA'):
     params = argparse.Namespace()
-    params.orig = f'datasets/sa/{lang}.txt'
+    params.orig = f'datasets/{task.lower()}/{lang}.txt'
     params.seg = None
     params.lang = lang
     params.num = 3
@@ -90,7 +94,9 @@ def sort_prediction(cand_list, neg_scores):
         pass
     sorted_list = sorted(zip(cand_list, neg_scores), key=lambda x: x[0])
     pred_neg_scores = [z[1] for z in sorted_list]
-    pred = rankdata(pred_neg_scores)
+    # pred = rankdata(pred_neg_scores, method='min')
+    # pred = rankdata(pred_neg_scores, method='max')
+    pred = rankdata(pred_neg_scores, method='ordinal')
     return pred
 
 def load_gold(task, target_lang):
@@ -132,20 +138,21 @@ def format_print(result, features):
 
 
 if __name__ == '__main__':
-    # params = parse_args()
-    task = 'sa' # 'sa'
+    args = parse_args()
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
              'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    # features = ['base', 'pos', 'emot', 'ltq', 'all', 'dataset', 'uriel',]
-    features = ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
-    # features = ['ours']
+    # features = ['base', 'nocult', 'pos', 'emot', 'ltq', 'ours', 'all']
+    # features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
+    # features = ['base', 'all']
+
+    result = defaultdict(dict)
     eval_metric = ['ndcg', 'ap']
     result_map = defaultdict(dict)
     result_ndcg = defaultdict(dict)
     for l in langs:
-        for f in features:
-            params = make_args(l, f, f'{task.upper()}')
+        for f in args.features:
+            params = make_args(l, f, f'{args.task.upper()}')
             assert os.path.isfile(params.orig)
             assert (params.seg is None or os.path.isfile(params.seg))
             lines = read_file(params.orig)
@@ -168,7 +175,7 @@ if __name__ == '__main__':
             pred_langs = [cand_langs[i] for i in np.argsort(pred)[:3]]
             gold_langs = [cand_langs[i] for i in np.argsort(gold)[:3]]
             print('*'*80)
-            print(f'Prediction for lang {params.lang} with {params.feature} features, {task} task')
+            print(f'Prediction for lang {params.lang} with {params.feature} features, {args.task} task')
             print(f'Prediction is {pred}')
             print(f'Top 3 prediction langs: {pred_langs}')
             print(f'Gold is {gold}')
@@ -177,10 +184,8 @@ if __name__ == '__main__':
             print(f'ap is {ap_3}')
             print('*'*80, end='\n\n')
 
-    summarize_result(result_map, features)
-    summarize_result(result_ndcg, features)
+    summarize_result(result_map, args.features)
+    summarize_result(result_ndcg, args.features)
 
-    format_print(result_map, features)
-    format_print(result_ndcg, features)
-
-
+    format_print(result_map, args.features)
+    format_print(result_ndcg, args.features)
