@@ -95,8 +95,8 @@ def sort_prediction(cand_list, neg_scores):
     sorted_list = sorted(zip(cand_list, neg_scores), key=lambda x: x[0])
     pred_neg_scores = [z[1] for z in sorted_list]
     # pred = rankdata(pred_neg_scores, method='min')
-    # pred = rankdata(pred_neg_scores, method='max')
-    pred = rankdata(pred_neg_scores, method='ordinal')
+    pred = rankdata(pred_neg_scores, method='max')
+    # pred = rankdata(pred_neg_scores, method='ordinal')
     return pred
 
 def load_gold(task, target_lang):

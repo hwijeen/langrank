@@ -214,6 +214,12 @@ def prepare_new_dataset(lang, task="SA", dataset_source=None,
     return features
 
 def uriel_distance_vec(languages):
+    # code = {'ara': 'arb', 'fas': 'pes', 'zho': 'cmn'}
+    # new_languages = []
+    # for l in languages:
+    #     new_languages.append(code.get(l, l))
+    # languages = new_languages
+
     # print('...geographic')
     geographic = l2v.geographic_distance(languages)
     # print('...genetic')
@@ -462,7 +468,6 @@ def rank(test_dataset_features, task="SA", candidates="all", model="best", featu
     # print("predicting...")
     predict_contribs = bst.predict(test_inputs, pred_contrib=True)
     predict_scores = predict_contribs.sum(-1)
-
 
     # # 0 means we ignore this feature (don't compute single-feature result of it)
     # if task == "MT":
