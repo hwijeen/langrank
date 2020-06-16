@@ -1,6 +1,6 @@
 # Ranking Transfer Languages with Pragmatically-Motivated Features for Multilingual Sentiment Analysis
 This repository contains data and codes used for [the paper](). We proposed pragmatically-motivated features that operationalize linguistic concepts such as language context-level and emotion semantics.
-As explained in the paper, the experimental set up consists of two steps: Optimal ranking extraction and Ranking model training. We provided the result of ranking model extraction in [this sheet](https://docs.google.com/spreadsheets/d/13qJIcksIbBz4et0vWzM3cdu5_UMrisurHs-K3AtN8Dw/edit#gid=0). Here, we train and evaluate the ranking model with the proposed pragmatically-motivated features.    
+As explained in the paper, the experimental set up consists of two steps: Optimal ranking extraction and Ranking model training. We provided the result of ranking model extraction in [this sheet](https://docs.google.com/spreadsheets/d/13qJIcksIbBz4et0vWzM3cdu5_UMrisurHs-K3AtN8Dw/edit#gid=0). Here, we train and evaluate the ranking model with the proposed pragmatically-motivated features. The code is based on this [repository](https://github.com/neulab/langrank).
 
 
 ## Dependencies

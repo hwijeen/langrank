@@ -5,8 +5,9 @@ import ast
 from copy import copy
 from collections import Counter, defaultdict
 from tqdm import tqdm
-
-from test_pos_tagger import *
+import os
+import sys
+from functools import partial
 
 lang2code = {
     'ara': 'ar', 'ces': 'cs',
@@ -32,18 +33,72 @@ VERB_TAGS = {
     'jpn': ['動詞']
 }
 
-POS_FEATURES = ['noun', 'pron', 'verb', 'noun2verb', 'pron2noun']
+POS_FEATURES = ['pron', 'verb']
+
+
+def listdir(dir_):
+    return [os.path.join(dir_, f) for f in os.listdir(dir_)]
+
+def find_rdr_dict(resource_path, kind='UPOS'):
+    files = listdir(resource_path)
+    rdr_path = [f for f in files if kind in f and f.endswith('RDR')][0]
+    dict_path = [f for f in files if kind in f and f.endswith('DICT')][0]
+    return rdr_path, dict_path
+
+def get_resources_path(pos_tagger_dir, ud_resources, etc_resources):
+    resources_by_lang = {}
+    for lang, resource_id in ud_resources.items():
+        resource_dir = f'Models/ud-treebanks-v2.4/UD_{resource_id}'
+        resource_path = os.path.join(pos_tagger_dir, resource_dir)
+        rdr_path, dict_path = find_rdr_dict(resource_path)
+        resources_by_lang[lang] = [rdr_path, dict_path]
+    for lang, resource_path in etc_resources.items():
+        resource_path = [os.path.join(pos_tagger_dir, p) for p in resource_path]
+        resources_by_lang[lang] = resource_path
+    return resources_by_lang
+
+def get_sample(fpath, num=5):
+    samples = []
+    with open(fpath, 'r') as f:
+        f.readline() # remove header
+        for _ in range(num):
+            sample = f.readline().strip('\n').split('\t')[1]
+            samples.append(sample)
+        return samples
+
+def load_sample_data(base_path, langs, num=5):
+    samples_by_lang = {}
+    for lang in langs:
+        lang_dir = os.path.join(base_path, lang)
+        print(lang_dir)
+        fpath = [f for f in listdir(lang_dir) if f.endswith('.tsv')][0] # arbitrary data
+        samples = get_sample(fpath, num)
+        samples_by_lang[lang] = samples
+    return samples_by_lang
+
+def load_pos_taggers(pos_tagger_dir, resources_by_lang):
+    py_tagger_path = os.path.join(pos_tagger_dir, 'pSCRDRtagger')
+    os.chdir(py_tagger_path)
+    import sys; sys.path.append('.')
+    from RDRPOSTagger import RDRPOSTagger, readDictionary
+    os.chdir('../../')
+    taggers_by_lang = {}
+    for lang, resources in resources_by_lang.items():
+        tagger = RDRPOSTagger()
+        rdr_path, dict_path = resources
+        tagger.constructSCRDRtreeFromRDRfile(rdr_path)
+        dict_ = readDictionary(dict_path)
+        taggers_by_lang[lang] = partial(tagger.tagRawSentence, DICT=dict_)
+    return taggers_by_lang
 
 def fetch_files(cond, data_dir):
     return sorted([os.path.join(data_dir, f) for f
                    in os.listdir(data_dir) if cond in f])
 
-
 def read_file(fname):
     with open(fname, 'r') as f:
         lines = [l.strip() for l in f.readlines()]
     return lines
-
 
 def parse_pos(line, lang):
     lst = ast.literal_eval(line)
@@ -61,11 +116,9 @@ def count_pos(lines, lang):
         counts.update(parse_pos(l, lang))
     return counts
 
-
 def ratio_x2y(x, y):
     n2v = x / (x + y)
     return n2v
-
 
 def build_counts(data_dir):
     pos_counts = {}
@@ -77,9 +130,8 @@ def build_counts(data_dir):
         pos_counts[lang] = counts
     return pos_counts
 
-
 def get_pos_ratio(lang, counter, pos):
-    assert pos in ['noun', 'verb', 'pron']
+    assert pos in ['verb', 'pron']
     num_tokens = sum(counter.values())
     if pos == 'noun':
         tag = NOUN_TAGS.get(lang, ['NOUN'])
@@ -90,16 +142,11 @@ def get_pos_ratio(lang, counter, pos):
     cnt = sum([counter.get(t, 0) for t in tag]) / num_tokens
     return cnt
 
-
 def get_feature(lang, counter, name):
-    if name in ['noun', 'pron', 'verb']:
+    if name in ['pron', 'verb']:
         return get_pos_ratio(lang, counter, name)
-    elif name in ['noun2verb', 'pron2noun']:
-        x, y = name.split('2')
-        return ratio_x2y(get_pos_ratio(lang, counter, x),
-                         get_pos_ratio(lang, counter, y))
     else:
-        raise ValueError('Feature name should be noun, pron, verb, noun2verb or pron2noun.')
+        raise ValueError('Feature name should be pron, verb.')
 
 
 def build_features(data_dir, feature_dir, feature_name):
@@ -152,8 +199,7 @@ def write_output(feature_dict, col_name, out_file):
     print(f'Results saved as {out_file}')
 
 
-def pos_features(lang, feature, feature_dir='./features-news', data_dir='./mono'):
-# def pos_features(lang, feature, feature_dir='./features', data_dir='./mono'):
+def pos_features(lang, feature, feature_dir='./features', data_dir='./mono'):
     assert feature in POS_FEATURES
     out_file = os.path.join(feature_dir, f'{feature}.csv')
 
@@ -166,19 +212,12 @@ def pos_features(lang, feature, feature_dir='./features-news', data_dir='./mono'
         feature_dict = read_features(out_file)
     return feature_dict[lang]
 
-# FIXME: read only once
 def emo_features(lang1, lang2, fpath='./features/', pairwise=True):
     if pairwise:
-        # fpath = os.path.join(fpath, 'emo-diffs-cosine-5.txt') # old
-        # fpath = os.path.join(fpath, 'emo-diffs-en-cc-cosine-5-norm.txt') # new
-        # fpath = os.path.join(fpath, 'emo-diffs-en-cosine-5.txt') # en
-        # fpath = os.path.join(fpath, 'emo-diffs-cc-cos-5iter-norm.txt') # en
         fpath = os.path.join(fpath, 'emo-diffs-cc-cos-5iter-zero-one-norm.txt') # en
     else:
         pass
 
-    # code_to_lang = {v:k for k,v in lang_to_code.items()}
-    # if asymmetric score is correct
     feature_dict = defaultdict(dict)
     with open(fpath) as f:
         for line in f:
@@ -188,23 +227,12 @@ def emo_features(lang1, lang2, fpath='./features/', pairwise=True):
         return 0.0
     return feature_dict[lang2code[lang1]][lang2code[lang2]].strip()
 
-    # # if symmetric score is correct
-    # feature_dict = dict()
-    # with open(fpath) as f:
-    #     for line in f:
-    #         lang1_code, lang2_code, emo_score = line.split('\t')
-    #         feature_dict[(lang1_code, lang2_code)] = emo_score
-    # return feature_dict[(lang_to_code[lang1], lang_to_code[lang2])]
-
 def ltq_features(lang1, lang2, fpath='./features/', norm=True):
     if norm:
         fpath = os.path.join(fpath, 'ltq_500_norm_download.txt')
-        # fpath = os.path.join(fpath, 'ltq_either_norm.txt')
-        # fpath = os.path.join(fpath, 'ltq_either.txt')
     else:
         fpath = os.path.join(fpath, 'ltq_either_norm.txt')
 
-    # if asymmetric score is correct
     feature_dict = defaultdict(dict)
     with open(fpath) as f:
         for line in f:
@@ -213,14 +241,3 @@ def ltq_features(lang1, lang2, fpath='./features/', norm=True):
     if lang1 == lang2:
         return 0.0
     return feature_dict[lang2code[lang1]][lang2code[lang2]].strip()
-
-if __name__ == "__main__":
-    features = ['noun', 'pron', 'verb', 'noun2verb', 'pron2noun']
-    # feature_dict = build_features('./mono-news-processed-pos', './features-news', features)
-    # for f in features:
-    #     feature_dict = build_features('./mono-news-processed-pos', './features-news', f)
-    #     out_file = f'./features-news/{f}.csv'
-    #     write_output(feature_dict, f, out_file)
-
-    print(pos_features('zho', 'noun', './features-news'))
-    print(pos_features('zho', 'verb', './features-news'))

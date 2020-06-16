@@ -1,4 +1,3 @@
-#!python langrank_predict.py -l ara -m ara -c '*ara;' -t SA -m ara
 import langrank as lr
 from langrank import rank_to_relevance
 import os
@@ -41,31 +40,11 @@ def evaluate(pred_rank, gold_rank):
     ap_3 = ap_score(pred_rank, gold_rank, 3)
     return ndcg_3, ap_3
 
-
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--task', default='sa')
     parser.add_argument('--features', nargs='+')
     return parser.parse_args()
-
-    # parser = argparse.ArgumentParser(description='Langrank parser.')
-    # parser.add_argument('-o', '--orig', type=str, required=True, help='unsegmented dataset')
-    # parser.add_argument('-s', '--seg', type=str, help='segmented dataset')
-    # parser.add_argument('-l', '--lang', type=str, required=True, help='language code')
-    # parser.add_argument('-n', '--num', type=int, default=3, help='print top N')
-    # parser.add_argument('-c', '--candidates', type=str, default="all",
-    #                     help="candidates of transfer languages, seperated by ;, use *abc to exclude language abc")
-    # parser.add_argument('-t', '--task', type=str, default="SA", choices=["MT", "POS", "EL", "DEP", "OLID", "SA"],
-    #                     help="The task of interested. Current options support 'MT': machine translation,"
-    #                     "'DEP': Dependency Parsing, 'POS': POS-tagging, 'EL': Entity Linking,"
-    #                     "'OLID': Offensive Language Identification, and 'SA': Sentiment Analysis.")
-    # # QUESTION: when to use "all"?
-    # parser.add_argument('-m', '--model', type=str, default="all", help="model to be used for prediction")
-    # parser.add_argument('-f', '--feature', type=str, default="base", choices=['base', 'pos', 'emot', 'all'],
-    #                     help="set of features to use for prediction")
-    # params = parser.parse_args()
-    # params.orig = f'datasets/sa/{params.lang}.txt'
-    # return params
 
 def make_args(lang, feature, task='SA'):
     params = argparse.Namespace()
@@ -118,7 +97,7 @@ def summarize_result(result, features, metric):
     for feat in features:
         for l, res_by_feat in result.items():
             res[feat] += res_by_feat[feat]
-    print('Averaged result({ metric })')
+    print(f'Averaged result({ metric })')
     num_lang= len(result)
     for feat in features:
         avg = res[feat] / num_lang
@@ -140,11 +119,7 @@ if __name__ == '__main__':
     args = parse_args()
     langs = ['ara', 'ces', 'deu', 'eng', 'fas',
              'fra', 'hin', 'jpn', 'kor', 'nld',
-             'pol', 'rus', 'spa', 'tam', 'tur', 'zho'] # no tha
-    # features = ['base', 'nocult', 'pos', 'emot', 'ltq', 'ours', 'all']
-    # features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
-    # features = ['base', 'all']
-
+             'pol', 'rus', 'spa', 'tam', 'tur', 'zho']
     result = defaultdict(dict)
     eval_metric = ['ndcg', 'ap']
     result_map = defaultdict(dict)
