@@ -214,11 +214,11 @@ def prepare_new_dataset(lang, task="SA", dataset_source=None,
     return features
 
 def uriel_distance_vec(languages):
-    # code = {'ara': 'arb', 'fas': 'pes', 'zho': 'cmn'}
-    # new_languages = []
-    # for l in languages:
-    #     new_languages.append(code.get(l, l))
-    # languages = new_languages
+    code = {'ara': 'arb', 'fas': 'pes', 'zho': 'cmn'}
+    new_languages = []
+    for l in languages:
+        new_languages.append(code.get(l, l))
+    languages = new_languages
 
     # print('...geographic')
     geographic = l2v.geographic_distance(languages)
@@ -569,5 +569,5 @@ def rank(test_dataset_features, task="SA", candidates="all", model="best", featu
     #     #              feature_name[contrib_ind[1]], contrib_scores[contrib_ind[1]],
     #     #              feature_name[contrib_ind[2]], contrib_scores[contrib_ind[2]]))
     cand_langs = [c[0] for c in candidate_list]
-    return cand_langs, -predict_scores
+    return cand_langs, -predict_scores # small is good
 

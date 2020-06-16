@@ -43,6 +43,7 @@ def evaluate(pred_rank, gold_rank):
     ap_3 = ap_score(pred_rank, gold_rank, 3)
     return ndcg_3, ap_3
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--task', default='sa')
@@ -89,7 +90,9 @@ def read_file(fpath):
 
 def sort_prediction(cand_list, neg_scores):
     try:
-        cand_list = [c.split('/')[2][:3] for c in cand_list]
+        where = 3 if cand_list[0].startswith('.') else 2
+        cand_list = [c.split('/')[where][:3] for c in cand_list]
+        assert len(set(cand_list)) != 1, 'something is wrong'
     except:
         pass
     sorted_list = sorted(zip(cand_list, neg_scores), key=lambda x: x[0])

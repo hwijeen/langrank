@@ -3,8 +3,8 @@
 # features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
 
 task='dep'
-# features=('nocult' 'base' 'pos' 'ltq' 'emot' 'all')
-features=('data_group' 'typo_group' 'geo_group' 'ortho_group' 'cult_group')
+features=('nocult' 'base' 'pos' 'ltq' 'emot' 'all')
+# features=('data_group' 'typo_group' 'geo_group' 'ortho_group' 'cult_group')
 # features=('nocult' 'base' 'pos' 'ltq' 'emot' 'all' 'data_group' 'typo_group' 'geo_group' 'ortho_group' 'cult_group')
 num_leaves=16
 max_depth=-1
