@@ -1,11 +1,8 @@
 #!/bin/bash
-# features = ['base', 'pos', 'emot', 'ltq', 'all', 'dataset', 'uriel',]
-# features += ['typo_group', 'geo_group', 'cult_group', 'ortho_group', 'data_group']
-
-task='dep'
-features=('nocult' 'base' 'pos' 'ltq' 'emot' 'all')
+task='sa'
+# features=('nocult' 'base' 'pos' 'ltq' 'emot' 'all')
 # features=('data_group' 'typo_group' 'geo_group' 'ortho_group' 'cult_group')
-# features=('nocult' 'base' 'pos' 'ltq' 'emot' 'all' 'data_group' 'typo_group' 'geo_group' 'ortho_group' 'cult_group')
+features=('nocult' 'base' 'pos' 'ltq' 'emot' 'all' 'data_group' 'typo_group' 'geo_group' 'ortho_group' 'cult_group')
 num_leaves=16
 max_depth=-1
 learning_rate=0.1

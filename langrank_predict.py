@@ -17,7 +17,6 @@ def ap_score(pred_rank, gold_rank, k=3):
         return 0
     return np.mean(prec_scores)
 
-
 def precision(pred_rank, gold_rank, k):
     relevant_idx = [idx for idx, r in enumerate(gold_rank) if r <= k]
     tp = 0
@@ -27,7 +26,6 @@ def precision(pred_rank, gold_rank, k):
         else:
             pass
     return tp / k
-
 
 def ndcg_score(pred_rank, gold_rank, k=3):
     # NDCG@3 as default
@@ -97,9 +95,7 @@ def sort_prediction(cand_list, neg_scores):
         pass
     sorted_list = sorted(zip(cand_list, neg_scores), key=lambda x: x[0])
     pred_neg_scores = [z[1] for z in sorted_list]
-    # pred = rankdata(pred_neg_scores, method='min')
     pred = rankdata(pred_neg_scores, method='max')
-    # pred = rankdata(pred_neg_scores, method='ordinal')
     return pred
 
 def load_gold(task, target_lang):
@@ -117,12 +113,12 @@ def load_gold(task, target_lang):
     return gold_list[target_lang_idx]
 
 
-def summarize_result(result, features):
+def summarize_result(result, features, metric):
     res = defaultdict(lambda: 0)
     for feat in features:
         for l, res_by_feat in result.items():
             res[feat] += res_by_feat[feat]
-    print('Averaged result')
+    print('Averaged result({ metric })')
     num_lang= len(result)
     for feat in features:
         avg = res[feat] / num_lang
@@ -187,8 +183,7 @@ if __name__ == '__main__':
             print(f'ap is {ap_3}')
             print('*'*80, end='\n\n')
 
-    summarize_result(result_map, args.features)
-    summarize_result(result_ndcg, args.features)
-
+    summarize_result(result_map, args.features, 'MAP')
+    summarize_result(result_ndcg, args.features, 'NDCG')
     format_print(result_map, args.features)
     format_print(result_ndcg, args.features)
