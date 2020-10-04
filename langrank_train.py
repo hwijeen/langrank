@@ -79,6 +79,20 @@ def train_langrank(task='sa', exclude_lang=None, feature='base',
                         'transfer_ttr', 'task_ttr', 'distance_ttr']
     elif feature == 'uriel':
         feature_name = ['genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    elif feature == 'learned':
+        feature_name = ['word_overlap',
+                        'transfer_data_size', 'task_data_size', 'ratio_data_size',
+                        'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+        feature_name += ['rep_dist']
+    elif feature == 'learned_diff':
+        feature_name = ['rep_dist'] * 512
+    elif feature == 'learned_diff_ours':
+        feature_name = ['rep_dist'] * 512
+        feature_name += ['distance_pron', 'distance_verb',
+                         'emotion_dist',
+                         'ltq_score']
+
 
     elif feature == 'nocult':
         feature_name = ['word_overlap',
@@ -113,6 +127,31 @@ def train_langrank(task='sa', exclude_lang=None, feature='base',
                         'distance_pron', 'distance_verb',
                         'emotion_dist',
                         'ltq_score',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+
+    elif feature == 'all_no_lcr':
+        feature_name = ['word_overlap',
+                        'transfer_data_size', 'task_data_size', 'ratio_data_size',
+                        'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        # 'distance_pron', 'distance_verb',
+                        'emotion_dist',
+                        'ltq_score',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    elif feature == 'all_no_esd':
+        feature_name = ['word_overlap',
+                        'transfer_data_size', 'task_data_size', 'ratio_data_size',
+                        'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'distance_pron', 'distance_verb',
+                        # 'emotion_dist',
+                        'ltq_score',
+                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
+    elif feature == 'all_no_ltq':
+        feature_name = ['word_overlap',
+                        'transfer_data_size', 'task_data_size', 'ratio_data_size',
+                        'transfer_ttr', 'task_ttr', 'distance_ttr',
+                        'distance_pron', 'distance_verb',
+                        'emotion_dist',
+                        # 'ltq_score',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
 
     elif feature == 'typo_group':

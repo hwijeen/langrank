@@ -5,6 +5,7 @@ import os
 import lightgbm as lgb
 from sklearn.datasets import load_svmlight_file
 from new_features import pos_features, emo_features, ltq_features
+from scipy.spatial import distance
 
 
 TASKS = ["DEP", "SA"]
@@ -165,6 +166,13 @@ def prepare_new_dataset(lang, task="SA", dataset_source=None,
     # read all pos features even if we might not use everything
     features["verb_ratio"] = pos_features(lang, 'verb')
     features["pron_ratio"] = pos_features(lang, 'pron')
+
+    code = {'ara': 'arb', 'fas': 'pes'}
+    lang = code.get(lang, lang)
+    if lang == 'eng':
+        features["learned"] = np.zeros(512) # 512
+    else:
+        features["learned"] = np.array(l2v.get_features(lang, 'learned')[lang]) # 512
     return features
 
 def uriel_distance_vec(languages):
@@ -216,6 +224,10 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     emotion_dist = emo_features(test['lang'], transfer['lang'])
     ltq_score = ltq_features(test['lang'], transfer['lang'])
 
+    # learned language vector
+    rep_dist = distance.cosine(transfer['learned'], test['learned']).tolist()
+    rep_diff = test['learned'] - transfer['learned']
+
     if feature == 'base':
         feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size,
@@ -227,6 +239,19 @@ def distance_vec(test, transfer, uriel_features, task, feature):
                  transfer_ttr, task_ttr, distance_ttr]
     elif feature == 'uriel':
         feats = uriel_features
+    elif feature == 'learned':
+        feats = [word_overlap,
+                 transfer_dataset_size, task_data_size, ratio_dataset_size,
+                 transfer_ttr, task_ttr, distance_ttr]
+        feats += uriel_features
+        feats += [rep_dist]
+    elif feature == 'learned_diff':
+        feats = rep_diff
+    elif feature == 'learned_diff_ours':
+        feats = rep_diff.tolist()
+        feats += [distance_pron, distance_verb]
+        feats += [emotion_dist]
+        feats += [ltq_score]
 
     elif feature == 'nocult':
         feats = [word_overlap,
@@ -261,6 +286,31 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         feats += [distance_pron, distance_verb]
         feats += [emotion_dist]
         feats += [ltq_score]
+        feats += uriel_features
+
+    elif feature == 'all_no_lcr':
+        feats = [word_overlap,
+                 transfer_dataset_size, task_data_size, ratio_dataset_size,
+                 transfer_ttr, task_ttr, distance_ttr]
+        # feats += [distance_pron, distance_verb]
+        feats += [emotion_dist]
+        feats += [ltq_score]
+        feats += uriel_features
+    elif feature == 'all_no_esd':
+        feats = [word_overlap,
+                 transfer_dataset_size, task_data_size, ratio_dataset_size,
+                 transfer_ttr, task_ttr, distance_ttr]
+        feats += [distance_pron, distance_verb]
+        # feats += [emotion_dist]
+        feats += [ltq_score]
+        feats += uriel_features
+    elif feature == 'all_no_ltq':
+        feats = [word_overlap,
+                 transfer_dataset_size, task_data_size, ratio_dataset_size,
+                 transfer_ttr, task_ttr, distance_ttr]
+        feats += [distance_pron, distance_verb]
+        feats += [emotion_dist]
+        # feats += [ltq_score]
         feats += uriel_features
 
     # below is for analyses

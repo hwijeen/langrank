@@ -3,8 +3,9 @@ import subprocess
 import numpy as np
 from collections import Counter
 
-import sys; sys.path.append('/home/hwijeen/langrank')
-sys.path.append('/Users/jimin/Documents/research/langrank')
+import lang2vec.lang2vec as l2v
+
+import sys; sys.path.append('/home/hwijeen/langrank/src')
 from new_features import pos_features
 
 def read_data(fn):
@@ -80,11 +81,18 @@ for filename in os.listdir(dataset_dir):
     features[key]["word_vocab"] = unique
     features[key]["type_token_ratio"] = features[key]["type_number"]/float(features[key]["token_number"])
 
-    features[key]["noun_ratio"] = pos_features(language, 'noun')
+    # features[key]["noun_ratio"] = pos_features(language, 'noun')
     features[key]["verb_ratio"] = pos_features(language, 'verb')
     features[key]["pron_ratio"] = pos_features(language, 'pron')
-    features[key]["n2v_ratio"] = pos_features(language, 'noun2verb')
-    features[key]["p2n_ratio"] = pos_features(language, 'pron2noun')
+    # features[key]["n2v_ratio"] = pos_features(language, 'noun2verb')
+    # features[key]["p2n_ratio"] = pos_features(language, 'pron2noun')
+
+    code = {'ara': 'arb', 'fas': 'pes'}
+    language = code.get(language, language)
+    if language == 'eng':
+        features[key]["learned"] = np.zeros(512) # 512
+    else:
+        features[key]["learned"] = np.array(l2v.get_features(language, 'learned')[language])
 
 indexed = "indexed/SA"
 outputfile = os.path.join(indexed, "sa.npy")
