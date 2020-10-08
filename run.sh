@@ -2,7 +2,8 @@
 task='sa'
 # features=('nocult' 'base' 'pos' 'ltq' 'emot' 'all')
 # features=('data_group' 'typo_group' 'geo_group' 'ortho_group' 'cult_group')
-features=('nocult' 'base' 'pos' 'ltq' 'emot' 'all' 'data_group' 'typo_group' 'geo_group' 'ortho_group' 'cult_group')
+features=('base' 'all' 'all_no_lcr' 'all_no_ltq' 'all_no_esd' 'learned' 'learned_ours' 'learned_ours_nolcr' 'learned_ours_noltq' 'learned_ours_noesd') # table1
+# features=('data_group' 'typo_group' 'geo_group' 'ortho_group' 'cult_group') # table 2
 num_leaves=16
 max_depth=-1
 learning_rate=0.1

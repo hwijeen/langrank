@@ -233,23 +233,8 @@ def distance_vec(test, transfer, uriel_features, task, feature):
                  transfer_dataset_size, task_data_size, ratio_dataset_size,
                  transfer_ttr, task_ttr, distance_ttr]
         feats += uriel_features
-    elif feature == 'dataset':
-        feats = [word_overlap,
-                 transfer_dataset_size, task_data_size, ratio_dataset_size,
-                 transfer_ttr, task_ttr, distance_ttr]
-    elif feature == 'uriel':
-        feats = uriel_features
     elif feature == 'learned':
         feats = rep_diff.tolist()
-    elif feature == 'learned_lcr':
-        feats = rep_diff.tolist()
-        feats += [distance_pron, distance_verb]
-    elif feature == 'learned_ltq':
-        feats = rep_diff.tolist()
-        feats += [ltq_score]
-    elif feature == 'learned_esd':
-        feats = rep_diff.tolist()
-        feats += [emotion_dist]
     elif feature == 'learned_ours':
         feats = rep_diff.tolist()
         feats += [distance_pron, distance_verb]
@@ -268,32 +253,6 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         feats += [distance_pron, distance_verb]
         feats += [ltq_score]
 
-    elif feature == 'nocult':
-        feats = [word_overlap,
-                 transfer_dataset_size, task_data_size, ratio_dataset_size]
-        feats += uriel_features
-    elif feature == 'lcr':
-        feats = [word_overlap,
-                 transfer_dataset_size, task_data_size, ratio_dataset_size]
-        feats += [distance_pron, distance_verb] # 2
-        feats += uriel_features
-    elif feature == 'ltq':
-        feats = [word_overlap,
-                 transfer_dataset_size, task_data_size, ratio_dataset_size]
-        feats += [ltq_score]
-        feats += uriel_features
-    elif feature == 'esd':
-        feats = [word_overlap,
-                 transfer_dataset_size, task_data_size, ratio_dataset_size]
-        feats += [emotion_dist]
-        feats += uriel_features
-    elif feature == 'ours':
-        feats = [word_overlap,
-                 transfer_dataset_size, task_data_size, ratio_dataset_size]
-        feats += [distance_pron, distance_verb]
-        feats += [emotion_dist]
-        feats += [ltq_score]
-        feats += uriel_features
     elif feature == 'all':
         feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size,
@@ -302,7 +261,6 @@ def distance_vec(test, transfer, uriel_features, task, feature):
         feats += [emotion_dist]
         feats += [ltq_score]
         feats += uriel_features
-
     elif feature == 'all_no_lcr':
         feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size,

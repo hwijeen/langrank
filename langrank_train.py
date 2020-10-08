@@ -73,23 +73,8 @@ def train_langrank(task='sa', exclude_lang=None, feature='base',
                         'transfer_data_size', 'task_data_size', 'ratio_data_size',
                         'transfer_ttr', 'task_ttr', 'distance_ttr',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    elif feature == 'dataset':
-        feature_name = ['word_overlap',
-                        'transfer_data_size', 'task_data_size', 'ratio_data_size',
-                        'transfer_ttr', 'task_ttr', 'distance_ttr']
-    elif feature == 'uriel':
-        feature_name = ['genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'learned':
         feature_name = ['learned'] * 512
-    elif feature == 'learned_lcr':
-        feature_name = ['learned'] * 512
-        feature_name += ['distance_pron', 'distance_verb']
-    elif feature == 'learned_ltq':
-        feature_name = ['learned'] * 512
-        feature_name += ['ltq_score']
-    elif feature == 'learned_esd':
-        feature_name = ['learned'] * 512
-        feature_name += ['emotion_dist']
     elif feature == 'learned_ours':
         feature_name = ['learned'] * 512
         feature_name += ['distance_pron', 'distance_verb',
@@ -108,33 +93,6 @@ def train_langrank(task='sa', exclude_lang=None, feature='base',
         feature_name += ['distance_pron', 'distance_verb',
                          'ltq_score']
 
-
-    elif feature == 'nocult':
-        feature_name = ['word_overlap',
-                        'transfer_data_size', 'task_data_size', 'ratio_data_size',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    elif feature == 'pos':
-        feature_name = ['word_overlap',
-                        'transfer_data_size', 'task_data_size', 'ratio_data_size',
-                        'distance_pron', 'distance_verb',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    elif feature == 'emot':
-        feature_name = ['word_overlap',
-                        'transfer_data_size', 'task_data_size', 'ratio_data_size',
-                        'emotion_dist',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    elif feature == 'ltq':
-        feature_name = ['word_overlap',
-                        'transfer_data_size', 'task_data_size', 'ratio_data_size',
-                        'ltq_score',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-    elif feature == 'ours':
-        feature_name = ['word_overlap',
-                        'transfer_data_size', 'task_data_size', 'ratio_data_size',
-                        'distance_pron', 'distance_verb',
-                        'emotion_dist',
-                        'ltq_score',
-                        'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
     elif feature == 'all':
         feature_name = ['word_overlap',
                         'transfer_data_size', 'task_data_size', 'ratio_data_size',
@@ -143,7 +101,6 @@ def train_langrank(task='sa', exclude_lang=None, feature='base',
                         'emotion_dist',
                         'ltq_score',
                         'genetic', 'syntactic', 'featural', 'phonological', 'inventory', 'geographical']
-
     elif feature == 'all_no_lcr':
         feature_name = ['word_overlap',
                         'transfer_data_size', 'task_data_size', 'ratio_data_size',
