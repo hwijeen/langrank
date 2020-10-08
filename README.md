@@ -13,7 +13,7 @@ lightgbm
 ## Data
 For sentiment analysis task, we have collected review dataset across 16 languages(one can find details about each dataset in the appendix of the paper). We have formatted the dataset and put it in `datasets/sa` directory. Note that the languages are expressed in terms of ISO 639-3 codes.
 The same set of languages were used for dependency parsing task([Universal Dependencies](https://lindat.mff.cuni.cz/repository/xmlui/handle/11234/1-2837)). Again, the formatted files are located in `datasets/dep`.
-The raw zero-shot results that are used to train the ranking model is in 'Optimal ranking extraction raw data.xlsx'.
+The raw zero-shot results that are used to train the ranking model is in `Optimal ranking extraction raw data.xlsx`.
 
 
 ## How to run
