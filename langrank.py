@@ -222,10 +222,10 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     distance_pron = transfer_pr / task_pr
 
     emotion_dist = emo_features(test['lang'], transfer['lang'])
+
     ltq_score = ltq_features(test['lang'], transfer['lang'])
 
     # learned language vector
-    rep_dist = distance.cosine(transfer['learned'], test['learned']).tolist()
     rep_diff = test['learned'] - transfer['learned']
 
     if feature == 'base':
@@ -240,37 +240,52 @@ def distance_vec(test, transfer, uriel_features, task, feature):
     elif feature == 'uriel':
         feats = uriel_features
     elif feature == 'learned':
-        feats = [word_overlap,
-                 transfer_dataset_size, task_data_size, ratio_dataset_size,
-                 transfer_ttr, task_ttr, distance_ttr]
-        feats += uriel_features
-        feats += [rep_dist]
-    elif feature == 'learned_diff':
-        feats = rep_diff
-    elif feature == 'learned_diff_ours':
+        feats = rep_diff.tolist()
+    elif feature == 'learned_lcr':
+        feats = rep_diff.tolist()
+        feats += [distance_pron, distance_verb]
+    elif feature == 'learned_ltq':
+        feats = rep_diff.tolist()
+        feats += [ltq_score]
+    elif feature == 'learned_esd':
+        feats = rep_diff.tolist()
+        feats += [emotion_dist]
+    elif feature == 'learned_ours':
         feats = rep_diff.tolist()
         feats += [distance_pron, distance_verb]
         feats += [emotion_dist]
+        feats += [ltq_score]
+    elif feature == 'learned_ours_nolcr':
+        feats = rep_diff.tolist()
+        feats += [emotion_dist]
+        feats += [ltq_score]
+    elif feature == 'learned_ours_noltq':
+        feats = rep_diff.tolist()
+        feats += [distance_pron, distance_verb]
+        feats += [emotion_dist]
+    elif feature == 'learned_ours_noesd':
+        feats = rep_diff.tolist()
+        feats += [distance_pron, distance_verb]
         feats += [ltq_score]
 
     elif feature == 'nocult':
         feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size]
         feats += uriel_features
-    elif feature == 'pos':
+    elif feature == 'lcr':
         feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size]
         feats += [distance_pron, distance_verb] # 2
-        feats += uriel_features
-    elif feature == 'emot':
-        feats = [word_overlap,
-                 transfer_dataset_size, task_data_size, ratio_dataset_size]
-        feats += [emotion_dist]
         feats += uriel_features
     elif feature == 'ltq':
         feats = [word_overlap,
                  transfer_dataset_size, task_data_size, ratio_dataset_size]
         feats += [ltq_score]
+        feats += uriel_features
+    elif feature == 'esd':
+        feats = [word_overlap,
+                 transfer_dataset_size, task_data_size, ratio_dataset_size]
+        feats += [emotion_dist]
         feats += uriel_features
     elif feature == 'ours':
         feats = [word_overlap,
@@ -332,6 +347,11 @@ def rank_to_relevance(rank, num_lang): # so that lower ranks are given higher re
     if isinstance(rank, list):
         rank = np.array(rank)
     return np.where(rank != 0, -rank + num_lang, 0)
+    # rel =  np.where(rank != 0, -rank + num_lang, 0)
+
+    # cutoff = 10 # top 10 as learning signal
+    # rel = np.where(rel >= num_lang - cutoff, rel, 0)
+    # return rel
 
 # preparing the file for training
 def prepare_train_file(datasets, langs, rank, segmented_datasets=None,

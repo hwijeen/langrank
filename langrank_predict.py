@@ -10,21 +10,35 @@ import numpy as np
 from collections import defaultdict
 
 
-def ap_score(pred_rank, gold_rank, k=3):
-    prec_scores = [precision(pred_rank, gold_rank, rank) for idx, rank in enumerate(pred_rank) if rank <= k]
-    if prec_scores == []:
-        return 0
-    return np.mean(prec_scores)
+# def ap_score(pred_rank, gold_rank, k=3):
+#     def precision(pred_rank, gold_rank, k):
+#         relevant_idx = [idx for idx, r in enumerate(gold_rank) if r <= k]
+#         tp = 0
+#         for idx, rank in enumerate(pred_rank):
+#             if rank <= k and idx in relevant_idx:
+#                 tp += 1
+#             else:
+#                 pass
+#         return tp / k
+#     prec_scores = [precision(pred_rank, gold_rank, rank) for idx, rank in enumerate(pred_rank) if rank <= k]
+#     if prec_scores == []:
+#         return 0
+#     return np.mean(prec_scores)
 
-def precision(pred_rank, gold_rank, k):
-    relevant_idx = [idx for idx, r in enumerate(gold_rank) if r <= k]
-    tp = 0
-    for idx, rank in enumerate(pred_rank):
-        if rank <= k and idx in relevant_idx:
-            tp += 1
-        else:
-            pass
-    return tp / k
+def ap_score(pred_rank, gold_rank, rel_cutoff=3):
+    def precision(pred_rank, gold_rank, k):
+        rel_idx = [idx for idx, r in enumerate(gold_rank) if r <= rel_cutoff]
+        correct = 0
+        for idx in np.argsort(pred_rank)[:k]:
+            if idx in rel_idx:
+                correct += 1
+        return correct / k
+    prec_scores = []
+    for idx in np.argsort(pred_rank):
+        if gold_rank[idx] <= rel_cutoff:
+            p = precision(pred_rank, gold_rank, pred_rank[idx])
+            prec_scores.append(p)
+    return np.mean(prec_scores)
 
 def ndcg_score(pred_rank, gold_rank, k=3):
     # NDCG@3 as default
